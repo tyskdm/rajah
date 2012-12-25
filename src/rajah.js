@@ -1,15 +1,15 @@
 /**
- * Rajah.js : runner of jasmine.
- *
+ * Rajah.js : junsmine runner on google apps script.
+ * @fileoverview jasmine runner on google apps script.
  *
  */
 
 var Rajah = (function () {
   /**
-   * User should call this function in user's doGet() function.
+   * Main application should call this function in main doGet() function.
    * and should return results of this function.
    *
-   * @param {object} Currently not in use. for futur extention.
+   * @param {object} Currently not in use. for futhur extention.
    */
   var doGet = function (e) {
     var app = UiApp.createApplication();
@@ -25,7 +25,7 @@ var Rajah = (function () {
     var scrollPanel = app.createScrollPanel().setSize("100%", "100%");
     scrollPanel.add(vPanel);
     
-    var handler = app.createServerHandler("executeJasmine").addCallbackElement(text);
+    var handler = app.createServerHandler("executeTrigger").addCallbackElement(text);
     var b = app.createButton("Execute jasmine", handler).setSize("100%", "30");
   
     splitPanel.addNorth(b, 38).setWidgetMinSize(b, 38);
@@ -35,13 +35,17 @@ var Rajah = (function () {
     return app;
   };
   
-  function executeJasmine(eventInfo) {
+  /**
+   * UI-handler, set-up environment and execute jasmine.
+   *
+   */
+  var executeTrigger = function (eventInfo) {
     var app = UiApp.createApplication(),
         logText = "",
         consoleHTML = app.getElementById("text"),
         colorChanged = "";
   
-    function console(message) {
+    var console = function (message) {
       var str, clearCode = "";
       message = message.replace(/\n/g, "<br />");
   
@@ -72,29 +76,29 @@ var Rajah = (function () {
   
       logText += message;
       consoleHTML.setHTML(logText);
-    }
+    };
   
-    main(console);
+    executeJasmine(console);
     
     return app;
-  }
-  
-  function main(console) {
-    
+  };
+
+  var executeJasmine = function (console) {
+
     var jasmineEnv = jasmine.getEnv();
-    var ConsoleReporter = new jasmine.ConsoleReporter(console, (function (r) {
-      var rStr = "result = ";
-      console(rStr);
-      // rStr =  Utilities.jsonStringify(r);
-      // console(rStr);
-    }), true);
+    var ConsoleReporter = new jasmine.ConsoleReporter(console, (function (r) { }), true);
     jasmineEnv.addReporter(ConsoleReporter);
     
     jasmineEnv.execute();
   
     return true;
+  };
+
+  var exports = {
+    doGet: doGet
   }
 
+  return exports;
 })();
 
 
