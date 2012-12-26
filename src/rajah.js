@@ -25,7 +25,7 @@ var Rajah = (function () {
     var scrollPanel = app.createScrollPanel().setSize("100%", "100%");
     scrollPanel.add(vPanel);
     
-    var handler = app.createServerHandler("executeTrigger").addCallbackElement(text);
+    var handler = app.createServerHandler("executeTrigger_").addCallbackElement(text);
     var b = app.createButton("Execute jasmine", handler).setSize("100%", "30");
   
     splitPanel.addNorth(b, 38).setWidgetMinSize(b, 38);
@@ -39,16 +39,16 @@ var Rajah = (function () {
    * UI-handler, set-up environment and execute jasmine.
    *
    */
-  var executeTrigger = function (eventInfo) {
+  function executeTrigger(eventInfo) {
     var app = UiApp.createApplication(),
         logText = "",
         consoleHTML = app.getElementById("text"),
         colorChanged = "";
   
     var console = function (message) {
-      var str, clearCode = "";
+      var str, clearCode = "";    // clearCodeは外へ。
       message = message.replace(/\n/g, "<br />");
-  
+
       var str = message.match(/\033\[32m|\033\[31m|\033\[33m|\033\[0m/);
       while (str !== null) {
         switch (str[0]) {
@@ -57,11 +57,11 @@ var Rajah = (function () {
             clearCode = '</span>';
             break;
           case ('\033[31m'): // red
-            message = message.replace(/\033\[32m/, clearCode + '<span style="color: #ff0000">');
+            message = message.replace(/\033\[31m/, clearCode + '<span style="color: #ff0000">');
             clearCode = '</span>';
             break;
           case ('\033[33m'): // yellow
-            message = message.replace(/\033\[32m/, clearCode + '<span style="color: #dddd00">');
+            message = message.replace(/\033\[33m/, clearCode + '<span style="color: #dddd00">');
             clearCode = '</span>';
             break;
           case ('\033[0m'):  // none
@@ -73,7 +73,7 @@ var Rajah = (function () {
         }
         str = message.match(/\033\[32m|\033\[31m|\033\[33m|\033\[0m/);
       }
-  
+
       logText += message;
       consoleHTML.setHTML(logText);
     };
@@ -86,25 +86,63 @@ var Rajah = (function () {
   var executeJasmine = function (console) {
 
     var jasmineEnv = jasmine.getEnv();
-    var ConsoleReporter = new jasmine.ConsoleReporter(console, (function (r) { }), true);
+    var ConsoleReporter = new jasmine.ConsoleReporter(console, (function () {}), true);
     jasmineEnv.addReporter(ConsoleReporter);
+
+    RajahTimer_Clear();
     
     jasmineEnv.execute();
+
+    RajahTimer_Execute();
   
     return true;
   };
 
   var exports = {
-    doGet: doGet
+    doGet: doGet,
+    executeTrigger: executeTrigger
   }
 
   return exports;
 })();
 
 
+
+function executeTrigger_(e) {
+  return Rajah.executeTrigger(e);
+}
+
+var RajahQue = [];
+
+function RajahTimer_Clear() {
+  RajahQue = [];
+}
+
+function RajahTimer_Execute() {
+  var i, l, f;
+  
+  while (RajahQue.length > 0) {
+    l=RajahQue.length;
+    i=0;
+    for (i=0; i<l; i++) {
+      f = RajahQue.shift();
+      f.func();
+    }
+  }
+}
+
 function setTimeout(f, t) {
+
+  RajahQue.push({func: f});
+  return RajahQue.length;
+/*
   Utilities.sleep(t);
-  f();
+  try {
+    f();
+  } catch (e) {
+    ;
+  }
+*/
 }
 
 function clearTimeout() {}
@@ -112,5 +150,4 @@ function clearTimeout() {}
 function setInterval() {}
 
 function clearInterval() {}
-
 
