@@ -46,7 +46,7 @@ var Rajah = (function () {
         colorChanged = "";
   
     var console = function (message) {
-      var str, clearCode = "";    // clearCodeは外へ。
+      var str, clearCode = "";
       message = message.replace(/\n/g, "<br />");
 
       var str = message.match(/\033\[32m|\033\[31m|\033\[33m|\033\[0m/);
@@ -135,14 +135,12 @@ function setTimeout(f, t) {
 
   RajahQue.push({func: f});
   return RajahQue.length;
-/*
-  Utilities.sleep(t);
-  try {
-    f();
-  } catch (e) {
-    ;
-  }
-*/
+//  Utilities.sleep(t);
+//  try {
+//    f();
+//  } catch (e) {
+//    ;
+//  }
 }
 
 function clearTimeout() {}
@@ -150,4 +148,12 @@ function clearTimeout() {}
 function setInterval() {}
 
 function clearInterval() {}
+
+
+
+
+function testMain() {
+  Rajah.doGet();
+  Rajah.executeTrigger()
+}
 
