@@ -14,13 +14,13 @@
 
 2. Add small code top of your source file.
 
-***
+
 Rajah.init(this);
 
 function doGet(e) {
     return Rajah.doGet(e);
 }
-***
+
 
 - Before using describe(), etc,.. Rajah.init() should be called.
 
