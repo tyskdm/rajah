@@ -1,5 +1,6 @@
 cat \
 ./src/rajah.js \
-../jasmine/lib/jasmine-core/jasmine.js \
-../jasmine/src/console/ConsoleReporter.js \
+./src/timer.js \
+./src/console.js \
+./src/exports.js \
 > ./gs/rajah.gs
