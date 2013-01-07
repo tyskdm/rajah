@@ -1,16 +1,20 @@
 /**
- * Rajah.js : junsmine runner on google apps script.
- * @fileoverview jasmine runner on google apps script.
- *
- * todo: add function for debugger.
+ * Rajah.js : jasmine runner on google apps script main module.
+ * @fileoverview jasmine runner on google apps script main module.
  *
  */
 
+/**
+ * @namespace Rajah
+ */
 var Rajah = (function () {
   /**
-   * Main application should call this function in main doGet() function.
+   * Main application should call this function in user-side doGet() function.
    * and should return results of this function.
-   *
+   * @example
+   * function doGet(e) {
+   *   return Rajah.doGet(e);
+   * }
    * @param {object} Currently not in use. for futhur extention.
    */
   var doGet = function (e) {
@@ -88,7 +92,7 @@ var Rajah = (function () {
    * UI-handler, select TabPanel.
    *
    */
-  function selectTab(eventInfo) {
+  var selectTab = function (eventInfo) {
     var app = UiApp.createApplication(),
         jasmineScrollPanel = app.getElementById("jasmineScrollPanel"),
         loggerScrollPanel = app.getElementById("loggerScrollPanel");
@@ -113,7 +117,7 @@ var Rajah = (function () {
    * UI-handler, set-up environment and execute jasmine.
    *
    */
-  function executeByButton(eventInfo) {
+  var executeByButton = function (eventInfo) {
     var app = UiApp.createApplication(),
         jasmineLog = app.getElementById("jasmineLog"),
         loggerLog = app.getElementById("loggerLog"),
@@ -137,7 +141,7 @@ var Rajah = (function () {
    * Called by Other script, execute jasmine.
    *
    */
-  function executeByScript() {
+  var executeByScript = function () {
     var con = new Rajah.Console(true);
   
     executeJasmine(con.put);
