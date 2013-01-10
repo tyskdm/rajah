@@ -1,68 +1,75 @@
 # Rajah
 
+[Development version](https://script.google.com/macros/s/AKfycbyHks7gWzANG1pBkrifXC4scyY1aHrlv1pBrf_gvizN/dev)
+
+
 ## What's Rajah?
 
 - Jasmine runner for Google apps script.
-- Rajah open report window and execute button.
+
+// - Rajah also provides log console.
 
 
-## Install Rajah
+## Installation
 
-### 1. Install Rajah libraly into your project.
+**1. Install Rajah libraly into your project.**
+
 - libraly code = <                         >
 
-### 2. Add small code top of your source file.    
+**2. Add small code into your source file.**
+
+```js
     Rajah.init(this);
     function doGet(e) {
         return Rajah.doGet(e);
     };
+```
 
-  - Before using describe(), etc,.. Rajah.init() should be called.
+- `Rajah.init()` should be called **before** using jasmine(`describe()`, etc,..). 
 
-### 3. Deploy web service.
+**3. Deploy your project as a web service.**
 
-  - Save project and add version number ('File' menu > 'Manage version')
-  - Deploy web service ('Resource' menu > 'deploy')
-  * Need call function doGet() once.
+1. Save project and add version number ('File' menu > 'Manage version')
+2. Deploy web service ('Resource' menu > 'deploy')
 
-### 4. Access URL.
+* Need call function doGet() once.
 
-  - Latest code.
+**4. Access URL.**
+
+- Latest code.
 
 
-Using Rajah
------------
+## Usage
 
 Tested function
 
-- describe() / xdescribe()
-- it() / xit()
-- expect()
+- `describe()` , `xdescribe()`
+- `it()` , `xit()`
+- `expect()`
+
+Spies have **not** tested enough.
+
+- `spyOn()`
 
 
-Limitation
-----------
+## Limitation
 
-### Async test doesn't work.
+**Async test doesn't work.**
 
-- waitsFor()
-
-### Spies are not tested.
-
-- spyOn()
+- `run()`, `wait()`, `waitsFor()`
 
 
-Wish list
----------
+
+## Wish list
 
 - Visual Reporter and Filter
 
-- console.log
+- console.log [Sample](http://minipaca.net/blog/javascript/firebug-console-api/)
 
 - Execute in debbug mode.
 
-    - Execute from debbug main function (not by button)
+  - Execute from debbug main function (not by button)
 
-    - Step by step console.log display
+  - Step by step console.log display
 
 

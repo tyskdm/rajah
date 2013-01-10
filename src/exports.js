@@ -12,14 +12,15 @@ function init(global) {
 
   global.jasmine = jasmine;
   global.describe = describe;
+  global.xdescribe = xdescribe;
   global.it = it;
+  global.xit = xit;
   global.beforeEach = beforeEach;
   global.afterEach = afterEach;
   global.expect = expect;
   global.spyOn = spyOn;
-  global.xdescribe = xdescribe;
-  global.xit = xit;
   global.runs = runs;
+  global.waits = waits;
   global.waitsFor = waitsFor;
 }
 
