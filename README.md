@@ -1,8 +1,5 @@
 # Rajah
 
-[Development version](https://script.google.com/macros/s/AKfycbyHks7gWzANG1pBkrifXC4scyY1aHrlv1pBrf_gvizN/dev)
-
-
 ## What's Rajah?
 
 - Jasmine runner for Google apps script.
