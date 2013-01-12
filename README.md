@@ -44,18 +44,27 @@ Tested function
 - `it()` , `xit()`
 - `expect()`
 
-Spies have **not** tested enough.
+Spies and async methods have **not** been tested enough.
 
 - `spyOn()`
+- `run()`, `wait()`, `waitsFor()`
 
 
 ## Limitation
 
-**Async test doesn't work.**
+As you know, GAS doesn't provide following timer services.
+- `setTimeout()`, `clearTimeout()`, `setInterval()`, `clearInteval()`
+And jasmine use them, so Rajah has dummyTimer functions internaly based on `Utilities.sleep()`
 
-- `run()`, `wait()`, `waitsFor()`
+But It's not clean way, so Rajah does not open these functions to global namespace.
 
+If you need use them, access as follows:
 
+````js
+function setTimer(func, t) {
+    return Rajah.setTimer(func, t);
+}
+````
 
 ## Wish list
 
