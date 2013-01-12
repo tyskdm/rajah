@@ -1,6 +1,6 @@
 # Rajah
 
-## Rajah is,
+## What's rajah
 
 1. [Jasmine](https://github.com/pivotal/jasmine/wiki) runner for [Google apps script](https://developers.google.com/apps-script/).
 
