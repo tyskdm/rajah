@@ -2,43 +2,53 @@
  * Rajah.dummyTimer
  *
  */
-var RajahQue = [];
 
-function RajahTimer_Clear() {
-  RajahQue = [];
-}
-
-function RajahTimer_Execute() {
-  var i, l, f;
-  
-  while (RajahQue.length > 0) {
-    l=RajahQue.length;
-    i=0;
-    for (i=0; i<l; i++) {
-      f = RajahQue.shift();
-      f.func();
-    }
-  }
-}
-
-var setTimeout = function (f, t) {
-
-  RajahQue.push({func: f});
-  return RajahQue.length;
+var setTimeout = function (func, t) {
+  return Rajah.dummyTimer.setTimeout(func, t);
 };
 
-var clearTimeout = function (id) {};
+var clearTimeout = function (id) {
+  Rajah.dummyTimer.clearTimeout(id);
+};
 
-var setInterval = function (f, t) {};
+var setInterval = function (func, t) {
+  return Rajah.dummyTimer.setInterval(func, t);
+};
 
-var clearInterval = function (id) {};
-
+var clearInterval = function (id) {
+  Rajah.dummyTimer.clearInterval(id);
+};
 
 Rajah.dummyTimer = (function () {
 
-  var timerQue =[];
   var idCounter = 0;
-
+  var timerQue =[];
+  
+  var timerQue_ins_ = function (o) {
+    var i;
+    
+    for (i = timerQue.length-1; i >= 0; i--) {
+      if (timerQue[i].time > o.time) {
+        continue;
+      } else {
+        break;
+      }
+    }
+    // o should be inserted to next of 'i'.
+    timerQue.splice(i+1, 0, o);
+  };
+  
+  var timerQue_del_ = function (id) {
+    var i;
+    
+    for (i = timerQue.length-1; i >= 0; i--) {
+      if (timerQue[i].id == id) {
+        timerQue.splice(i, 1);
+        break;
+      }
+    }
+  };
+  
   var clear = function () {
     timerQue.length = 0;
     // idCounter is NOT initialised here.
@@ -47,22 +57,20 @@ Rajah.dummyTimer = (function () {
 
   var execute = function () {
     
-    var now = new Date();
-
     // while task exists,
     while (timerQue.length > 0) {
-
-      if (timerQue[0].time <= now) {
-        timerQue[0].func();
-        if (timerQue[0].t > 0) {
-          // Re-entry (id, func, t)
-          ;
+      var now = new Date().getTime();
+      
+      if (now >= timerQue[0].time) {
+        var o = timerQue.shift();
+        o.func();
+        if (o.interval > 0) {
+          // Re-entry
+          o.time += o.interval;
+          timerQue_ins_(o);
         }
-        timerQue.shift();   // delete entry that has been called.
-
       } else {
-        // wait a while;
-        sleep(timerQue[0].time - now);
+        Utilities.sleep(timerQue[0].time - now);
       }
     }
   };
@@ -71,18 +79,19 @@ Rajah.dummyTimer = (function () {
   
     var id = idCounter++;
   
-    // not push. into order
-    timerQue.push({
+    timerQue_ins_({
       id:       id,
       func:     func,
-      time:     t + now,    // now should replace with like 'new Date'
+      time:     t + new Date().getTime(),
       interval: 0
     });
 
     return id;
   };
   
-  var clearTimeout = function () {};
+  var clearTimeout = function (id) {
+    timerQue_del_(id);
+  };
   
 
   var setInterval = function (func, t) {
@@ -93,18 +102,19 @@ Rajah.dummyTimer = (function () {
 
     var id = idCounter++;
   
-    // not push. into order
-    timerQue.push({
+    timerQue_ins_({
       id:       id,
       func:     func,
-      time:     t + now,    // now should replace with like 'new Date'
+      time:     t + new Date().getTime(),
       interval: t
     });
 
     return id;
   };
   
-  var clearInterval = function () {};
+  var clearInterval = function () {
+    timerQue_del_(id);
+  };
 
   
   var exports = {

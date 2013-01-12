@@ -22,6 +22,11 @@ function init(global) {
   global.runs = runs;
   global.waits = waits;
   global.waitsFor = waitsFor;
+
+//  global.setTimeout = setTimeout;
+//  global.clearTimeout = clearTimeout;
+//  global.setInterval = setInterval;
+//  global.clearInterval = clearInterval;
 }
 
 /**

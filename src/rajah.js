@@ -160,11 +160,11 @@ var Rajah = (function () {
     var ConsoleReporter = new jasmine.ConsoleReporter(console, (function () {}), true);
     jasmineEnv.addReporter(ConsoleReporter);
 
-    RajahTimer_Clear();
+    Rajah.dummyTimer.clear();
     
     jasmineEnv.execute();
 
-    RajahTimer_Execute();
+    Rajah.dummyTimer.execute();
   };
 
   var exports = {
