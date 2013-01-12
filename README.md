@@ -4,7 +4,7 @@
 
 - Jasmine runner for Google apps script.
 
-// - Rajah also provides log console.
+- `Logger.log()` viewer.
 
 
 ## Installation
@@ -53,7 +53,9 @@ Spies and async methods have **not** been tested enough.
 ## Limitation
 
 As you know, GAS doesn't provide following timer services.
+
 - `setTimeout()`, `clearTimeout()`, `setInterval()`, `clearInteval()`
+
 And jasmine use them, so Rajah has dummyTimer functions internaly based on `Utilities.sleep()`
 
 But It's not clean way, so Rajah does not open these functions to global namespace.
@@ -74,8 +76,8 @@ function setTimer(func, t) {
 
 - Execute in debbug mode.
 
-  - Execute from debbug main function (not by button)
+    - Execute from debbug main function (not by button)
 
-  - Step by step console.log display
+    - Step by step console.log display
 
 
