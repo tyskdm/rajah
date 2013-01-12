@@ -1,5 +1,7 @@
 # Rajah
 
+## Rajah is,
+
 1. [Jasmine](https://github.com/pivotal/jasmine/wiki) runner for [Google apps script](https://developers.google.com/apps-script/).
 
 2. `Logger.log()` viewer.
