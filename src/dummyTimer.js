@@ -1,25 +1,25 @@
 /**
- * Rajah.dummyTimer
+ * rajah.dummyTimer
  *
  */
 
 var setTimeout = function (func, t) {
-  return Rajah.dummyTimer.setTimeout(func, t);
+  return rajah.dummyTimer.setTimeout(func, t);
 };
 
 var clearTimeout = function (id) {
-  Rajah.dummyTimer.clearTimeout(id);
+  rajah.dummyTimer.clearTimeout(id);
 };
 
 var setInterval = function (func, t) {
-  return Rajah.dummyTimer.setInterval(func, t);
+  return rajah.dummyTimer.setInterval(func, t);
 };
 
 var clearInterval = function (id) {
-  Rajah.dummyTimer.clearInterval(id);
+  rajah.dummyTimer.clearInterval(id);
 };
 
-Rajah.dummyTimer = (function () {
+rajah.dummyTimer = (function () {
 
   var idCounter = 0;
   var timerQue =[];

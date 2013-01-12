@@ -1,8 +1,8 @@
 /**
- * Rajah.Console
+ * rajah.Console
  *
  */
-Rajah.Console = function (ignoreColor) {
+rajah.Console = function (ignoreColor) {
   var logHTML = "";
   var igColor = ignoreColor;
   var clearCode = "";

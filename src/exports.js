@@ -30,19 +30,19 @@ function init(global) {
 }
 
 /**
- * Rajah.doGet(e) : for execute Rajah as web service.
+ * rajah.doGet(e) : for execute rajah as web service.
  * @param e {object} HTTP Get option
  * @returns app {object} UiApp
  */
 function doGet(e) {
-  return Rajah.doGet(e);
+  return rajah.doGet(e);
 }
 
 /**
- * Rajah.executeJasmine() : execute Jasmine by script for debug mode.
+ * rajah.executeJasmine() : execute Jasmine by script for debug mode.
  */
 function executeJasmine() {
-  Rajah.executeByScript();
+  rajah.executeByScript();
 }
 
 

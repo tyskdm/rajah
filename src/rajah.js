@@ -1,19 +1,19 @@
 /**
- * Rajah.js : jasmine runner on google apps script main module.
+ * rajah.js : jasmine runner on google apps script main module.
  * @fileoverview jasmine runner on google apps script main module.
  *
  */
 
 /**
- * @namespace Rajah
+ * @namespace rajah
  */
-var Rajah = (function () {
+var rajah = (function () {
   /**
    * Main application should call this function in user-side doGet() function.
    * and should return results of this function.
    * @example
    * function doGet(e) {
-   *   return Rajah.doGet(e);
+   *   return rajah.doGet(e);
    * }
    * @param {object} Currently not in use. for futhur extention.
    */
@@ -22,7 +22,7 @@ var Rajah = (function () {
     {
       var panel = app.createVerticalPanel().setSize("100%","100%");
       {
-        var label = app.createHTML('<span style="font-size: 160%">Rajah</span> -- Jasmine runner for GAS')
+        var label = app.createHTML('<span style="font-size: 160%">rajah</span> -- Jasmine runner for GAS')
         .setStyleAttributes({'padding-left': "10", 'padding-top': "8"});
         panel.add(label).setCellHeight(label, "40");
       
@@ -66,7 +66,7 @@ var Rajah = (function () {
           horizontalPanel.add(app.createLabel("jasmine.version_ : " + jasmine.version_.major + '.' + jasmine.version_.minor + '.' + jasmine.version_.build)
           .setStyleAttributes({'text-align': "center", 'padding-left': "8", 'padding-top': "10"}));
 
-          var handler = app.createServerHandler("Rajah.executeByButton")
+          var handler = app.createServerHandler("rajah.executeByButton")
           .addCallbackElement(jasmineLog)
           .addCallbackElement(loggerLog)
           .addCallbackElement(timeStamp);
@@ -77,7 +77,7 @@ var Rajah = (function () {
         panel.add(horizontalPanel).setCellHeight(horizontalPanel, 38)
 
         tabBar.addSelectionHandler(
-          app.createServerHandler("Rajah.selectTab")
+          app.createServerHandler("rajah.selectTab")
           .addCallbackElement(jasmineScrollPanel)
           .addCallbackElement(loggerScrollPanel)
         );
@@ -122,7 +122,7 @@ var Rajah = (function () {
         jasmineLog = app.getElementById("jasmineLog"),
         loggerLog = app.getElementById("loggerLog"),
         timeStamp = app.getElementById("timeStamp"),
-        con = new Rajah.Console(),
+        con = new rajah.Console(),
         log = "";
     
     executeJasmine(con.put);
@@ -142,7 +142,7 @@ var Rajah = (function () {
    *
    */
   var executeByScript = function () {
-    var con = new Rajah.Console(true);
+    var con = new rajah.Console(true);
   
     executeJasmine(con.put);
     
@@ -160,11 +160,11 @@ var Rajah = (function () {
     var ConsoleReporter = new jasmine.ConsoleReporter(console, (function () {}), true);
     jasmineEnv.addReporter(ConsoleReporter);
 
-    Rajah.dummyTimer.clear();
+    rajah.dummyTimer.clear();
     
     jasmineEnv.execute();
 
-    Rajah.dummyTimer.execute();
+    rajah.dummyTimer.execute();
   };
 
   var exports = {
