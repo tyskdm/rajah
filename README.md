@@ -42,7 +42,7 @@ function doGet(e) {
 
 ## Usage
 
-- Here's sample project using Rajah lib. >> https://script.google.com/macros/s/AKfycbyHks7gWzANG1pBkrifXC4scyY1aHrlv1pBrf_gvizN/dev
+- Here's sample project using Rajah lib. >> https://script.google.com/macros/s/AKfycbywg8Pk94M5rn_h0sWFkKKJ2SOZQAE4FNqfdUlHQ20/dev
 
 Tested functions are:
 
