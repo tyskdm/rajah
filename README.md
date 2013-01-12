@@ -9,42 +9,48 @@
 
 ## Installation
 
-**1. Install Rajah libraly into your project.**
+**1. Create and Install Rajah libraly.**
 
-- libraly code = <                         >
+1. Create rajah.gs : `sh build.sh` >> ./gs/rajah.gs
 
-**2. Add small code into your source file.**
+2. Create Rajah lib project : need rajah.gs and two jasmine source file, jasmine.js and ConsoleReporter.js
+
+3. Import to your GAS project.
+
+- You can try Raja lib instantly, Project key = < Mn7JlN4wYLKUhi13E3mbpdVJodnbMh4p7 >
+
+**2. Add small code into your GAS project.**
 
 ```js
-    Rajah.init(this);
-    function doGet(e) {
-        return Rajah.doGet(e);
-    };
+Rajah.init(this);
+function doGet(e) {
+    return Rajah.doGet(e);
+};
 ```
 
 - `Rajah.init()` should be called **before** using jasmine(`describe()`, etc,..). 
 
-**3. Deploy your project as a web service.**
+**3. Deploy your GAS project as a web service.**
 
 1. Save project and add version number ('File' menu > 'Manage version')
-2. Deploy web service ('Resource' menu > 'deploy')
+2. Deploy web service ('Publish' menu > 'Deploy as web app')
 
-* Need call function doGet() once.
+**4. Access web service.**
 
-**4. Access URL.**
-
-- Latest code.
+- **USE** web app URL for latest code, showed `Test web app for your latest code.`
 
 
 ## Usage
 
-Tested function
+- Here's sample project using Rajah lib. >> https://script.google.com/macros/s/AKfycbyHks7gWzANG1pBkrifXC4scyY1aHrlv1pBrf_gvizN/dev
+
+Tested functions are:
 
 - `describe()` , `xdescribe()`
 - `it()` , `xit()`
 - `expect()`
 
-Spies and async methods have **not** been tested enough.
+Following methods have **not** been tested enough.
 
 - `spyOn()`
 - `run()`, `wait()`, `waitsFor()`
@@ -68,11 +74,12 @@ function setTimer(func, t) {
 }
 ````
 
+
 ## Wish list
 
 - Visual Reporter and Filter
 
-- console.log [Sample](http://minipaca.net/blog/javascript/firebug-console-api/)
+- console.log >> http://minipaca.net/blog/javascript/firebug-console-api/
 
 - Execute in debbug mode.
 
