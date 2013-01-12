@@ -2,7 +2,7 @@
 
 ## What's Rajah?
 
-- [Jasmine](https://github.com/pivotal/jasmine/wiki) runner for Google apps script.
+- [Jasmine](https://github.com/pivotal/jasmine/wiki) runner for [Google apps script](https://developers.google.com/apps-script/).
 
 - `Logger.log()` viewer.
 
