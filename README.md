@@ -42,7 +42,10 @@ function doGet(e) {
 
 ## Usage
 
-- Here's sample project using Rajah lib. >> https://script.google.com/macros/s/AKfycbywg8Pk94M5rn_h0sWFkKKJ2SOZQAE4FNqfdUlHQ20/dev
+- Sample project using Rajah lib. is [here](https://script.google.com/d/1D6qmc_sIehOP-p6__Z29uSQTbGYrcTF0wXIwWgsD2Hba8Onjf6EWrRym/edit).
+
+- and Rajah URL is [here](https://script.google.com/macros/s/AKfycbywg8Pk94M5rn_h0sWFkKKJ2SOZQAE4FNqfdUlHQ20/dev).
+
 
 Tested functions are:
 
