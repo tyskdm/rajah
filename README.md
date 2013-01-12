@@ -22,7 +22,7 @@
 **2. Add small code into your GAS project.**
 
 ```js
-Rajah.init(this);
+rajah.init(this);
 function doGet(e) {
     return Rajah.doGet(e);
 };
@@ -71,7 +71,7 @@ If you need use them, access as follows:
 
 ````js
 function setTimer(func, t) {
-    return Rajah.setTimer(func, t);
+    return rajah.setTimer(func, t);
 }
 ````
 
