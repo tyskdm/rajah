@@ -15,7 +15,7 @@ var rajah = (function () {
    * function doGet(e) {
    *   return rajah.doGet(e);
    * }
-   * @param {object} Currently not in use. for futhur extention.
+   * @param {object} Currently not in use. for future extention.
    */
   var doGet = function (e) {
     var app = UiApp.createApplication().setTitle("Rajah");
