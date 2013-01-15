@@ -52,7 +52,7 @@ rajah.dummyTimer = (function () {
   var clear = function () {
     timerQue.length = 0;
     // idCounter is NOT initialised here.
-    // That's for keeping id unique, although after timer cleared.
+    // That's for keeping id unique, even if after timer cleared.
   };
 
   var execute = function () {
