@@ -3,6 +3,12 @@
  *
  */
 
+
+/*
+ * Following four wrapper functions are interface for jasmine.
+ * - jasmine needs timer functions to be in global object.
+ * - HERE is global context for jasmine.js
+ */
 var setTimeout = function (func, t) {
   return rajah.dummyTimer.setTimeout(func, t);
 };
@@ -19,6 +25,10 @@ var clearInterval = function (id) {
   rajah.dummyTimer.clearInterval(id);
 };
 
+
+/**
+ * @namespace dummyTimer
+ */
 rajah.dummyTimer = (function () {
 
   var idCounter = 0;
