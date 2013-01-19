@@ -40,14 +40,12 @@ function doGet(e) {
 
 ### Create your own library (if you need)
 
-1. Create rajah.gs : type `sh build.sh` and you get ./gs/rajah.gs
-
-2. Create Rajah lib project : create GAS project and put following three files in.
+1. Create Rajah lib project : create GAS project and put following three files in.
     1. rajah.gs : it should be first file in your project. keep this order.
     2. jasmine.js : from github >> [here](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/jasmine.js)
     3. ConsoleReporter.js : from github >> [here](https://github.com/pivotal/jasmine/blob/master/src/console/ConsoleReporter.js)
 
-3. Import to your GAS project.
+2. Import to your GAS project.
 
 
 ## Usage
