@@ -9,15 +9,12 @@
 
 ## Installation
 
-**1. Create and Install Rajah libraly.**
+**1. Import Rajah libraly.**
 
-1. Create rajah.gs : `sh build.sh` >> ./gs/rajah.gs
+You can try Raja lib instantly:
+- Project key = < Mn7JlN4wYLKUhi13E3mbpdVJodnbMh4p7 >
+- Import that Project key into your project as a library.
 
-2. Create Rajah lib project : need rajah.gs and two jasmine source file, jasmine.js and ConsoleReporter.js
-
-3. Import to your GAS project.
-
-- You can try Raja lib instantly, Project key = < Mn7JlN4wYLKUhi13E3mbpdVJodnbMh4p7 >
 
 **2. Add small code into your GAS project.**
 
@@ -40,9 +37,21 @@ function doGet(e) {
 - **USE** web app URL for latest code, showed `Test web app for your latest code.`
 
 
+### Create your own library (if you need)
+
+1. Create rajah.gs : type `sh build.sh` and you get ./gs/rajah.gs
+
+2. Create Rajah lib project : create GAS project and put following three files in.
+    1. rajah.gs : it should be first file in your project. keep this order.
+    2. jasmine.js : from github >> [here](https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/jasmine.js)
+    3. ConsoleReporter.js : from github >> [here](https://github.com/pivotal/jasmine/blob/master/src/console/ConsoleReporter.js)
+
+3. Import to your GAS project.
+
+
 ## Usage
 
-- Sample project using Rajah lib. is [here](https://script.google.com/d/1D6qmc_sIehOP-p6__Z29uSQTbGYrcTF0wXIwWgsD2Hba8Onjf6EWrRym/edit).
+**Sample project using Rajah lib. is [here](https://script.google.com/d/1D6qmc_sIehOP-p6__Z29uSQTbGYrcTF0wXIwWgsD2Hba8Onjf6EWrRym/edit).**
 
 
 Tested functions are:
