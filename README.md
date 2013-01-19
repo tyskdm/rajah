@@ -1,6 +1,6 @@
 # Rajah
 
-README.jp is [here](https://github.com/tyskdm/rajah/wiki).
+[日本語版](https://github.com/tyskdm/rajah/wiki).
 
 
 ## What's rajah
