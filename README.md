@@ -6,6 +6,7 @@
 
 2. `Logger.log()` viewer.
 
+- Sample project using rajah is [here](https://script.google.com/d/1D6qmc_sIehOP-p6__Z29uSQTbGYrcTF0wXIwWgsD2Hba8Onjf6EWrRym/edit).
 
 ## Installation
 
