@@ -1,6 +1,6 @@
 # Rajah
 
-日本語版は[こちら](https://github.com/tyskdm/rajah/wiki)
+japanese version is [here](https://github.com/tyskdm/rajah/wiki).
 
 
 ## What's rajah
