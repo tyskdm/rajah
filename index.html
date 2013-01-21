@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Rajah by tyskdm</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/tyskdm/rajah">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/tyskdm/rajah/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/tyskdm/rajah/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Rajah</h1>
+          <p>Rajah is Jasmine runner for Google apps script.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/tyskdm">tyskdm</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>Rajah</h1>
+
+<p>japanese version is <a href="https://github.com/tyskdm/rajah/wiki">here</a>.</p>
+
+<h2>What's rajah</h2>
+
+<ol>
+<li><p><a href="https://github.com/pivotal/jasmine/wiki">Jasmine</a> runner for <a href="https://developers.google.com/apps-script/">Google apps script</a>.</p></li>
+<li><p><code>Logger.log()</code> viewer.</p></li>
+</ol><ul>
+<li>Sample GAS project using rajah is <a href="https://script.google.com/d/1D6qmc_sIehOP-p6__Z29uSQTbGYrcTF0wXIwWgsD2Hba8Onjf6EWrRym/edit">here</a>.</li>
+</ul><h2>Installation</h2>
+
+<p><strong>1. Import Rajah libraly.</strong></p>
+
+<p>You can try Raja lib instantly:</p>
+
+<ul>
+<li>Project key = &lt; Mn7JlN4wYLKUhi13E3mbpdVJodnbMh4p7 &gt;</li>
+<li>Import that Project key into your project as a library.</li>
+</ul><p><strong>2. Add small code into your GAS project.</strong></p>
+
+<div class="highlight"><pre><span class="nx">rajah</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="kd">function</span> <span class="nx">doGet</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">Rajah</span><span class="p">.</span><span class="nx">doGet</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+
+<ul>
+<li>
+<code>Rajah.init()</code> should be called <strong>before</strong> using jasmine(<code>describe()</code>, etc,..). </li>
+</ul><p><strong>3. Deploy your GAS project as a web service.</strong></p>
+
+<ol>
+<li>Save project and add version number ('File' menu &gt; 'Manage version')</li>
+<li>Deploy web service ('Publish' menu &gt; 'Deploy as web app')</li>
+</ol><p><strong>4. Access web service.</strong></p>
+
+<ul>
+<li>
+<strong>USE</strong> web app URL for latest code, showed <code>Test web app for your latest code.</code>
+</li>
+</ul><h3>Create your own library (if you need)</h3>
+
+<ol>
+<li>
+<p>Create Rajah lib project : create GAS project and put following three files in.</p>
+
+<ol>
+<li>rajah.gs : It's <a href="https://github.com/tyskdm/rajah/blob/master/gs/rajah.gs">here</a>. and it should be first file in your project. keep this order.</li>
+<li>jasmine.js : from github &gt;&gt; <a href="https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/jasmine.js">here</a>
+</li>
+<li>ConsoleReporter.js : from github &gt;&gt; <a href="https://github.com/pivotal/jasmine/blob/master/src/console/ConsoleReporter.js">here</a>
+</li>
+</ol>
+</li>
+<li><p>Import to your GAS project.</p></li>
+</ol><h2>Usage</h2>
+
+<p><strong>Sample project using Rajah lib. is <a href="https://script.google.com/d/1D6qmc_sIehOP-p6__Z29uSQTbGYrcTF0wXIwWgsD2Hba8Onjf6EWrRym/edit">here</a>.</strong></p>
+
+<p>Tested functions are:</p>
+
+<ul>
+<li>
+<code>describe()</code> , <code>xdescribe()</code>
+</li>
+<li>
+<code>it()</code> , <code>xit()</code>
+</li>
+<li><code>expect()</code></li>
+</ul><p>Following methods have <strong>not</strong> been tested enough.</p>
+
+<ul>
+<li><code>spyOn()</code></li>
+<li>
+<code>run()</code>, <code>wait()</code>, <code>waitsFor()</code>
+</li>
+</ul><h2>Limitation</h2>
+
+<p>As you know, GAS doesn't provide following timer services.</p>
+
+<ul>
+<li>
+<code>setTimeout()</code>, <code>clearTimeout()</code>, <code>setInterval()</code>, <code>clearInteval()</code>
+</li>
+</ul><p>And jasmine use them, so Rajah has dummyTimer functions internaly based on <code>Utilities.sleep()</code></p>
+
+<p>But It's not clean way, so Rajah does not open these functions to global namespace.</p>
+
+<p>If you need use them, access as follows:</p>
+
+<div class="highlight"><pre><span class="kd">function</span> <span class="nx">setTimer</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">rajah</span><span class="p">.</span><span class="nx">setTimer</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">t</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>Wish list</h2>
+
+<ul>
+<li><p>Visual Reporter and Filter</p></li>
+<li><p>console.log &gt;&gt; <a href="http://minipaca.net/blog/javascript/firebug-console-api/">http://minipaca.net/blog/javascript/firebug-console-api/</a></p></li>
+<li>
+<p>Execute in debbug mode.</p>
+
+<ul>
+<li>Execute from debbug main function (not by button)</li>
+<li>Step by step console.log display</li>
+</ul>
+</li>
+</ul>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
