@@ -42,7 +42,7 @@ function doGet(e) {
  * rajah.executeJasmine() : execute Jasmine by script for debug mode.
  */
 function executeJasmine() {
-  rajah.executeByScript();
+  return rajah.executeByScript();
 }
 
 
