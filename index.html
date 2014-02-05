@@ -35,21 +35,24 @@
           <p>Rajah is Jasmine runner for Google apps script.</p>
           <hr>
           <span class="credits left">Project maintained by <a href="https://github.com/tyskdm">tyskdm</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
         </div>
 
-        <h1>Rajah</h1>
+        <h1>
+<a name="rajah" class="anchor" href="#rajah"><span class="octicon octicon-link"></span></a>Rajah</h1>
 
 <p>japanese version is <a href="https://github.com/tyskdm/rajah/wiki">here</a>.</p>
 
-<h2>What's rajah</h2>
+<h2>
+<a name="whats-rajah" class="anchor" href="#whats-rajah"><span class="octicon octicon-link"></span></a>What's rajah</h2>
 
 <ol>
 <li><p><a href="https://github.com/pivotal/jasmine/wiki">Jasmine</a> runner for <a href="https://developers.google.com/apps-script/">Google apps script</a>.</p></li>
 <li><p><code>Logger.log()</code> viewer.</p></li>
 </ol><ul>
 <li>Sample GAS project using rajah is <a href="https://script.google.com/d/1D6qmc_sIehOP-p6__Z29uSQTbGYrcTF0wXIwWgsD2Hba8Onjf6EWrRym/edit">here</a>.</li>
-</ul><h2>Installation</h2>
+</ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p><strong>1. Import Rajah libraly.</strong></p>
 
@@ -60,7 +63,7 @@
 <li>Import that Project key into your project as a library.</li>
 </ul><p><strong>2. Add small code into your GAS project.</strong></p>
 
-<div class="highlight"><pre><span class="nx">rajah</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<div class="highlight highlight-js"><pre><span class="nx">rajah</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 <span class="kd">function</span> <span class="nx">doGet</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">Rajah</span><span class="p">.</span><span class="nx">doGet</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 <span class="p">};</span>
@@ -80,7 +83,8 @@
 <li>
 <strong>USE</strong> web app URL for latest code, showed <code>Test web app for your latest code.</code>
 </li>
-</ul><h3>Create your own library (if you need)</h3>
+</ul><h3>
+<a name="create-your-own-library-if-you-need" class="anchor" href="#create-your-own-library-if-you-need"><span class="octicon octicon-link"></span></a>Create your own library (if you need)</h3>
 
 <ol>
 <li>
@@ -95,7 +99,8 @@
 </ol>
 </li>
 <li><p>Import to your GAS project.</p></li>
-</ol><h2>Usage</h2>
+</ol><h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
 <p><strong>Sample project using Rajah lib. is <a href="https://script.google.com/d/1D6qmc_sIehOP-p6__Z29uSQTbGYrcTF0wXIwWgsD2Hba8Onjf6EWrRym/edit">here</a>.</strong></p>
 
@@ -116,7 +121,8 @@
 <li>
 <code>run()</code>, <code>wait()</code>, <code>waitsFor()</code>
 </li>
-</ul><h2>Limitation</h2>
+</ul><h2>
+<a name="limitation" class="anchor" href="#limitation"><span class="octicon octicon-link"></span></a>Limitation</h2>
 
 <p>As you know, GAS doesn't provide following timer services.</p>
 
@@ -130,12 +136,13 @@
 
 <p>If you need use them, access as follows:</p>
 
-<div class="highlight"><pre><span class="kd">function</span> <span class="nx">setTimer</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight highlight-js"><pre><span class="kd">function</span> <span class="nx">setTimer</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">rajah</span><span class="p">.</span><span class="nx">setTimer</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">t</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 
-<h2>Wish list</h2>
+<h2>
+<a name="wish-list" class="anchor" href="#wish-list"><span class="octicon octicon-link"></span></a>Wish list</h2>
 
 <ul>
 <li><p>Visual Reporter and Filter</p></li>
@@ -144,8 +151,8 @@
 <p>Execute in debbug mode.</p>
 
 <ul>
-<li>Execute from debbug main function (not by button)</li>
-<li>Step by step console.log display</li>
+<li><p>Execute from debbug main function (not by button)</p></li>
+<li><p>Step by step console.log display</p></li>
 </ul>
 </li>
 </ul>
