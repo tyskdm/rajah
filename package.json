@@ -1,0 +1,11 @@
+{
+  "name": "rajah",
+  "version": "0.0.0",
+  "description": "[NOT UPLOAD YET] Jasmine 2.0 runner for Node.js and Google Apps Script.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tsuyoshi Kodama",
+  "license": "MIT"
+}
