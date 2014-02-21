@@ -7,5 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Tsuyoshi Kodama",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "jasmine-core": "~2.0.0"
+  }
 }
