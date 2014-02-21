@@ -25,7 +25,7 @@ var rajah = (function () {
         var label = app.createHTML('<span style="font-size: 160%">rajah</span> -- Jasmine runner for GAS')
         .setStyleAttributes({'padding-left': "10", 'padding-top': "8"});
         panel.add(label).setCellHeight(label, "40");
-      
+
         var tabBar = app.createDecoratedTabBar().setSize("100%", "24");
         tabBar.addTab("jasmine").addTab("Logger")
         .selectTab(0);
@@ -34,7 +34,7 @@ var rajah = (function () {
         var timeStamp = app.createHTML(Utilities.formatDate(new Date(), "PST", "yyyy.MM.dd HH:mm:ss")).setId("timeStamp")
         .setStyleAttributes({background:"#92c1f0", color: "white", 'text-align': "right", 'padding-right': "8"}).setWidth("100%-8");
         panel.add(timeStamp).setCellHeight(timeStamp, "3");
-        
+
         var deckPanel = app.createAbsolutePanel().setSize("100%", "100%");
         {
           var jasmineScrollPanel = app.createScrollPanel().setSize("100%", "100%").setId("jasmineScrollPanel");
@@ -63,21 +63,22 @@ var rajah = (function () {
         var horizontalPanel = app.createHorizontalPanel().setSize("100%", "100%")
         .setStyleAttributes({'background': "#e0e0e0"});
         {
-          horizontalPanel.add(app.createLabel("jasmine.version_ : " + jasmine.version_.major + '.' + jasmine.version_.minor + '.' + jasmine.version_.build)
+          horizontalPanel.add(app.createLabel("jasmine.version : " + jasmine.getEnv().versionString())
+          //horizontalPanel.add(app.createLabel("jasmine.version : " + jasmine.version_.major + '.' + jasmine.version_.minor + '.' + jasmine.version_.build)
           .setStyleAttributes({'text-align': "center", 'padding-left': "8", 'padding-top': "10"}));
 
-          var handler = app.createServerHandler("rajah.executeByButton")
+          var handler = app.createServerHandler("executeByButton")
           .addCallbackElement(jasmineLog)
           .addCallbackElement(loggerLog)
           .addCallbackElement(timeStamp);
-          
+
           var b = app.createButton("Execute jasmine", handler).setSize("94%", "30");
           horizontalPanel.add(b);
         }
         panel.add(horizontalPanel).setCellHeight(horizontalPanel, 38)
 
         tabBar.addSelectionHandler(
-          app.createServerHandler("rajah.selectTab")
+          app.createServerHandler("selectTab")
           .addCallbackElement(jasmineScrollPanel)
           .addCallbackElement(loggerScrollPanel)
         );
@@ -87,7 +88,7 @@ var rajah = (function () {
     }
     return app;
   };
-  
+
   /**
    * UI-handler, select TabPanel.
    *
@@ -96,7 +97,7 @@ var rajah = (function () {
     var app = UiApp.createApplication(),
         jasmineScrollPanel = app.getElementById("jasmineScrollPanel"),
         loggerScrollPanel = app.getElementById("loggerScrollPanel");
-    
+
     switch (eventInfo.parameter[eventInfo.parameter.source]) {
       case "0":
         jasmineScrollPanel.setVisible(true);
@@ -109,7 +110,7 @@ var rajah = (function () {
       default:
         break;
     }
-    
+
     return app;
   };
 
@@ -124,9 +125,9 @@ var rajah = (function () {
         timeStamp = app.getElementById("timeStamp"),
         con = new rajah.Console(),
         log = "";
-    
+
     executeJasmine(con.put);
-    
+
     jasmineLog.setHTML(con.get());
     log = Logger.getLog().replace(/\n/g, "<br />") || "<< Logger.getLog() empty. >>";
     Logger.clear();
@@ -143,9 +144,9 @@ var rajah = (function () {
    */
   var executeByScript = function () {
     var con = new rajah.Console(true);
-  
+
     executeJasmine(con.put);
-    
+
     return con.get();
   };
 
@@ -161,7 +162,7 @@ var rajah = (function () {
     jasmineEnv.addReporter(ConsoleReporter);
 
     rajah.dummyTimer.clear();
-    
+
     jasmineEnv.execute();
 
     rajah.dummyTimer.execute();
@@ -179,8 +180,13 @@ var rajah = (function () {
 
 
 
+function executeByButton () {
+  return rajah.executeByButton();
+}
 
-
+function selectTab (eventInfo) {
+  return rajah.selectTab(eventInfo);
+}
 /**
  * rajah.dummyTimer
  *
@@ -414,7 +420,7 @@ function doGet(e) {
  * rajah.executeJasmine() : execute Jasmine by script for debug mode.
  */
 function executeJasmine() {
-  rajah.executeByScript();
+  return rajah.executeByScript();
 }
 
 
