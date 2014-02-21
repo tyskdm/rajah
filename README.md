@@ -2,6 +2,8 @@
 
 japanese version is [here](https://github.com/tyskdm/rajah/wiki).
 
+### version info
+version 1.0b : small fix and publish sample doGet() as a web service.
 
 ## What's rajah
 
@@ -10,6 +12,7 @@ japanese version is [here](https://github.com/tyskdm/rajah/wiki).
 2. `Logger.log()` viewer.
 
 - Sample GAS project using rajah is [here](https://script.google.com/d/1D6qmc_sIehOP-p6__Z29uSQTbGYrcTF0wXIwWgsD2Hba8Onjf6EWrRym/edit).
+- And It's results you can see [here](https://script.google.com/macros/s/AKfycbz5tA3qJOgNHU9M8pSM7hLHO76pg8A3mx_b7bqziHIpSCwXWus/exec).
 
 ## Installation
 
@@ -29,7 +32,7 @@ function doGet(e) {
 };
 ```
 
-- `Rajah.init()` should be called **before** using jasmine(`describe()`, etc,..). 
+- `Rajah.init()` should be called **before** using jasmine(`describe()`, etc,..).
 
 **3. Deploy your GAS project as a web service.**
 
@@ -98,5 +101,3 @@ function setTimer(func, t) {
     - Execute from debbug main function (not by button)
 
     - Step by step console.log display
-
-
