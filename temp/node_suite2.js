@@ -46,23 +46,26 @@ _extend(global, {
   })
 });
 
+_extend(jasmine, {
+  addCustomEqualityTester: function(tester) {
+    env.addCustomEqualityTester(tester);
+  },
+
+  addMatchers: function(matchers) {
+    return env.addMatchers(matchers);
+  },
+
+  clock: function() {
+    return env.clock;
+  }
+});
+
 
 function _extend(destination, source) {
   for (var property in source) destination[property] = source[property];
   return destination;
 }
 
-jasmine.addCustomEqualityTester = function(tester) {
-  env.addCustomEqualityTester(tester);
-};
-
-jasmine.addMatchers = function(matchers) {
-  return env.addMatchers(matchers);
-};
-
-jasmine.clock = function() {
-  return env.clock;
-};
 
 // Jasmine "runner"
 function executeSpecs(specs, done, isVerbose, showColors) {
@@ -75,7 +78,7 @@ function executeSpecs(specs, done, isVerbose, showColors) {
 
   var env = jasmine.getEnv();
   var consoleReporter = new jasmine.ConsoleReporter({
-    print: console.log,
+    print: console.log,     // BUGBUG: should be util.print compatible
     onComplete: done,
     showColors: showColors,
     timer: new jasmine.Timer()
@@ -111,35 +114,6 @@ function getSpecFiles(dir) {
   return getFiles(dir, new RegExp("Spec.js$"));
 }
 
-var j$require = (function() {
-  var exported = {},
-      j$req;
-
-  global.getJasmineRequireObj = getJasmineRequireObj;
-
-  j$req = require(__dirname + "/../src/core/requireCore.js");
-  _extend(j$req, require(__dirname + "/../src/console/requireConsole.js"));
-
-  var srcFiles = getFiles(__dirname + "/../src/core");
-  srcFiles.push(__dirname + "/../src/version.js");
-  srcFiles.push(__dirname + "/../src/console/ConsoleReporter.js");
-
-  for (var i = 0; i < srcFiles.length; i++) {
-    require(srcFiles[i]);
-  }
-  _extend(j$req, exported);
-
-  delete global.getJasmineRequireObj;
-
-  return j$req;
-
-  function getJasmineRequireObj() {
-    return exported;
-  }
-}());
-
-j$ = j$require.core(j$require);
-j$require.console(j$require, j$);
 
 // options from command line
 var isVerbose = false;
