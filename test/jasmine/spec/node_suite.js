@@ -80,7 +80,11 @@ function executeSpecs(specs, done, isVerbose, showColors) {
 
   var env = jasmine.getEnv();
   var consoleReporter = new jasmine.ConsoleReporter({
-    print: util.print,
+    print: function() {
+      for (var i = 0, len = arguments.length; i < len; ++i) {
+        process.stdout.write(String(arguments[i]));
+      }
+    },
     onComplete: done,
     showColors: showColors,
     timer: new jasmine.Timer()
@@ -102,7 +106,7 @@ function getFiles(dir, matcher) {
       if (fs.statSync(filename).isFile() && filename.match(matcher)) {
         allFiles.push(filename);
       } else if (fs.statSync(filename).isDirectory()) {
-        var subfiles = getFiles(filename);
+        var subfiles = getFiles(filename, matcher);
         subfiles.forEach(function(result) {
           allFiles.push(result);
         });
@@ -126,7 +130,7 @@ var j$require = (function() {
   j$req = require(path.join(__dirname, "../src/core/requireCore.js"));
   extend(j$req, require(path.join(__dirname, "../src/console/requireConsole.js")));
 
-  var srcFiles = getFiles(path.join(__dirname, "../src/core"));
+  var srcFiles = getFiles(path.join(__dirname, "../src/core"), /.+/);
   srcFiles.push(path.join(__dirname, "../src/version.js"));
   srcFiles.push(path.join(__dirname, "../src/console/ConsoleReporter.js"));
 
