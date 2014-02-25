@@ -7,9 +7,11 @@ if (typeof global === 'undefined') {
 
     global.process = require('process');
 
-    global.Buffer = require('buffer');
+    if (typeof global.console === 'undefined') {
+        global.console = require('console');
+    }
 
-    global.console = require('console');
+    global.Buffer = require('buffer');
 
 }
 
