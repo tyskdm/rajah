@@ -1,14 +1,16 @@
 
 module.exports = function () {
 
+    var path = require('path');
     var rajah = require('./rajah');
 
     // options from command line
     var isVerbose = false;
     var showColors = true;
-    var perfSuite = false;
+    var specs = [];
 
-    process.argv.forEach(function(arg) {
+    for (var i = process.argv.length - 1; i > 1; i--) {
+        var arg = process.argv[i];
         switch (arg) {
         case '--color':
             showColors = true;
@@ -19,29 +21,25 @@ module.exports = function () {
         case '--verbose':
             isVerbose = true;
             break;
-        case '--perf':
-            perfSuite = true;
-            break;
+        default:
+            specs.push(path.join(process.cwd(), arg));
         }
-    });
-
-    specs = [];
-
-    if (perfSuite) {
-        specs = getFiles(__dirname + '/performance', new RegExp("test.js$"));
-    } else {
-        var consoleSpecs = getSpecFiles(__dirname + "/console"),
-            coreSpecs = getSpecFiles(__dirname + "/core"),
-            specs = consoleSpecs.concat(coreSpecs);
     }
 
-    executeSpecs(specs, function(passed) {
-        if (passed) {
-            process.exit(0);
-        } else {
-            process.exit(1);
-        }
-    }, isVerbose, showColors);
+    var opts = {
+            showColors: showColors,
+            isVerbose:  isVerbose,
+
+            done: function (passed) {
+                if (passed) {
+                    process.exit(0);
+                } else {
+                    process.exit(1);
+                }
+            }
+        };
+
+    rajah.run(specs, opts);
 }
 
 if (module.parent === null) {
