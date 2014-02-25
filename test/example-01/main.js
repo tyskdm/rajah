@@ -6,7 +6,7 @@ if (typeof global === 'undefined') {
 
 // Setup jasmine with default settings.
 // If doGet function exists, rajah hooks it.
-require('rajah').init(global);
+require('rajah');
 function doGet(e) {}
 
 

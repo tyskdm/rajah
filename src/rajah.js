@@ -1,183 +1,165 @@
-/**
- * rajah.js : jasmine runner on google apps script main module.
- * @fileoverview jasmine runner on google apps script main module.
- *
- */
 
-/**
- * @namespace rajah
- */
-var rajah = (function () {
-  /**
-   * Main application should call this function in user-side doGet() function.
-   * and should return results of this function.
-   * @example
-   * function doGet(e) {
-   *   return rajah.doGet(e);
-   * }
-   * @param {object} Currently not in use. for future extention.
-   */
-  var doGet = function (e) {
-    var app = UiApp.createApplication().setTitle("Rajah");
-    {
-      var panel = app.createVerticalPanel().setSize("100%","100%");
-      {
-        var label = app.createHTML('<span style="font-size: 160%">rajah</span> -- Jasmine runner for GAS')
-        .setStyleAttributes({'padding-left': "10", 'padding-top': "8"});
-        panel.add(label).setCellHeight(label, "40");
-      
-        var tabBar = app.createDecoratedTabBar().setSize("100%", "24");
-        tabBar.addTab("jasmine").addTab("Logger")
-        .selectTab(0);
-        panel.add(tabBar).setCellHeight(tabBar, "24");
+var fs = require('fs');
+var jasmine = initJasmine(global);
 
-        var timeStamp = app.createHTML(Utilities.formatDate(new Date(), "PST", "yyyy.MM.dd HH:mm:ss")).setId("timeStamp")
-        .setStyleAttributes({background:"#92c1f0", color: "white", 'text-align': "right", 'padding-right': "8"}).setWidth("100%-8");
-        panel.add(timeStamp).setCellHeight(timeStamp, "3");
-        
-        var deckPanel = app.createAbsolutePanel().setSize("100%", "100%");
-        {
-          var jasmineScrollPanel = app.createScrollPanel().setSize("100%", "100%").setId("jasmineScrollPanel");
-          {
-            var jasmineLog = app.createHTML("--- jasmineLog ---").setId("jasmineLog")
-            .setStyleAttributes({'padding-left': "8", 'padding-right': "8", 'padding-top': "4"})
-            .setSize("100%-16","100%-4").setWordWrap(true);
-            jasmineScrollPanel.add(jasmineLog);
-          }
-          deckPanel.add(jasmineScrollPanel, 0, 0);
+exports.jasmine = jasmine;
+exports.run = run;
 
-          var loggerScrollPanel = app.createScrollPanel().setSize("100%", "100%").setId("loggerScrollPanel")
-          .setVisible(false);
-          {
-            var loggerLog = app.createHTML("--- Logger.getLog() ---").setId("loggerLog")
-            .setStyleAttributes({'padding-left': "8", 'padding-right': "8", 'padding-top': "4"})
-            .setSize("100%-16","100%-4").setWordWrap(true);
-            loggerScrollPanel.add(loggerLog);
-          }
-          deckPanel.add(loggerScrollPanel, 0, 0);
+if (typeof global.doGet === 'function') {
+    exports._doGet = global.doGet;
 
-
+    global.doGet = function (e) {
+        var results = doGet(e);
+        if (results === null) {
+            results = exports._doGet(e);
         }
-        panel.add(deckPanel);
+        return results;
+    }
+}
 
-        var horizontalPanel = app.createHorizontalPanel().setSize("100%", "100%")
-        .setStyleAttributes({'background': "#e0e0e0"});
-        {
-          horizontalPanel.add(app.createLabel("jasmine.version_ : " + jasmine.version_.major + '.' + jasmine.version_.minor + '.' + jasmine.version_.build)
-          .setStyleAttributes({'text-align': "center", 'padding-left': "8", 'padding-top': "10"}));
 
-          var handler = app.createServerHandler("rajah.executeByButton")
-          .addCallbackElement(jasmineLog)
-          .addCallbackElement(loggerLog)
-          .addCallbackElement(timeStamp);
-          
-          var b = app.createButton("Execute jasmine", handler).setSize("94%", "30");
-          horizontalPanel.add(b);
+
+function initJasmine(global) {
+    // boot code for jasmine
+    var jasmineJS = require('jasmine-core/lib/jasmine-core/jasmine.js');
+    var jasmine = jasmineJS.core(jasmineJS);
+
+    _extend(jasmineJS, require('jasmine-core/lib/console/console.js'));
+    jasmineJS.console(jasmineJS, jasmine);
+
+    var env = jasmine.getEnv();
+
+    _extend(global, {
+        describe: function(description, specDefinitions) {
+           return env.describe(description, specDefinitions);
+        },
+
+        xdescribe: function(description, specDefinitions) {
+            return env.xdescribe(description, specDefinitions);
+        },
+
+        it: function(desc, func) {
+            return env.it(desc, func);
+        },
+
+        xit: function(desc, func) {
+            return env.xit(desc, func);
+        },
+
+        beforeEach: function(beforeEachFunction) {
+            return env.beforeEach(beforeEachFunction);
+        },
+
+        afterEach: function(afterEachFunction) {
+            return env.afterEach(afterEachFunction);
+        },
+
+        expect: function(actual) {
+            return env.expect(actual);
+        },
+
+        spyOn: function(obj, methodName) {
+            return env.spyOn(obj, methodName);
+        },
+
+        jsApiReporter: new jasmine.JsApiReporter({
+            timer: new jasmine.Timer()
+        })
+    });
+
+    _extend(jasmine, {
+        addCustomEqualityTester: function(tester) {
+            env.addCustomEqualityTester(tester);
+        },
+
+        addMatchers: function(matchers) {
+            return env.addMatchers(matchers);
+        },
+
+        clock: function() {
+            return env.clock;
         }
-        panel.add(horizontalPanel).setCellHeight(horizontalPanel, 38)
+    });
 
-        tabBar.addSelectionHandler(
-          app.createServerHandler("rajah.selectTab")
-          .addCallbackElement(jasmineScrollPanel)
-          .addCallbackElement(loggerScrollPanel)
-        );
+    return jasmine;
+}
 
-      }
-      app.add(panel);
+function _extend(destination, source) {
+    for (var property in source) destination[property] = source[property];
+    return destination;
+}
+
+
+// Jasmine "runner"
+function run(specs, opts) {
+
+    var specFiles = [];
+    for (var i = 0; i < specs.length; i++) {
+        specFiles = specFiles.concat(getFiles(specs[i], /.js$/))
     }
-    return app;
-  };
-  
-  /**
-   * UI-handler, select TabPanel.
-   *
-   */
-  var selectTab = function (eventInfo) {
-    var app = UiApp.createApplication(),
-        jasmineScrollPanel = app.getElementById("jasmineScrollPanel"),
-        loggerScrollPanel = app.getElementById("loggerScrollPanel");
-    
-    switch (eventInfo.parameter[eventInfo.parameter.source]) {
-      case "0":
-        jasmineScrollPanel.setVisible(true);
-        loggerScrollPanel.setVisible(false);
-        break;
-      case "1":
-        jasmineScrollPanel.setVisible(false);
-        loggerScrollPanel.setVisible(true);
-        break;
-      default:
-        break;
+
+    var results;
+    executeSpecs(specFiles, function(passed) {
+        results = passed;
+    }, opts.isVerbose, opts.showColors);
+    return results;
+}
+
+function executeSpecs(specs, done, isVerbose, showColors) {
+
+    for (var i = 0; i < specs.length; i++) {
+        var filename = specs[i];
+        require(filename.replace(/\.\w+$/, ""));
     }
-    
-    return app;
-  };
 
-  /**
-   * UI-handler, set-up environment and execute jasmine.
-   *
-   */
-  var executeByButton = function (eventInfo) {
-    var app = UiApp.createApplication(),
-        jasmineLog = app.getElementById("jasmineLog"),
-        loggerLog = app.getElementById("loggerLog"),
-        timeStamp = app.getElementById("timeStamp"),
-        con = new rajah.Console(),
-        log = "";
-    
-    executeJasmine(con.put);
-    
-    jasmineLog.setHTML(con.get());
-    log = Logger.getLog().replace(/\n/g, "<br />") || "<< Logger.getLog() empty. >>";
-    Logger.clear();
-    loggerLog.setHTML(log);
-    timeStamp.setHTML(Utilities.formatDate(new Date(), "PST", "yyyy.MM.dd HH:mm:ss"));
+    var env = jasmine.getEnv();
+    var consoleReporter = new jasmine.ConsoleReporter({
+        print: function() {
+            for (var i = 0, len = arguments.length; i < len; ++i) {
+                process.stdout.write(String(arguments[i]));
+            }
+        },
+        onComplete: done,
+        showColors: showColors,
+        timer: new jasmine.Timer()
+    });
 
-    return app;
-  };
+    env.addReporter(consoleReporter);
+    env.execute();
+}
 
+function getFiles(dir, matcher) {
+    var allFiles = [];
 
-  /**
-   * Called by Other script, execute jasmine.
-   *
-   */
-  var executeByScript = function () {
-    var con = new rajah.Console(true);
-  
-    executeJasmine(con.put);
-    
-    return con.get();
-  };
-
-
-  /**
-   * execute jasmine.
-   *
-   */
-  var executeJasmine = function (console) {
-
-    var jasmineEnv = jasmine.getEnv();
-    var ConsoleReporter = new jasmine.ConsoleReporter(console, (function () {}), true);
-    jasmineEnv.addReporter(ConsoleReporter);
-
-    rajah.dummyTimer.clear();
-    
-    jasmineEnv.execute();
-
-    rajah.dummyTimer.execute();
-  };
-
-  var exports = {
-    doGet: doGet,
-    executeByButton: executeByButton,
-    executeByScript: executeByScript,
-    selectTab: selectTab
-  };
-
-  return exports;
-})();
+    if (fs.statSync(dir).isFile() && dir.match(matcher)) {
+        allFiles.push(dir);
+    } else {
+        var files = fs.readdirSync(dir);
+        for (var i = 0, len = files.length; i < len; ++i) {
+            var filename = dir + '/' + files[i];
+            if (fs.statSync(filename).isFile() && filename.match(matcher)) {
+                allFiles.push(filename);
+            } else if (fs.statSync(filename).isDirectory()) {
+                var subfiles = getFiles(filename, matcher);
+                subfiles.forEach(function(result) {
+                    allFiles.push(result);
+                });
+            }
+        }
+    }
+    return allFiles;
+}
 
 
 
+function doGet(e) {
+    if (typeof e !== 'undefined' && e.rajah === undefined) {
+        return null;
+    }
+    var results;
 
+
+
+    return results;
+}
 
