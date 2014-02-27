@@ -10,5 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "jasmine-core": "~2.0.0"
+  },
+  "devDependencies": {
+    "codegs-core": "0.0.0"
   }
 }
