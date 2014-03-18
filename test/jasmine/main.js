@@ -8,4 +8,4 @@ if (typeof global === 'undefined') {
     require('global');
 }
 
-require('./spec/node_suite');
+require('./jasmine/spec/node_suite');
