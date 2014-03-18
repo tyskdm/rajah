@@ -6,6 +6,16 @@
 
 if (typeof global === 'undefined') {
     require('global');
+    require('./timer');
 }
 
-require('./jasmine/spec/node_suite');
+
+require('./jasmine_node_suite/node_suite');
+
+
+
+
+if ( ! (process.versions && process.versions.node)) {
+    require('./timer').execute();
+}
+

@@ -1,0 +1,29 @@
+{
+  "name": "jasmine-test",
+  "version": "0.0.0",
+  "description": "jasmine-test",
+  "main": "./main.js",
+  "files": [
+    "timer.js",
+    "jasmine_node_suite/node_suite.js",
+    "jasmine/lib/console/console.js",
+    "jasmine/lib/jasmine-core/jasmine.js",
+    "jasmine/src/console",
+    "jasmine/src/core",
+    "jasmine/src/version.js",
+    "jasmine/spec"
+  ],
+  "config": {
+    "code_core": "node_modules/code-core/code/gas",
+    "node_core": "node_modules/code-core/node/v0.10.26"
+  },
+  "devDependencies": {
+    "codegs": "~0.0.10",
+    "codegs-core": "~0.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tsuyoshi Kodama",
+  "license": "MIT"
+}
