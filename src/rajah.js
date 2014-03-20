@@ -1,35 +1,30 @@
 
-var fs = require('fs');
-var jasmine = initJasmine(global);
+var jasmineJS = require('jasmine-core/lib/jasmine-core/jasmine.js');
+_extend(jasmineJS, require('jasmine-core/lib/console/console.js'));
 
-exports.jasmine = jasmine;
-exports.run = run;
+function Rajah () {
 
-if (typeof global.doGet === 'function') {
-    exports._doGet = global.doGet;
+    this.jasmine = jasmineJS.core(jasmineJS);   // create new jasmine instance.
+    this.hasReporter = false;
+    jasmineJS.console(jasmineJS, this.jasmine);
 
-    global.doGet = function (e) {
-        var results = doGet(e);
-        if (results === null) {
-            results = exports._doGet(e);
+    var env = this.jasmine.getEnv();
+
+    _extend(this.jasmine, {
+        addCustomEqualityTester: function(tester) {
+            env.addCustomEqualityTester(tester);
+        },
+
+        addMatchers: function(matchers) {
+            return env.addMatchers(matchers);
+        },
+
+        clock: function() {
+            return env.clock;
         }
-        return results;
-    }
-}
+    });
 
-
-
-function initJasmine(global) {
-    // boot code for jasmine
-    var jasmineJS = require('jasmine-core/lib/jasmine-core/jasmine.js');
-    var jasmine = jasmineJS.core(jasmineJS);
-
-    _extend(jasmineJS, require('jasmine-core/lib/console/console.js'));
-    jasmineJS.console(jasmineJS, jasmine);
-
-    var env = jasmine.getEnv();
-
-    _extend(global, {
+    this.jasmineInterface = {
         describe: function(description, specDefinitions) {
            return env.describe(description, specDefinitions);
         },
@@ -58,108 +53,78 @@ function initJasmine(global) {
             return env.expect(actual);
         },
 
+        pending: function() {
+          return env.pending();
+        },
+
         spyOn: function(obj, methodName) {
             return env.spyOn(obj, methodName);
         },
 
-        jsApiReporter: new jasmine.JsApiReporter({
-            timer: new jasmine.Timer()
+        jsApiReporter: new this.jasmine.JsApiReporter({
+            timer: new this.jasmine.Timer()
         })
-    });
-
-    _extend(jasmine, {
-        addCustomEqualityTester: function(tester) {
-            env.addCustomEqualityTester(tester);
-        },
-
-        addMatchers: function(matchers) {
-            return env.addMatchers(matchers);
-        },
-
-        clock: function() {
-            return env.clock;
-        }
-    });
-
-    return jasmine;
+    };
 }
 
+Rajah.prototype = {
+
+    create: function () {
+        return new Rajah();
+    },
+
+    setup: function (scopeObj) {
+        _extend(scopeObj, this.jasmineInterface);
+    },
+
+    addReporter: function (reporter) {
+        this.jasmine.getEnv().addReporter(reporter);
+        this.hasReporter = true;
+    },
+
+    addConsoleReporter: function (showColors) {
+
+        var consoleReporter = new this.jasmine.ConsoleReporter({
+            print: function() {
+                for (var i = 0, len = arguments.length; i < len; ++i) {
+                    process.stdout.write(String(arguments[i]));
+                }
+            },
+            showColors: showColors,
+            timer: new this.jasmine.Timer()
+        });
+
+        this.jasmine.getEnv().addReporter(consoleReporter);
+        this.hasReporter = true;
+    },
+
+    run: function (onComplete) {
+
+        if ( ! this.hasReporter) {
+            this.addConsoleReporter(true);      // set 'showColors' true
+        }
+
+        if (typeof onComplete === 'function') {
+            // add reporter to set callback 'onComplete'.
+            this.addReporter({
+                jasmineDone: onComplete
+            });
+        }
+
+        this.jasmine.getEnv().execute();
+    }
+};
+
 function _extend(destination, source) {
-    for (var property in source) destination[property] = source[property];
+    for (var property in source) {
+        if (source.hasOwnProperty(property)) {
+            destination[property] = source[property];
+        }
+    }
     return destination;
 }
 
 
-// Jasmine "runner"
-function run(specs, opts) {
+module.exports = new Rajah();
 
-    var specFiles = [];
-    for (var i = 0; i < specs.length; i++) {
-        specFiles = specFiles.concat(getFiles(specs[i], /.js$/))
-    }
-
-    var results;
-    executeSpecs(specFiles, function(passed) {
-        results = passed;
-    }, opts.isVerbose, opts.showColors);
-    return results;
-}
-
-function executeSpecs(specs, done, isVerbose, showColors) {
-
-    for (var i = 0; i < specs.length; i++) {
-        var filename = specs[i];
-        require(filename.replace(/\.\w+$/, ""));
-    }
-
-    var env = jasmine.getEnv();
-    var consoleReporter = new jasmine.ConsoleReporter({
-        print: function() {
-            for (var i = 0, len = arguments.length; i < len; ++i) {
-                process.stdout.write(String(arguments[i]));
-            }
-        },
-        onComplete: done,
-        showColors: showColors,
-        timer: new jasmine.Timer()
-    });
-
-    env.addReporter(consoleReporter);
-    env.execute();
-}
-
-function getFiles(dir, matcher) {
-    var allFiles = [];
-
-    if (fs.statSync(dir).isFile() && dir.match(matcher)) {
-        allFiles.push(dir);
-    } else {
-        var files = fs.readdirSync(dir);
-        for (var i = 0, len = files.length; i < len; ++i) {
-            var filename = dir + '/' + files[i];
-            if (fs.statSync(filename).isFile() && filename.match(matcher)) {
-                allFiles.push(filename);
-            } else if (fs.statSync(filename).isDirectory()) {
-                var subfiles = getFiles(filename, matcher);
-                subfiles.forEach(function(result) {
-                    allFiles.push(result);
-                });
-            }
-        }
-    }
-    return allFiles;
-}
-
-
-
-function doGet(e) {
-    if (typeof e !== 'undefined' && e.rajah === undefined) {
-        return null;
-    }
-    var results;
-
-
-
-    return results;
-}
 

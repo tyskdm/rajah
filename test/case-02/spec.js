@@ -5,5 +5,5 @@ describe("HELLO Jasmine.", function () {
             isFriend: function (foo) { return true; }
         };
         expect(rajah.isFriend('Jasmine')).toBe(true);
-    })
+    });
 });
