@@ -75,6 +75,7 @@ Rajah.prototype = {
 
     setup: function (scopeObj) {
         _extend(scopeObj, this.jasmineInterface);
+        scopeObj.jasmine = this.jasmine;
     },
 
     addReporter: function (reporter) {
@@ -126,5 +127,3 @@ function _extend(destination, source) {
 
 
 module.exports = new Rajah();
-
-
