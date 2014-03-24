@@ -2,16 +2,18 @@
   "name": "rajah",
   "version": "0.0.0",
   "description": "[NOT UPLOAD YET] Jasmine 2.0 runner for Node.js and Google Apps Script.",
-  "main": "index.js",
+  "main": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Tsuyoshi Kodama",
   "license": "MIT",
   "dependencies": {
-    "jasmine-core": "~2.0.0"
+    "jasmine-core": "~2.0.0",
+    "argv": "~0.0.2"
   },
   "devDependencies": {
-    "codegs-core": "0.0.0"
+    "codegs-core": "0.0.0",
+    "codegs": "0.0.10"
   }
 }

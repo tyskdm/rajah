@@ -4,33 +4,24 @@
  *
  */
 
-
-/*
- * Following four wrapper functions are interface for jasmine.
- * - jasmine needs timer functions to be in global object.
- * - HERE is global context for jasmine.js
- */
-var setTimeout = function (func, t) {
-  return rajah.dummyTimer.setTimeout(func, t);
+global.setTimeout = function (func, t) {
+  return module.exports.setTimeout(func, t);
 };
 
-var clearTimeout = function (id) {
-  rajah.dummyTimer.clearTimeout(id);
+global.clearTimeout = function (id) {
+  module.exports.clearTimeout(id);
 };
 
-var setInterval = function (func, t) {
-  return rajah.dummyTimer.setInterval(func, t);
+global.setInterval = function (func, t) {
+  return module.exports.setInterval(func, t);
 };
 
-var clearInterval = function (id) {
-  rajah.dummyTimer.clearInterval(id);
+global.clearInterval = function (id) {
+  module.exports.clearInterval(id);
 };
 
 
-/**
- * @namespace dummyTimer
- */
-rajah.dummyTimer = (function () {
+module.exports = (function () {
 
   var idCounter = 0;
   var timerQue =[];
