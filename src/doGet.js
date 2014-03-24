@@ -2,37 +2,51 @@
  *  doGet.js : rajah mainfile for GAS environment.
  */
 
+require('global');
+var fs = require('fs');
+var timers = require('./timers');
+
 function doGet(e) {
 
-    var config;
+    var config, callByHttp;
 
-    if (typeof e === 'undefined') {
-        // execute by debugger.
-
-        config = rajaConfig || {};
-
-
-    } else  if (typeof e.query === 'object') {
+    if (typeof e.queryString === 'string') {
         // execute by URL.
+        config = e.parameter;
+        callByHttp = true;
 
-        config = e.query;
-
-
-    } else if (typeof e.some === 'object') {
-        // execute by time trigger.
-
-        config = {};
+    } else {
+        // execute by debugger or time trigger.
+        config = null;
+        callByHttp = false;
     }
 
-    require('global');
-    require('./timer');
 
-    var rajahApp = require('./rajahApp.js').create();
+    var rajah = require('./rajahApp.js').create();
 
-    rajahApp.run();
+    if (fs.existsSync('/rajah.json')) {
+        if (fs.statSync('/rajah.json').isFile()) {
+            rajah.addConfig(require('/rajah.json'));
+        }
+    }
 
-    require('./timer').execute();
+    if (typeof rajahConfig === 'object') {
+        rajah.addConfig(rajahConfig);
+    }
 
+    if (config) {
+        rajah.addConfig(config);
+    }
 
-    return resultString;
+    rajah.run();
+
+    timers.execute();
+
+    if (callByHttp) {
+        var output = ContentService.createTextOutput(JSON.stringify(jsonObject))
+                     .setMimeType(ContentService.MimeType.JSON);
+        return output;
+    }
+
+    return undefined;
 }

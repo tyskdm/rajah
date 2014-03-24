@@ -53,38 +53,9 @@ module.exports = function () {
         ])
         .run();
 
-    var fs = require('fs');
-    var path = require('path');
-
-    var cwd = process.cwd(),
-        packageJson = null,
-        projectdir = cwd,
-        mainfile = argv.targets.length === 0 ? cwd : path.join(cwd, argv.targets[0]);
-        // TODO: check if resolve is better way?
-
-    if (fs.existsSync(mainfile)) {
-        var stat = fs.statSync(mainfile);
-
-        if (stat.isDirectory()) {
-            if (fs.existsSync(path.join(mainfile, './package.json'))) {
-                packageJson = path.join(mainfile, './package.json');
-                projectdir = mainfile;
-                mainfile = null;
-            }
-
-        } else if (stat.isFile() && (path.basename(mainfile) === 'package.json')) {
-            packageJson = mainfile;
-            projectdir = path.dirname(mainfile);
-            mainfile = null;
-        }
-    }
 
     // all options should be fully resolved path.
-    // and be possibly using platform path delimiter('\').
     var config = {
-        rootdir:    projectdir,
-        mainfile:   mainfile,
-
         source:     argv.options.source     || null,
         output:     argv.options.output     || null,
         core:       argv.options.core       || null,
@@ -93,19 +64,24 @@ module.exports = function () {
     };
 
     // Create configure Application.
-    var codegs = require('./codegs');
-    var code = codegs.create();
+    var rajahApp = require('./rajahApp');
+    var rajah = rajahApp.create();
     var error;
 
-    if (packageJson) {
-        error = code.loadPackageJson(packageJson);
-        _check(error);
+    var fs = require('fs'),
+        path = require('path');
+
+    var packagefile = path.join(process.cwd(), './rajah.json');
+    if (fs.existsSync(packagefile)) {
+        if (fs.statSync(packagefile).isFile()) {
+            rajah.addConfig(packagefile);
+        }
     }
 
-    error = code.addConfig(config);
+    error = rajah.addConfig(config);
     _check(error);
 
-    error = code.run();
+    error = rajah.run();
     _check(error);
 
     process.exit(0);

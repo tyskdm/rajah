@@ -2,11 +2,21 @@
   "name": "rajah",
   "version": "0.0.0",
   "description": "[NOT UPLOAD YET] Jasmine 2.0 runner for Node.js and Google Apps Script.",
-  "main": "src/main.js",
+  "main": "src/rajah.js",
+  "bin": {
+    "rajah": "./bin/rajah"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Tsuyoshi Kodama",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:tyskdm/rajah.git"
+  },
+  "author": {
+    "name": "Tsuyoshi Kodama",
+    "email": "tsuyoshi.kodama@gmail.com"
+  },
   "license": "MIT",
   "dependencies": {
     "jasmine-core": "~2.0.0",
