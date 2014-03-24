@@ -8,17 +8,17 @@ var timers = require('./timers');
 
 function doGet(e) {
 
-    var config, callByHttp;
+    var config, calledByHttp;
 
     if (typeof e.queryString === 'string') {
         // execute by URL.
         config = e.parameter;
-        callByHttp = true;
+        calledByHttp = true;
 
     } else {
         // execute by debugger or time trigger.
         config = null;
-        callByHttp = false;
+        calledByHttp = false;
     }
 
 
@@ -42,9 +42,9 @@ function doGet(e) {
 
     timers.execute();
 
-    if (callByHttp) {
+    if (calledByHttp) {
         var output = ContentService.createTextOutput(JSON.stringify(jsonObject))
-                     .setMimeType(ContentService.MimeType.JSON);
+                     .setMimeType(ContentService.MimeType.XML);
         return output;
     }
 
