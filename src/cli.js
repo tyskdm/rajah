@@ -56,7 +56,7 @@ module.exports = function () {
 
     // all options should be fully resolved path.
     var config = {
-        source:     argv.options.source     || null,
+        specs:      argv.options.specs      || null,
         output:     argv.options.output     || null,
         core:       argv.options.core       || null,
         node_core:  argv.options.nodecore   || null,
@@ -74,7 +74,8 @@ module.exports = function () {
     var packagefile = path.join(process.cwd(), './rajah.json');
     if (fs.existsSync(packagefile)) {
         if (fs.statSync(packagefile).isFile()) {
-            rajah.addConfig(packagefile);
+            error = rajah.addConfig(packagefile);
+            _check(error);
         }
     }
 
@@ -83,8 +84,6 @@ module.exports = function () {
 
     error = rajah.run();
     _check(error);
-
-    process.exit(0);
 };
 
 function _check(error) {

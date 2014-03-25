@@ -15,7 +15,10 @@ var joinPath = (function () {
 
 function RajahApp(config) {
 
+    this.rajah = require('./rajah.js');
+
     this.config = {
+        rootdir:      null,
         specs:        null,
         matcher:      null,
         helpers:      null,
@@ -30,6 +33,7 @@ function RajahApp(config) {
         helpers:      []
     };
     this.ignoreFilepath = [];
+    this.ignorePattern = [];
     this.reportContent = '';
 
     if (config) {
@@ -44,19 +48,19 @@ RajahApp.create = function (config) {
 
 RajahApp.prototype.addConfig = function (config) {
 
+    if (config.specs) {
+        if (this.config.specs === null) {
+            this.config.specs = [];
+        }
+        this.config.specs = this.config.specs.concat(config.specs);
+    }
+
     if (config.rootdir) {
         this.config.rootdir = config.rootdir;
     }
 
     if (config.mainfile) {
         this.config.mainfile = config.mainfile;
-    }
-
-    if (config.source) {
-        if (this.config.source === null) {
-            this.config.source = [];
-        }
-        this.config.source = this.config.source.concat(config.source);
     }
 
     if (config.output) {
@@ -89,12 +93,12 @@ RajahApp.prototype.addConfig = function (config) {
 RajahApp.prototype.run = function () {
     var steps = [
             this.setup,
-            this.addCoreFiles,
-            this.addNodeCoreFiles,
-            this.addNodeModules,
-            this.addSourceFiles,
-            this.compile,
-            this.out
+            this.addSpecFiles,
+            //this.addCoreFiles,
+            //this.addNodeCoreFiles,
+            //this.addNodeModules,
+            this.executeJasmine
+            //this.out
         ],
         error = null;
 
@@ -107,70 +111,48 @@ RajahApp.prototype.run = function () {
 RajahApp.prototype.setup = function (mockfs) {
     var fs = mockfs || require('fs');
 
-    // config.rootdir
-    if ( ! this.config.rootdir) {
-        this.config.rootdir = process.cwd();
+    this.config.rootdir = process.cwd();
+
+    return null;
+};
+
+RajahApp.prototype.addSpecFiles = function (mockfs) {
+
+    if (this.config.specs === null) {
+        this.config.specs = [];
     }
 
-    // config.mainfile
-    if ( ! this.config.mainfile) {
-        this.config.mainfile = process.cwd();
+    var i, specfile, error = null;
+    var rootdir = joinPath(this.config.rootdir);
+
+    for (i = 0; i < this.config.specs.length; i++) {
+
+        specfile = joinPath(this.config.specs[i]);
+        console.log('add : ' + specfile);
+
+        error = this._addFilesToList(this.files.specfiles, specfile, true, mockfs);
+        console.log('addFilesToList returns : ' + this.files.specfiles);
+
+        if (error === null) {
+            specfile = specfile.slice(-1) === '/' ? specfile.slice(0, -1) : specfile;
+            this._addIgnoreFilepath(specfile);
+        } else {
+            break;
+        }
+    }
+    return error;
+};
+
+RajahApp.prototype.executeJasmine = function (mockfs) {
+    var fs = mockfs || require('fs');
+
+    this.rajah.setup(global);
+
+    for (var i = 0; i < this.files.specfiles.length; i++) {
+        require(this.files.specfiles[i]);
     }
 
-    // config.core
-    if (this.config.core) {
-        this.config.core = path.resolve(this.config.rootdir, this.config.core);
-        if ( ! fs.existsSync(this.config.core)) {
-            return 'Error: core module directory is not existent.';
-        }
-        if ( ! fs.statSync(this.config.core).isDirectory()) {
-            return 'Error: core module directory is not directory.';
-        }
-    } else {
-        // default value. not check if it exists.
-        this.config.core = path.resolve(this.config.rootdir, './core');
-    }
-
-    // config.node_core
-    if (this.config.node_core) {
-        this.config.node_core = path.resolve(this.config.rootdir, this.config.node_core);
-        if ( ! fs.existsSync(this.config.node_core)) {
-            return 'Error: node_core module directory is not existent.';
-        }
-        if ( ! fs.statSync(this.config.node_core).isDirectory()) {
-            return 'Error: node_core module directory is not directory.';
-        }
-    } else {
-        // default value. not check if it exists.
-        this.config.node_core = path.resolve(this.config.rootdir, './node_core');
-    }
-
-    // files.main
-    this.files.main = path.resolve(this.config.rootdir, this.config.mainfile);
-    if ( ! fs.existsSync(this.files.main)) {
-        this.files.main = null;
-        return 'Error: main file is not existent.';
-    }
-    if ( ! fs.statSync(this.files.main).isFile()) {
-        this.files.main = null;
-        return 'Error: main file is not valid filetype.';
-    }
-    this._addIgnoreFilepath(this.files.main);
-
-    // files.kernel
-    if (this.config.kernel) {
-
-        this.files.kernel = path.resolve(this.config.rootdir, this.config.kernel);
-        if ( ! fs.existsSync(this.files.kernel)) {
-            this.files.kernel = null;
-            return 'Error: kernel file is not existent.';
-        }
-        if ( ! fs.statSync(this.files.kernel).isFile()) {
-            this.files.kernel = null;
-            return 'Error: kernel file is not valid filetype.';
-        }
-        this._addIgnoreFilepath(this.files.kernel);
-    }
+    this.rajah.run(function (e) { console.log('END:' + e); });
 
     return null;
 };
@@ -234,71 +216,6 @@ RajahApp.prototype.addNodeModules = function (mockfs) {
         }
     }
     return error;
-};
-
-RajahApp.prototype.addSourceFiles = function (mockfs) {
-
-    if (this.config.source === null) {
-        this.config.source = [];
-        this.config.source.push(this.config.rootdir);
-    }
-
-    var i, source, storepath, error = null;
-    var rootdir = joinPath(this.config.rootdir);
-
-    for (i = 0; i < this.config.source.length; i++) {
-
-        storepath = source = joinPath(this.config.source[i]);
-
-        if (storepath.slice(0, rootdir.length) !== rootdir) {
-            return 'Error: Source directory is outside project root.';
-        }
-        storepath = storepath === rootdir ? '/' : storepath.slice(rootdir.length);
-
-        error = this._addFilesToList(this.files.source, source, storepath, true, mockfs);
-        if (error === null) {
-            source = source.slice(-1) === '/' ? source.slice(0, -1) : source;
-            this._addIgnoreFilepath(source);
-        } else {
-            break;
-        }
-    }
-    return error;
-};
-
-RajahApp.prototype.compile = function (mockfs) {
-    var fs = mockfs || require('fs');
-
-    this.content = '';
-    var content = '';
-
-    content = RajahApp._compileFilesList(this.files.core, mockfs);
-    this.content += content;
-
-    content = RajahApp._compileFilesList(this.files.node_core, mockfs);
-    this.content += content;
-
-    content = RajahApp._compileFilesList(this.files.node_modules, mockfs);
-    this.content += content;
-
-    content = RajahApp._compileFilesList(this.files.source, mockfs);
-    this.content += content;
-
-    var mainfileList = RajahApp._createFilesList(this.config, this.files.main, 'main');
-    content = RajahApp._compileFilesList(mainfileList, mockfs);
-    this.content += content;
-
-    if (this.files.kernel) {
-        var corefileList = {};
-        corefileList[this.files.kernel] = { type: 'core', path: '' };
-        content = RajahApp._compileFilesList(corefileList, mockfs);
-    } else {
-        // kernel === null, then should not wrap. just read and append.
-        content = fs.readFileSync(require.resolve('./module.js'));
-    }
-    this.content += content;
-
-    return null;
 };
 
 RajahApp.prototype.out = function (mockfs) {
@@ -373,7 +290,7 @@ RajahApp.prototype._isIgnoreFile = function (file, checkPattern) {
     return false;
 };
 
-RajahApp.prototype._addFilesToList = function (list, source, storepath, checkPattern, mockfs) {
+RajahApp.prototype._addFilesToList = function (list, source, checkPattern, mockfs) {
     var fs = mockfs || require('fs');
 
     if (this._isIgnoreFile(source, checkPattern)) {
@@ -389,12 +306,7 @@ RajahApp.prototype._addFilesToList = function (list, source, storepath, checkPat
 
     if (stat.isFile()) {
         // If specific file passed, no file type checking to add.
-        if (list[source] === undefined) {
-            list[source] = {
-                type : source.slice(-5) === '.json' ? 'json' : 'js',
-                path : storepath
-            };
-        }
+        list.push(source);
         return null;
     }
     if (stat.isDirectory()) {
@@ -407,15 +319,13 @@ RajahApp.prototype._addFilesToList = function (list, source, storepath, checkPat
             }
             stat = fs.statSync(joinPath(source, files[i]));
             if (stat.isFile()) {
-                // File types to add are only '.js' and '.json', by default.
-                if (! ( ((files[i].length > 3) && (files[i].slice(-3) === '.js')) ||
-                        ((files[i].length > 5) && (files[i].slice(-5) === '.json'))) ) {
+                // File types to add are only '.js' by default.
+                if (! ((files[i].length > 3) && (files[i].slice(-3) === '.js'))) {
                     continue;
                 }
             }
             error = this._addFilesToList(list,
                                     joinPath(source, files[i]),
-                                    joinPath(storepath, files[i]),
                                     checkPattern,
                                     mockfs);
             if (error !== null) {
