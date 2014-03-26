@@ -26,7 +26,7 @@
   },
   "devDependencies": {
      "jasmine-node": "^2.0.0",
-     "codegs-core": "0.0.0",
-     "codegs": "0.0.10"
-  }
+     "codegs-core": "~0.0.2",
+     "codegs": "~0.1.0"
+  },
 }

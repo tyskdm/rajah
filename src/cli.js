@@ -53,10 +53,9 @@ module.exports = function () {
         ])
         .run();
 
-
     // all options should be fully resolved path.
     var config = {
-        specs:      argv.options.specs      || null,
+        specs:      argv.targets,
         output:     argv.options.output     || null,
         core:       argv.options.core       || null,
         node_core:  argv.options.nodecore   || null,

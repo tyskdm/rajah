@@ -93,12 +93,13 @@ RajahApp.prototype.addConfig = function (config) {
 RajahApp.prototype.run = function () {
     var steps = [
             this.setup,
+            // this.addSpecHelpers,
             this.addSpecFiles,
-            //this.addCoreFiles,
-            //this.addNodeCoreFiles,
-            //this.addNodeModules,
+            // this.addCoreFiles,
+            // this.addNodeCoreFiles,
+            // this.addNodeModules,
             this.executeJasmine
-            //this.out
+            // this.out
         ],
         error = null;
 
