@@ -28,5 +28,5 @@
      "jasmine-node": "^2.0.0",
      "codegs-core": "~0.0.2",
      "codegs": "~0.1.0"
-  },
+  }
 }

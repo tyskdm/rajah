@@ -10,12 +10,6 @@ module.exports = function () {
               "SPECFILES:  spec files or directories.\n\n" +
               "Options:")
         .option([
-            {   name:           'specs',
-                short:          's',
-                type:           'csv,path',
-                description:    'Spec files or directories to run.',
-                example:        "'" + name + " --specs=file1,file2,..' or '" + name + " -s file1 -s file2..'"
-            },
             {   name:           'match',
                 short:          'm',
                 type:           'string',
@@ -27,12 +21,6 @@ module.exports = function () {
                 description:    'Spec files or directories to run.',
                 example:        "'" + name + " --specs=file1,file2,..'"
             },
-            {   name:           'report-type',
-                short:          'r',
-                type:           'string',
-                description:    'Reporter type: console, junit.',
-                example:        "'" + name + " --reporter-type=console' or '" + name + " -r junit'"
-            },
             {   name:           'output',
                 short:          'o',
                 type:           'path',
@@ -43,12 +31,6 @@ module.exports = function () {
                 type:           'path',
                 description:    'execute Codegs and output to specified file.',
                 example:        "'" + name + " --outout=file' or '" + name + " -o file'"
-            },
-            {   name:           'package',
-                short:          'p',
-                type:           'path',
-                description:    'Output file',
-                example:        "'" + name + " --outout=file' or '" + name + " -o file'"
             }
         ])
         .run();
@@ -56,10 +38,10 @@ module.exports = function () {
     // all options should be fully resolved path.
     var config = {
         specs:      argv.targets,
+        match:      argv.options.match      || null,
+        helpers:    argv.options.helpers    || null,
         output:     argv.options.output     || null,
-        core:       argv.options.core       || null,
-        node_core:  argv.options.nodecore   || null,
-        kernel:     argv.options.kernel     || null
+        codegs:     argv.options.codegs     || null
     };
 
     // Create configure Application.
@@ -70,11 +52,15 @@ module.exports = function () {
     var fs = require('fs'),
         path = require('path');
 
-    var packagefile = path.join(process.cwd(), './rajah.json');
+    var packagefile = path.join(process.cwd(), './package.json');
+    var packageConfig;
     if (fs.existsSync(packagefile)) {
         if (fs.statSync(packagefile).isFile()) {
-            error = rajah.addConfig(packagefile);
-            _check(error);
+            packageConfig = require(packagefile)._rajah;
+            if (packageConfig) {
+                error = rajah.addConfig(packagefile);
+                _check(error);
+            }
         }
     }
 
