@@ -1,7 +1,2 @@
-.settings/
-.project
-*~
-.komodotools/
-*.komodoproject
-lib/
-
+node_modules
+test/jasmine
