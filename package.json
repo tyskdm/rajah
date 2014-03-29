@@ -6,6 +6,9 @@
   "bin": {
     "rajah": "./bin/rajah"
   },
+  "files": [
+    "./src"
+  ],
   "scripts": {
     "test": "./node_modules/.bin/jasmine-node test/spec"
   },

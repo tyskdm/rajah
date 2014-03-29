@@ -125,7 +125,7 @@ describe("rajahApp:", function () {
         });
     });
 
-    describe("Methods to add source files:", function () {
+    describe("Methods addSpecFiles:", function () {
 
         describe("Private Method _addIgnoreFilepath:", function () {
 

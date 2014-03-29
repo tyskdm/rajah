@@ -37,7 +37,7 @@ function RajahApp(config) {
     };
 
     if (config) {
-        RajahApp.prototype.addConfig.call(this, config);
+        this.addConfig(config);
     }
 }
 
@@ -91,8 +91,8 @@ RajahApp.prototype.run = function () {
     if (this.config.codegs === null) {
         error = this.runJasmine();
     } else {
-        // error = this.runCodegs();
-        console.log('runCodegs not yet impremented.');
+        error = this.runCodegs();
+        // console.log('runCodegs not yet impremented.');
     }
 
     return error;
@@ -116,9 +116,7 @@ RajahApp.prototype.runCodegs = function () {
     var steps = [
             this.setup,
             this.addSpecFiles,
-            this.addSpecFiles,
-            this.executeJasmine,
-            this.out
+            this.executeCodegs,
         ],
         error = null;
 
@@ -184,6 +182,55 @@ RajahApp.prototype.executeJasmine = function (mockfs) {
 
     return null;
 };
+
+RajahApp.prototype.executeCodegs = function (mockfs) {
+    var fs = mockfs || require('fs');
+
+    var packageJson = joinPath(this.config.rootdir, './package.json');
+    if ( ! fs.existsSync(packageJson)) {
+        packageJson = null;
+    }
+
+    // Create configure Application.
+    var codegs = require('codegs');
+    var code = codegs.create();
+    var error;
+
+    if (packageJson) {
+        error = code.loadPackageJson(packageJson);
+        if (error) return error;
+    }
+
+    // all options should be fully resolved path.
+    // and be possibly using platform path delimiter('\').
+    var config = {
+        rootdir:    this.config.rootdir,
+        mainfile:   require.resolve('./doGet.js'),
+
+        source:     this.files.specfiles.concat(this.files.helpers),
+        output:     this.config.codegs || null,
+
+        core:       code.config.core ?
+                        null : path.resolve(__dirname, '../node_modules/codegs-core/code/gas'),
+
+        node_core:  code.config.node_core ?
+                        null : path.resolve(__dirname, '../node_modules/codegs-core/node/v0.10.26'),
+
+        kernel:     null
+    };
+
+    console.log(config.core);
+    console.log(config.node_core);
+
+    error = code.addConfig(config);
+    if (error) return error;
+
+    error = code.run();
+    if (error) return error;
+
+    return null;
+};
+
 
 RajahApp.prototype.output = function (passed, mockfs) {
     var fs = mockfs || require('fs');
