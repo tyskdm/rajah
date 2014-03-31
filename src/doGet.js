@@ -8,43 +8,54 @@ var timers = require('./timers');
 
 function doGet(e) {
 
-    var config, calledByHttp;
+    var config, calledByHttp, fputs;
 
-    if (typeof e.queryString === 'string') {
+    if (typeof e !== 'undefined' && typeof e.queryString === 'string') {
         // execute by URL.
         config = e.parameter;
         calledByHttp = true;
-
     } else {
         // execute by debugger or time trigger.
         config = null;
         calledByHttp = false;
     }
 
+    var print = function () {
+        for (var i = 0, len = arguments.length; i < len; ++i) {
+            process.stdout.write(String(arguments[i]));
+        }
+    };
 
-    var rajah = require('./rajahApp.js').create();
+    var rajahApp = require('./rajahApp.js').create();
 
     if (fs.existsSync('/rajah.json')) {
         if (fs.statSync('/rajah.json').isFile()) {
-            rajah.addConfig(require('/rajah.json'));
+            rajahApp.addConfig(require('/rajah.json'));
         }
     }
 
     if (typeof rajahConfig === 'object') {
-        rajah.addConfig(rajahConfig);
+        rajahApp.addConfig(rajahConfig);
     }
 
     if (config) {
-        rajah.addConfig(config);
+        rajahApp.addConfig(config);
     }
 
-    rajah.run();
+    if (calledByHttp) {
+        rajahApp.addConfig({
+            showColor:  false,
+            reportType: 'onMemory'
+        });
+    }
+
+    rajahApp.run();
 
     timers.execute();
 
     if (calledByHttp) {
-        var output = ContentService.createTextOutput(JSON.stringify(jsonObject))
-                     .setMimeType(ContentService.MimeType.XML);
+        var output = ContentService.createTextOutput(rajahApp.getReport())
+                     .setMimeType(ContentService.MimeType.TEXT);
         return output;
     }
 

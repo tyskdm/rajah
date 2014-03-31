@@ -21,6 +21,8 @@ describe("rajahApp:", function () {
                 specs:        null,
                 match:        null,
                 helpers:      null,
+                reportType:   null,
+                showColor:    null,
                 output:       null,
                 codegs:       null
             },
@@ -33,6 +35,8 @@ describe("rajahApp:", function () {
                 specs:        null,
                 match:        null,
                 helpers:      null,
+                reportType:   null,
+                showColor:    null,
                 output:       null,
                 codegs:       null
             };
@@ -58,6 +62,8 @@ describe("rajahApp:", function () {
                 specs:        null,
                 match:        null,
                 helpers:      null,
+                reportType:   null,
+                showColor:    null,
                 output:       null,
                 codegs:       null
             },
@@ -66,6 +72,8 @@ describe("rajahApp:", function () {
                 specs:        ['spec'],
                 match:        ['Spec.js'],
                 helpers:      ['spec/helpers'],
+                reportType:   'console',
+                showColor:    true,
                 output:       ['out.js'],
                 codegs:       ['code.gs']
             },
@@ -74,6 +82,8 @@ describe("rajahApp:", function () {
                 specs:        ['spec', 'spec'],
                 match:        ['Spec.js', 'Spec.js'],
                 helpers:      ['spec/helpers', 'spec/helpers'],
+                reportType:   'console',
+                showColor:    true,
                 output:       ['out.js'],
                 codegs:       ['code.gs']
             };
@@ -96,6 +106,8 @@ describe("rajahApp:", function () {
                     specs:        null,
                     match:        null,
                     helpers:      null,
+                    reportType:   null,
+                    showColor:    null,
                     output:       null,
                     codegs:       null
                 },

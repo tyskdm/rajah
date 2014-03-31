@@ -19,6 +19,8 @@ function RajahApp(config) {
         specs:      null,
         match:      null,
         helpers:    null,
+        reportType: null,   // 'console' or 'onMemory'
+        showColor:  null,
         output:     null,
         codegs:     null
     };
@@ -72,6 +74,14 @@ RajahApp.prototype.addConfig = function (config) {
         this.config.helpers = this.config.helpers.concat(config.helpers);
     }
 
+    if (config.reportType) {
+        this.config.reportType = config.reportType;
+    }
+
+    if (typeof config.showColor !== 'undefined') {   // showColor is boolean.
+        this.config.showColor = config.showColor;
+    }
+
     if (config.output) {
         this.config.output = config.output;
     }
@@ -116,7 +126,7 @@ RajahApp.prototype.runCodegs = function () {
     var steps = [
             this.setup,
             this.addSpecFiles,
-            this.executeCodegs,
+            this.executeCodegs
         ],
         error = null;
 
@@ -169,6 +179,16 @@ RajahApp.prototype.executeJasmine = function (mockfs) {
     // var fs = mockfs || require('fs');
 
     this.rajah.setup(global);
+
+    if (this.config.reportType === 'onMemory') {
+        var THIS = this;
+        var print = function() {
+            for (var i = 0, len = arguments.length; i < len; ++i) {
+                THIS.reportContent += arguments[i];
+            }
+        };
+        this.rajah.addConsoleReporter(this.config.showColor, print);
+    }
 
     for (var i = 0; i < this.files.helpers.length; i++) {
         require(this.files.helpers[i]);
@@ -231,6 +251,9 @@ RajahApp.prototype.executeCodegs = function (mockfs) {
     return null;
 };
 
+RajahApp.prototype.getReport = function () {
+    return this.reportContent;
+};
 
 RajahApp.prototype.output = function (passed, mockfs) {
     var fs = mockfs || require('fs');
