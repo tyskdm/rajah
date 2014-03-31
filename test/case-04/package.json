@@ -1,0 +1,19 @@
+{
+  "name": "case-04",
+  "version": "0.0.0",
+  "description": "Rajah test case-04 : test '--codegs' option.",
+  "files": [
+    "./lib"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+    "codegs": "~0.1.0",
+    "codegs-core": "~0.0.2",
+    "rajah": "0.0.0"
+  },
+  "_codegs": {
+    "core": "node_modules/codegs-core/code/gas",
+    "node_core": "node_modules/codegs-core/node/v0.10.26"
+  }
+}
