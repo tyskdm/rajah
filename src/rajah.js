@@ -83,17 +83,21 @@ Rajah.prototype = {
         this.hasReporter = true;
     },
 
-    addConsoleReporter: function (showColors) {
+    addConsoleReporter: function (showColors, print) {
 
-        var consoleReporter = new this.jasmine.ConsoleReporter({
-            print: function() {
-                for (var i = 0, len = arguments.length; i < len; ++i) {
-                    process.stdout.write(String(arguments[i]));
-                }
-            },
+        print = print || function() {
+            for (var i = 0, len = arguments.length; i < len; ++i) {
+                process.stdout.write(String(arguments[i]));
+            }
+        };
+
+        var config = {
+            print:      print,
             showColors: showColors,
-            timer: new this.jasmine.Timer()
-        });
+            timer:      new this.jasmine.Timer()
+        };
+
+        var consoleReporter = new this.jasmine.ConsoleReporter(config);
 
         this.jasmine.getEnv().addReporter(consoleReporter);
         this.hasReporter = true;
