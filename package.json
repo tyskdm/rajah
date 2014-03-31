@@ -28,8 +28,10 @@
     "minimatch": "^0.2.14"
   },
   "devDependencies": {
-     "jasmine-node": "^2.0.0",
-     "codegs-core": "~0.0.2",
-     "codegs": "~0.1.0"
+    "jasmine-node": "^2.0.0",
+    "codegs-core": "~0.0.2",
+    "codegs": "~0.1.0",
+    "grunt": "^0.4.4",
+    "grunt-contrib-jshint": "^0.9.2"
   }
 }
