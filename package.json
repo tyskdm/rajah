@@ -10,7 +10,7 @@
     "./src"
   ],
   "scripts": {
-    "test": "./node_modules/.bin/jasmine-node test/spec"
+    "test": "./bin/rajah test/spec"
   },
   "repository": {
     "type": "git",
