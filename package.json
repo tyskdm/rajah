@@ -1,18 +1,17 @@
 {
   "name": "rajah",
-  "version": "0.0.0",
+  "version": "0.0.8",
   "description": "[NOT PUBLISHED YET] Jasmine 2.0 runner for Node.js and Google Apps Script.",
   "main": "src/rajah.js",
-  "bin": {
-    "rajah": "./bin/rajah"
-  },
   "files": [
-    "./src",
-    "./test/mock",
-    "./test/spec"
+    "bin",
+    "src"
   ],
+  "bin": {
+    "rajah": "bin/rajah"
+  },
   "scripts": {
-    "test": "./bin/rajah test/spec"
+    "test": "bin/rajah test/spec"
   },
   "repository": {
     "type": "git",
@@ -26,11 +25,11 @@
   "dependencies": {
     "jasmine-core": "~2.0.0",
     "argv": "~0.0.2",
-    "minimatch": "^0.2.14"
+    "minimatch": "^0.2.14",
+    "codegs": "~0.1.0",
+    "codegs-core": "~0.0.2"
   },
   "devDependencies": {
-    "codegs-core": "~0.0.2",
-    "codegs": "~0.1.0",
     "grunt": "^0.4.4",
     "grunt-contrib-jshint": "^0.9.2"
   }

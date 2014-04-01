@@ -225,9 +225,13 @@ RajahApp.prototype.executeCodegs = function (mockfs) {
     // and be possibly using platform path delimiter('\').
     var config = {
         rootdir:    this.config.rootdir,
+
         mainfile:   require.resolve('./doGet.js'),
 
-        source:     this.files.specfiles.concat(this.files.helpers),
+        source:     this.files.specfiles
+                    .concat(this.files.helpers)
+                    .concat([ joinPath(__dirname, '../') ]),
+
         output:     this.config.codegs || null,
 
         core:       code.config.core ?
@@ -238,9 +242,6 @@ RajahApp.prototype.executeCodegs = function (mockfs) {
 
         kernel:     null
     };
-
-    console.log(config.core);
-    console.log(config.node_core);
 
     error = code.addConfig(config);
     if (error) return error;
