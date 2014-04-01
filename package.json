@@ -1,6 +1,6 @@
 {
   "name": "rajah",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "description": "[NOT PUBLISHED YET] Jasmine 2.0 runner for Node.js and Google Apps Script.",
   "main": "src/rajah.js",
   "files": [

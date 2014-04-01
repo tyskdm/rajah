@@ -198,7 +198,7 @@ RajahApp.prototype.executeJasmine = function (mockfs) {
         require(this.files.specfiles[j]);
     }
 
-    this.rajah.run(function (e) { console.log('END:' + e); });
+    this.rajah.run();
 
     return null;
 };
@@ -232,7 +232,7 @@ RajahApp.prototype.executeCodegs = function (mockfs) {
         'minimatch/minimatch.js',
         'minimatch/node_modules/lru-cache/package.json',
         'minimatch/node_modules/lru-cache/lib/lru-cache.js',
-        'minimatch/node_modules/sigmund/project.json',
+        'minimatch/node_modules/sigmund/package.json',
         'minimatch/node_modules/sigmund/sigmund.js',
         'jasmine-core/lib/jasmine-core/jasmine.js',
         'jasmine-core/lib/console/console.js'
@@ -257,10 +257,7 @@ RajahApp.prototype.executeCodegs = function (mockfs) {
 
         source:     this.files.specfiles
                     .concat(this.files.helpers)
-                    .concat([ joinPath(__dirname, '../src') ])
-                    .concat([ joinPath(__dirname, '../node_modules/minimatch/minimatch.js') ])
-                    .concat([ joinPath(__dirname, '../node_modules/minimatch/node_modules') ])
-                    .concat([ joinPath(__dirname, '../') ]),
+                    .concat(rajahFiles),
 
         output:     this.config.codegs || null,
 

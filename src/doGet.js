@@ -10,7 +10,7 @@ function doGet(e) {
 
     var config, calledByHttp, fputs;
 
-    if (typeof e !== 'undefined' && typeof e.year !== 'undefined') {
+    if (typeof e !== 'undefined' && typeof e.year === 'undefined') {
         // execute by Web Access.
         config = e.parameter;
         calledByHttp = true;
