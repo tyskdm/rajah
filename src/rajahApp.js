@@ -216,6 +216,33 @@ RajahApp.prototype.executeCodegs = function (mockfs) {
     var code = codegs.create();
     var error;
 
+    var rajahFiles = [];
+
+    var rajahSource = [
+        '../src/rajah.js',
+        '../src/rajahApp.js',
+        '../src/timers.js'
+    ];
+    for (var i = 0; i < rajahSource.length; i++) {
+        rajahFiles.push(joinPath(__dirname, rajahSource[i]));
+    }
+
+    var node_modules = [
+        'minimatch/package.json',
+        'minimatch/minimatch.js',
+        'minimatch/node_modules/lru-cache/package.json',
+        'minimatch/node_modules/lru-cache/lib/lru-cache.js',
+        'minimatch/node_modules/sigmund/project.json',
+        'minimatch/node_modules/sigmund/sigmund.js',
+        'jasmine-core/lib/jasmine-core/jasmine.js',
+        'jasmine-core/lib/console/console.js'
+    ];
+    for (var j = 0; j < node_modules.length; j++) {
+        rajahFiles.push(joinPath(__dirname + '/../node_modules', node_modules[j]));
+    }
+
+
+
     if (packageJson) {
         error = code.loadPackageJson(packageJson);
         if (error) return error;
@@ -230,6 +257,9 @@ RajahApp.prototype.executeCodegs = function (mockfs) {
 
         source:     this.files.specfiles
                     .concat(this.files.helpers)
+                    .concat([ joinPath(__dirname, '../src') ])
+                    .concat([ joinPath(__dirname, '../node_modules/minimatch/minimatch.js') ])
+                    .concat([ joinPath(__dirname, '../node_modules/minimatch/node_modules') ])
                     .concat([ joinPath(__dirname, '../') ]),
 
         output:     this.config.codegs || null,
