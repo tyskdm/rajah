@@ -44,30 +44,14 @@ module.exports = function () {
         codegs:     argv.options.codegs     || null
     };
 
-    // Create configure Application.
-    var rajahApp = require('./rajahApp');
-    var rajah = rajahApp.create();
+    // Create and configure Application.
+    var rajahApp = require('./rajahApp').create();
     var error;
 
-    var fs = require('fs'),
-        path = require('path');
-
-    var packagefile = path.join(process.cwd(), './package.json');
-    var packageConfig;
-    if (fs.existsSync(packagefile)) {
-        if (fs.statSync(packagefile).isFile()) {
-            packageConfig = require(packagefile)._rajah;
-            if (packageConfig) {
-                error = rajah.addConfig(packagefile);
-                _check(error);
-            }
-        }
-    }
-
-    error = rajah.addConfig(config);
+    error = rajahApp.addConfig(config);
     _check(error);
 
-    error = rajah.run();
+    error = rajahApp.run();
     _check(error);
 };
 
