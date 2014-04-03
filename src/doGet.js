@@ -3,30 +3,36 @@
  */
 
 require('global');
-var timers = require('./timers');
 
 function doGet(e) {
 
-    var config, calledByHttp, fputs;
+    var config, calledByHttp, error,
+        timers = require('./timers');
 
-    if (typeof e !== 'undefined' && typeof e.year === 'undefined') {
+    if (typeof e !== 'undefined' && typeof e.queryString !== 'undefined') {
         // execute by Web Access.
-        config = e.parameter;
         calledByHttp = true;
+        config = e.parameters;
+        if (config.reportType) {
+            this.config.reportType = config.reportType[0];
+        }
+
     } else {
         // execute by debugger or time trigger.
-        config = null;
         calledByHttp = false;
+        config = null;
     }
 
     var rajahApp = require('./rajahApp.js').create();
 
     if (typeof rajahConfig === 'object') {
-        rajahApp.addConfig(rajahConfig);
+        error = rajahApp.addConfig(rajahConfig);
+        _check(error);
     }
 
     if (config) {
-        rajahApp.addConfig(config);
+        error = rajahApp.addConfig(config);
+        _check(error);
     }
 
     if (calledByHttp) {
@@ -36,7 +42,8 @@ function doGet(e) {
         });
     }
 
-    rajahApp.run();
+    error = rajahApp.run();
+    _check(error);
 
     timers.execute();
 
@@ -47,4 +54,16 @@ function doGet(e) {
     }
 
     return undefined;
+}
+
+function _check(error) {
+    if (error !== null) {
+        if (error.substr(0, 6) === 'Error:') {
+            console.error(error);
+            console.log('');
+            process.exit(1);    // exit not exists. this code will throw.
+        } else {
+            console.log(error);
+        }
+    }
 }
