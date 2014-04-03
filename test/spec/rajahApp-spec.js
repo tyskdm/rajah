@@ -112,7 +112,7 @@ describe("rajahApp:", function () {
                     codegs:       null
                 },
                 MATCH_PATTERN = {
-                    match:        ['*Spec.js']
+                    match:        [ 'Spec\\.js$' ]
                 },
                 CWD = process.cwd();
 
@@ -122,7 +122,7 @@ describe("rajahApp:", function () {
 
                 rajah.setup();
                 expect(rajah.config.rootdir).toEqual(CWD);
-                expect(rajah.matchPattern).toEqual(['**/*.js']);
+                expect(rajah.matchPattern).toEqual([ /.+\.js$/i ]);
             });
 
             it("case#2: added config.match pattern.", function () {
@@ -132,7 +132,7 @@ describe("rajahApp:", function () {
                 rajah.addConfig(MATCH_PATTERN);
                 rajah.setup();
                 expect(rajah.config.rootdir).toEqual(CWD);
-                expect(rajah.matchPattern).toEqual(['**/*Spec.js']);
+                expect(rajah.matchPattern).toEqual([/Spec\.js$/i]);
             });
         });
     });
@@ -176,9 +176,9 @@ describe("rajahApp:", function () {
                 var rajah = rajahApp.create();
                 expect(rajah.matchPattern).toEqual([]);
 
-                rajah._addMatchPattern('.*');
+                rajah._addMatchPattern( '.+\\.js$' );
 
-                expect(rajah.matchPattern).toEqual(['.*']);
+                expect(rajah.matchPattern).toEqual([ /.+\.js$/i ]);
             });
         });
 
@@ -187,7 +187,7 @@ describe("rajahApp:", function () {
             it("case#1 : should return true when match pattern.", function () {
                 var rajah = rajahApp.create();
 
-                rajah._addMatchPattern('**/*Spec.js');
+                rajah._addMatchPattern('Spec\\.js$');
                 expect(rajah._isMatchPattern('/mainSpec.js')).toBe(true);
                 expect(rajah._isMatchPattern('/project/lib/mainSpec.js')).toBe(true);
             });
@@ -195,7 +195,7 @@ describe("rajahApp:", function () {
             it("case#2 : should return false when unmatch pattern.", function () {
                 var rajah = rajahApp.create();
 
-                rajah._addMatchPattern('**/*Spec.js');
+                rajah._addMatchPattern('Spec\\.js$');
                 expect(rajah._isMatchPattern('/main.js')).toBe(false);
                 expect(rajah._isMatchPattern('/project/lib/main.js')).toBe(false);
             });

@@ -1,5 +1,4 @@
 
-var minimatch = require('minimatch');
 var path =  require('path');
 
 var joinPath = (function () {
@@ -145,10 +144,10 @@ RajahApp.prototype.setup = function (mockfs) {
 
     if (this.config.match !== null) {
         for (var i = 0; i < this.config.match.length; i++) {
-            this._addMatchPattern('**/' + this.config.match[i]);
+            this._addMatchPattern(this.config.match[i]);
         }
     } else {
-        this._addMatchPattern('**/*.js');
+        this._addMatchPattern( '.+\\.js$' );
     }
 
     return null;
@@ -314,12 +313,12 @@ RajahApp.prototype._isIgnoreFile = function (file) {
 };
 
 RajahApp.prototype._addMatchPattern = function (pattern) {
-    this.matchPattern.push(pattern);
+    this.matchPattern.push(new RegExp(pattern, 'i'));
 };
 
 RajahApp.prototype._isMatchPattern = function (file) {
     for (var j = 0; j < this.matchPattern.length; j++) {
-        if (minimatch(file, this.matchPattern[j])) {
+        if (this.matchPattern[j].test(file)) {
             return true;
         }
     }
