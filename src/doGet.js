@@ -3,7 +3,6 @@
  */
 
 require('global');
-var fs = require('fs');
 var timers = require('./timers');
 
 function doGet(e) {
@@ -21,12 +20,6 @@ function doGet(e) {
     }
 
     var rajahApp = require('./rajahApp.js').create();
-
-    if (fs.existsSync('/rajah.json')) {
-        if (fs.statSync('/rajah.json').isFile()) {
-            rajahApp.addConfig(require('/rajah.json'));
-        }
-    }
 
     if (typeof rajahConfig === 'object') {
         rajahApp.addConfig(rajahConfig);
