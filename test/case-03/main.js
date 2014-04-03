@@ -10,6 +10,7 @@ if (typeof global === 'undefined') {
 
 var rajah = require('../../src/rajah.js');
 rajah.setup(global);
+global.jasmine = rajah.jasmine;
 
 
 require('./spec_main');

@@ -179,6 +179,7 @@ RajahApp.prototype.executeJasmine = function (mockfs) {
     // var fs = mockfs || require('fs');
 
     this.rajah.setup(global);
+    global.jasmine = this.rajah.jasmine;
 
     if (this.config.reportType === 'onMemory') {
         var THIS = this;
