@@ -228,12 +228,6 @@ RajahApp.prototype.executeCodegs = function (mockfs) {
     }
 
     var node_modules = [
-        'minimatch/package.json',
-        'minimatch/minimatch.js',
-        'minimatch/node_modules/lru-cache/package.json',
-        'minimatch/node_modules/lru-cache/lib/lru-cache.js',
-        'minimatch/node_modules/sigmund/package.json',
-        'minimatch/node_modules/sigmund/sigmund.js',
         'jasmine-core/lib/jasmine-core/jasmine.js',
         'jasmine-core/lib/console/console.js'
     ];
