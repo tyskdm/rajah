@@ -7,41 +7,54 @@ module.exports = function () {
     var argv = require('argv')
         .version(version)
         .info("Usage: " + name + " SPECFILES [Options]\n\n" +
-              "SPECFILES:  spec files or directories.\n\n" +
+              "SPECFILES:  Spec files or directories.\n\n" +
               "Options:")
         .option([
+            {   name:           'color',
+                type:           'string'
+            },
+            {   name:           'noColor',
+                type:           'string'
+            },
             {   name:           'match',
                 short:          'm',
                 type:           'string',
-                description:    'mather RegEx.',
-                example:        "'" + name + " --reporter-type=console' or '" + name + " -r junit'"
+                description:    'matcher RegExp. always added i(ignore case) option.',
+                example:        "'" + name + " --match=-Spec\\.js$' or '" + name + " -s -Spec\\.js$'"
             },
-            {   name:           'helpers',
-                type:           'csv,path',
-                description:    'Spec files or directories to run.',
-                example:        "'" + name + " --specs=file1,file2,..'"
-            },
+            //{   name:           'reportType',
+            //    short:          'r',
+            //    type:           'string',
+            //    description:    'reporter type. [ console | junit ]',
+            //},
             {   name:           'output',
                 short:          'o',
                 type:           'path',
-                description:    'Output file',
-                example:        "'" + name + " --outout=file' or '" + name + " -o file'"
+                description:    'Output filepath result will be stored in.',
+                example:        "'" + name + " --outout=FILEPATH' or '" + name + " -o FILEPATH'"
             },
             {   name:           'codegs',
-                type:           'path',
+                type:           'string',
                 description:    'execute Codegs and output to specified file.',
-                example:        "'" + name + " --outout=file' or '" + name + " -o file'"
+            },
+            {   name:           'package',
+                short:          'p',
+                type:           'path',
+                description:    'filepath which package file should be handed to codegs command.',
+                example:        "'" + name + " --path=FILEPATH' or '" + name + " -p FILEPATH'"
             }
         ])
         .run();
 
     // all options should be fully resolved path.
     var config = {
-        specs:      argv.targets,
-        match:      argv.options.match      || null,
-        helpers:    argv.options.helpers    || null,
-        output:     argv.options.output     || null,
-        codegs:     argv.options.codegs     || null
+        specs:          argv.targets,
+        showColor:      (typeof argc.options.color !== 'undefined') ||
+                        (typeof argc.options.noColor === 'undefined'),
+        match:          argv.options.match      || null,
+        output:         argv.options.output     || null,
+        codegs:         typeof argv.options.codegs !== 'undefined',
+        packagefile:    argv.options['package'] || null
     };
 
     // Create and configure Application.
