@@ -35,7 +35,7 @@ module.exports = function () {
             },
             {   name:           'codegs',
                 type:           'string',
-                description:    'execute Codegs and output to specified file.',
+                description:    'execute Codegs and output to specified file.'
             },
             {   name:           'package',
                 short:          'p',
@@ -49,8 +49,8 @@ module.exports = function () {
     // all options should be fully resolved path.
     var config = {
         specs:          argv.targets,
-        showColor:      (typeof argc.options.color !== 'undefined') ||
-                        (typeof argc.options.noColor === 'undefined'),
+        showColor:      (typeof argv.options.color !== 'undefined') ||
+                        (typeof argv.options.noColor === 'undefined'),
         match:          argv.options.match      || null,
         output:         argv.options.output     || null,
         codegs:         typeof argv.options.codegs !== 'undefined',

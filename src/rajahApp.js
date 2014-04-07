@@ -14,19 +14,18 @@ function RajahApp(config) {
     this.rajah = require('./rajah.js');
 
     this.config = {
-        rootdir:    null,
-        specs:      null,
-        match:      null,
-        helpers:    null,
-        reportType: null,   // 'console' or 'onMemory'
-        showColor:  null,
-        output:     null,
-        codegs:     null
+        rootdir:        null,
+        specs:          null,
+        match:          null,
+        packagefile:    null,
+        reportType:     null,   // 'console' or 'onMemory'
+        showColor:      null,
+        output:         null,
+        codegs:         null
     };
 
     this.files = {
-        specfiles:  [],
-        helpers:    []
+        specfiles: []
     };
 
     this.ignoreFilepath = [];
@@ -66,11 +65,8 @@ RajahApp.prototype.addConfig = function (config) {
         this.config.match = this.config.match.concat(config.match);
     }
 
-    if (config.helpers) {
-        if (this.config.helpers === null) {
-            this.config.helpers = [];
-        }
-        this.config.helpers = this.config.helpers.concat(config.helpers);
+    if (config.packagefile) {
+        this.config.packagefile = config.packagefile;
     }
 
     if (config.reportType) {
@@ -84,7 +80,6 @@ RajahApp.prototype.addConfig = function (config) {
     if (config.output) {
         this.config.output = config.output;
     }
-
 
     if (config.codegs) {
         this.config.codegs = config.codegs;
@@ -190,10 +185,6 @@ RajahApp.prototype.executeJasmine = function (mockfs) {
         this.rajah.addConsoleReporter(this.config.showColor, print);
     }
 
-    for (var i = 0; i < this.files.helpers.length; i++) {
-        require(this.files.helpers[i]);
-    }
-
     for (var j = 0; j < this.files.specfiles.length; j++) {
         require(this.files.specfiles[j]);
     }
@@ -206,7 +197,8 @@ RajahApp.prototype.executeJasmine = function (mockfs) {
 RajahApp.prototype.executeCodegs = function (mockfs) {
     var fs = mockfs || require('fs');
 
-    var packageJson = joinPath(this.config.rootdir, './package.json');
+    var packageJson = this.config.packagefile ||
+                      joinPath(this.config.rootdir, './package.json');
     if ( ! fs.existsSync(packageJson)) {
         packageJson = null;
     }
@@ -218,24 +210,18 @@ RajahApp.prototype.executeCodegs = function (mockfs) {
 
     var rajahFiles = [];
 
-    var rajahSource = [
-        '../src/rajah.js',
+    [   '../src/rajah.js',
         '../src/rajahApp.js',
         '../src/timers.js'
-    ];
-    for (var i = 0; i < rajahSource.length; i++) {
-        rajahFiles.push(joinPath(__dirname, rajahSource[i]));
-    }
+    ].forEach(function (filepath) {
+        rajahFiles.push(joinPath(__dirname, filepath));
+    });
 
-    var node_modules = [
-        'jasmine-core/lib/jasmine-core/jasmine.js',
+    [   'jasmine-core/lib/jasmine-core/jasmine.js',
         'jasmine-core/lib/console/console.js'
-    ];
-    for (var j = 0; j < node_modules.length; j++) {
-        rajahFiles.push(joinPath(__dirname + '/../node_modules', node_modules[j]));
-    }
-
-
+    ].forEach(function (filepath) {
+        rajahFiles.push(joinPath(__dirname + '/../node_modules', filepath));
+    });
 
     if (packageJson) {
         error = code.loadPackageJson(packageJson);
@@ -249,11 +235,9 @@ RajahApp.prototype.executeCodegs = function (mockfs) {
 
         mainfile:   require.resolve('./doGet.js'),
 
-        source:     this.files.specfiles
-                    .concat(this.files.helpers)
-                    .concat(rajahFiles),
+        source:     this.files.specfiles.concat(rajahFiles),
 
-        output:     this.config.codegs || null,
+        output:     this.config.output || null,
 
         core:       code.config.core ?
                         null : path.resolve(__dirname, '../node_modules/codegs-core/code/gas'),
