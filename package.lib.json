@@ -1,0 +1,15 @@
+{
+  "main": "src/main.js",
+  "files": [
+    "src/rajah.js",
+    "src/rajahApp.js",
+    "src/timers.js"
+  ],
+  "dependencies": {
+    "jasmine-core": "~2.0.0"
+  },
+  "_codegs": {
+    "core": "node_modules/codegs-core/code/gas",
+    "node_core": "node_modules/codegs-core/node/v0.10.26"
+  }
+}
