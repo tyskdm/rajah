@@ -254,6 +254,20 @@ RajahApp.prototype.executeCodegs = function (mockfs) {
     error = code.run();
     if (error) return error;
 
+    if (this.config.output) {
+        var rajahConfig =
+            "var rajahConfig = " +
+            JSON.stringify({
+                specs:      this.config.specs,
+                match:      this.config.match,
+                showColor:  this.config.showColor
+            }, null, 2) +
+            ";\n\n";
+
+        rajahConfig = rajahConfig + fs.readFileSync(this.config.output, {encoding: 'utf8'});
+        fs.writeFileSync(this.config.output, rajahConfig, {encoding: 'utf8'});
+    }
+
     return null;
 };
 
