@@ -12,7 +12,14 @@ function doGet(e) {
     if (typeof e !== 'undefined' && typeof e.queryString !== 'undefined') {
         // execute by Web Access.
         calledByHttp = true;
-        config = e.parameters;
+
+        config = {
+            specs:          e.parameters || null,
+            match:          e.parameter.match || null,
+            showColor:      (typeof e.parameter.color !== 'undefined') ||
+                            (typeof e.parameter.noColor === 'undefined')
+        };
+
         if (config.reportType) {
             this.config.reportType = config.reportType[0];
         }
