@@ -6,13 +6,13 @@ require('global');
 
 function doGet(e) {
 
-    var config, calledByHttp, error,
+    var config, calledByHttp, consoleOut, error,
         timers = require('./timers');
 
     if (typeof e !== 'undefined' && typeof e.queryString !== 'undefined') {
         // execute by Web Access.
         calledByHttp = true;
-
+        consoleOut = false;
         config = {
             specs:          e.parameters || null,
             match:          e.parameter.match || null,
@@ -20,13 +20,16 @@ function doGet(e) {
                             (typeof e.parameter.noColor === 'undefined')
         };
 
-        if (config.reportType) {
-            this.config.reportType = config.reportType[0];
-        }
+    } else if (typeof e !== 'undefined') {
+        // execute by some trigger.
+        calledByHttp = false;
+        consoleOut = false;
+        config = null;
 
     } else {
-        // execute by debugger or time trigger.
+        // execute by debugger.
         calledByHttp = false;
+        consoleOut = true;
         config = null;
     }
 
@@ -42,10 +45,18 @@ function doGet(e) {
         _check(error);
     }
 
-    if (calledByHttp) {
+    if ( ! consoleOut) {
         rajahApp.addConfig({
             showColor:  false,
             reportType: 'onMemory'
+        });
+    }
+
+    if ((typeof rajahConfig === 'object') &&
+        (typeof rajahConfig.onComplete === 'function')) {
+        // add reporter to set callback 'onComplete'.
+        rajahApp.rajah.addReporter({
+            jasmineDone: rajahConfig.onComplete
         });
     }
 
