@@ -1,7 +1,7 @@
 {
   "name": "rajah",
-  "version": "0.0.12",
-  "description": "[NOT PUBLISHED YET] Jasmine 2.0 runner for Node.js and Google Apps Script.",
+  "version": "0.1.0",
+  "description": "Jasmine 2.0 runner for Node.js and Google Apps Script.",
   "main": "src/rajah.js",
   "files": [
     "bin",
