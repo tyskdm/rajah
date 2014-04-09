@@ -1,5 +1,5 @@
 
-var rajah = require('../../src/rajah.js');
+var rajah = require('../../lib/rajah.js');
 
 rajah.setup(global);
 

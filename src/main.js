@@ -3,9 +3,9 @@
  */
 
 require('global');
-this.timers = require('./timers');
+this.timers = require('../lib/timers');
 
-this.rajah = require('./rajah.js');
+this.rajah = require('../lib/rajah.js');
 var jasmine = this.rajah.jasmine;
 
 /**

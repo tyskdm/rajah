@@ -4,11 +4,11 @@
 
 if (typeof global === 'undefined') {
     require('global');
-    require('./timer');
+    require('../../lib/timers.js');
 }
 
 
-var rajah = require('../../src/rajah.js');
+var rajah = require('../../lib/rajah.js');
 rajah.setup(global);
 global.jasmine = rajah.jasmine;
 

@@ -58,7 +58,7 @@ module.exports = function () {
     };
 
     // Create and configure Application.
-    var rajahApp = require('./rajahApp').create();
+    var rajahApp = require('../lib/rajahApp').create();
     var error;
 
     error = rajahApp.addConfig(config);

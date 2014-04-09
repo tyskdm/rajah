@@ -5,6 +5,7 @@
   "main": "src/rajah.js",
   "files": [
     "bin",
+    "lib",
     "src"
   ],
   "bin": {

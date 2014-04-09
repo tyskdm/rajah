@@ -1,5 +1,10 @@
+/**
+ *  tst/case-01 : test rajah.js if it execute jasmine.
+ *  test:
+ *  $ node main.js
+ */
 
-var rajah = require('../../src/rajah.js');
+var rajah = require('../../lib/rajah.js');
 
 rajah.setup(global);
 

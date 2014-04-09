@@ -2,7 +2,7 @@
 describe("rajahApp:", function () {
 
     var path =   require('path');
-    var rajahApp = require('../../src/rajahApp.js');
+    var rajahApp = require('../../lib/rajahApp.js');
     var MockFs = require('../mock/mockfs.js');
 
     beforeEach(function () {

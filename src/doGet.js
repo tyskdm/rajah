@@ -7,7 +7,7 @@ require('global');
 function doGet(e) {
 
     var config, calledByHttp, consoleOut, error,
-        timers = require('./timers');
+        timers = require('../lib/timers');
 
     if (typeof e !== 'undefined' && typeof e.queryString !== 'undefined') {
         // execute by Web Access.
@@ -33,7 +33,7 @@ function doGet(e) {
         config = null;
     }
 
-    var rajahApp = require('./rajahApp.js').create();
+    var rajahApp = require('../lib/rajahApp.js').create();
 
     if (typeof rajahConfig === 'object') {
         error = rajahApp.addConfig(rajahConfig);
