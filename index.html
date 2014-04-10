@@ -41,120 +41,305 @@
         <h1>
 <a name="rajah" class="anchor" href="#rajah"><span class="octicon octicon-link"></span></a>Rajah</h1>
 
-<p>japanese version is <a href="https://github.com/tyskdm/rajah/wiki">here</a>.</p>
+<p>Rajah is a <a href="https://github.com/pivotal/jasmine">Jasmine 2.0</a> spec runner for Node.js
+and <a href="https://developers.google.com/apps-script">Google apps script</a>.</p>
+
+<p>Want to use GAS-Library now? <a href="#library-project-for-google-apps-script">Here’s project key</a>.</p>
 
 <h2>
-<a name="whats-rajah" class="anchor" href="#whats-rajah"><span class="octicon octicon-link"></span></a>What's rajah</h2>
+<a name="version-info" class="anchor" href="#version-info"><span class="octicon octicon-link"></span></a>Version info:</h2>
 
-<ol>
-<li><p><a href="https://github.com/pivotal/jasmine/wiki">Jasmine</a> runner for <a href="https://developers.google.com/apps-script/">Google apps script</a>.</p></li>
-<li><p><code>Logger.log()</code> viewer.</p></li>
-</ol><ul>
-<li>Sample GAS project using rajah is <a href="https://script.google.com/d/1D6qmc_sIehOP-p6__Z29uSQTbGYrcTF0wXIwWgsD2Hba8Onjf6EWrRym/edit">here</a>.</li>
-</ul><h2>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
-
-<p><strong>1. Import Rajah libraly.</strong></p>
-
-<p>You can try Raja lib instantly:</p>
+<h4>
+<a name="rajah-2-v010-development-version--branch-release2x-master" class="anchor" href="#rajah-2-v010-development-version--branch-release2x-master"><span class="octicon octicon-link"></span></a>Rajah 2 v0.1.0 (development version) : branch <a href="https://github.com/tyskdm/rajah/tree/Release/2.x"><code>Release/2.x</code></a> (<code>master</code>)</h4>
 
 <ul>
-<li>Project key = &lt; Mn7JlN4wYLKUhi13E3mbpdVJodnbMh4p7 &gt;</li>
-<li>Import that Project key into your project as a library.</li>
-</ul><p><strong>2. Add small code into your GAS project.</strong></p>
+<li>new release for Jasmine 2.0</li>
+<li>Rebuild whole project on Node.js environment.</li>
+<li>Using <a href="https://www.npmjs.org/package/codegs">Code.gs</a> to build for google apps script environment.</li>
+</ul><h4>
+<a name="rajah-v100b-stable-version--branch-release10" class="anchor" href="#rajah-v100b-stable-version--branch-release10"><span class="octicon octicon-link"></span></a>Rajah v1.00b (stable version) : branch <a href="https://github.com/tyskdm/rajah/tree/Release/1.0"><code>Release/1.0</code></a>
+</h4>
 
-<div class="highlight highlight-js"><pre><span class="nx">rajah</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-<span class="kd">function</span> <span class="nx">doGet</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">Rajah</span><span class="p">.</span><span class="nx">doGet</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-<span class="p">};</span>
+<ul>
+<li>Jasmine 1.3</li>
+<li>Only Google apps script Library.</li>
+</ul><h2>
+<a name="whats-rajah" class="anchor" href="#whats-rajah"><span class="octicon octicon-link"></span></a>What’s Rajah?</h2>
+
+<p>Rajah is a simple Jasmine spec runner, but has 3 faces.</p>
+
+<ol>
+<li><p>Jasmine spec runner for <strong>Node.js</strong>.</p></li>
+<li><p>Jasmine spec runner for <strong>Google apps script</strong>.</p></li>
+<li><p><strong>Library project</strong> for Google apps script.</p></li>
+<li><p><a href="http://www.google.com/search?tbm=isch&amp;q=rajah+jasmine">www.google.com/search?tbm=isch&amp;q=rajah+jasmine</a></p></li>
+</ol><p>Rajah allows you to test Node.js project files in your PC’s command line shell. - (1)</p>
+
+<p>And also allows to pack Node.js module files and spec files into one source file.
+That source code is executable on Google apps script environment and run all specs as same as on your PC. - (2)</p>
+
+<p>Last face of Rajah is Google apps script Library. In this case, Rajah is a thin wrapper of Jasmine.
+It’s almost same as Jasmine itself, but simple and easy to use. - (3)</p>
+
+<p>Following sections explain those 3 ways to use Rajah / Jasmine 2.0.</p>
+
+<h2>
+<a name="jasmine-spec-runner-for-nodejs" class="anchor" href="#jasmine-spec-runner-for-nodejs"><span class="octicon octicon-link"></span></a>Jasmine spec runner for Node.js</h2>
+
+<p>Nothing special. It's simple jasmine spec runner.</p>
+
+<h4>
+<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h4>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>npm install -g rajah
+</pre></div>
+
+<h4>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>usage</h4>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>rajah SPECS <span class="o">[</span> options <span class="o">]</span>
 </pre></div>
 
 <ul>
+<li><p><strong>SPECS</strong><br>
+Spec files or directories.</p></li>
 <li>
-<code>Rajah.init()</code> should be called <strong>before</strong> using jasmine(<code>describe()</code>, etc,..). </li>
-</ul><p><strong>3. Deploy your GAS project as a web service.</strong></p>
-
-<ol>
-<li>Save project and add version number ('File' menu &gt; 'Manage version')</li>
-<li>Deploy web service ('Publish' menu &gt; 'Deploy as web app')</li>
-</ol><p><strong>4. Access web service.</strong></p>
+<p><strong>Options</strong></p>
 
 <ul>
-<li>
-<strong>USE</strong> web app URL for latest code, showed <code>Test web app for your latest code.</code>
-</li>
-</ul><h3>
-<a name="create-your-own-library-if-you-need" class="anchor" href="#create-your-own-library-if-you-need"><span class="octicon octicon-link"></span></a>Create your own library (if you need)</h3>
-
-<ol>
-<li>
-<p>Create Rajah lib project : create GAS project and put following three files in.</p>
-
-<ol>
-<li>rajah.gs : It's <a href="https://github.com/tyskdm/rajah/blob/master/gs/rajah.gs">here</a>. and it should be first file in your project. keep this order.</li>
-<li>jasmine.js : from github &gt;&gt; <a href="https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/jasmine.js">here</a>
-</li>
-<li>ConsoleReporter.js : from github &gt;&gt; <a href="https://github.com/pivotal/jasmine/blob/master/src/console/ConsoleReporter.js">here</a>
-</li>
-</ol>
-</li>
-<li><p>Import to your GAS project.</p></li>
-</ol><h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
-
-<p><strong>Sample project using Rajah lib. is <a href="https://script.google.com/d/1D6qmc_sIehOP-p6__Z29uSQTbGYrcTF0wXIwWgsD2Hba8Onjf6EWrRym/edit">here</a>.</strong></p>
-
-<p>Tested functions are:</p>
-
-<ul>
-<li>
-<code>describe()</code> , <code>xdescribe()</code>
-</li>
-<li>
-<code>it()</code> , <code>xit()</code>
-</li>
-<li><code>expect()</code></li>
-</ul><p>Following methods have <strong>not</strong> been tested enough.</p>
-
-<ul>
-<li><code>spyOn()</code></li>
-<li>
-<code>run()</code>, <code>wait()</code>, <code>waitsFor()</code>
+<li><p><strong>-m RegExp / --match=RegExp</strong><br>
+Only math files in SPECS directories are loaded to run.</p></li>
+<li><p><strong>--color / --noColor</strong><br>
+Use color to report results.</p></li>
+<li><p><strong>-o FILEPATH / --output=FILEPATH</strong><br>
+Store result into that file.</p></li>
+<li><p><strong>Not implemented yet</strong> : -r TYPE / --reporttype=TYPE<br>
+It will be 'console' or 'junit'.</p></li>
+</ul>
 </li>
 </ul><h2>
-<a name="limitation" class="anchor" href="#limitation"><span class="octicon octicon-link"></span></a>Limitation</h2>
+<a name="jasmine-spec-runner-for-google-apps-script" class="anchor" href="#jasmine-spec-runner-for-google-apps-script"><span class="octicon octicon-link"></span></a>Jasmine spec runner for Google apps script</h2>
 
-<p>As you know, GAS doesn't provide following timer services.</p>
+<p>This is for <a href="https://github.com/tyskdm/codegs">codegs</a> user. Need understanding how <code>codegs</code> works first.</p>
 
 <ul>
 <li>
-<code>setTimeout()</code>, <code>clearTimeout()</code>, <code>setInterval()</code>, <code>clearInteval()</code>
+<a href="https://github.com/tyskdm/codegs">codegs</a> is a tool to develop Google apps script application using Node.js development tools.<br>
 </li>
-</ul><p>And jasmine use them, so Rajah has dummyTimer functions internaly based on <code>Utilities.sleep()</code></p>
+</ul><p>Rajah execute codegs to pack your project and spec files with special <code>doGet</code> spec runner function.
+You can kick <code>doGet</code> by web IDE, HTTP Request(need to publish as web service), or Other triggers.</p>
 
-<p>But It's not clean way, so Rajah does not open these functions to global namespace.</p>
+<p>For quick understanding, see this sample.</p>
 
-<p>If you need use them, access as follows:</p>
+<ol>
+<li><p>Open <a href="https://script.google.com/macros/s/AKfycbzZaq3NPqMHYBno7ByxV-bpTbDt6EZ4M_5-kjYXXeQ9HI-k_w8/exec"><code>gas-console</code></a>.</p></li>
+<li><p>Open <a href="https://script.google.com/d/1JRe4VsU9yLYMoQGDYALZN-uGQz7h9OeDGiqiTb7Oj3RVrqe8HuCVpZE7/edit">sample project</a> and run <code>doGet</code> function.</p></li>
+<li><p>Or access sample project as <a href="https://script.google.com/macros/s/AKfycbz_9m0u59d01xCk4UUvGDgTZqt3oY2G6kdSR5FVGXsSXh3yNm21/exec">web service</a>.</p></li>
+</ol><p>Source files are in 'test/case-04'.</p>
 
-<div class="highlight highlight-js"><pre><span class="kd">function</span> <span class="nx">setTimer</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">rajah</span><span class="p">.</span><span class="nx">setTimer</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">t</span><span class="p">);</span>
+<h4>
+<a name="install-1" class="anchor" href="#install-1"><span class="octicon octicon-link"></span></a>Install</h4>
+
+<p>Need to install into project’s local directory.</p>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>npm install rajah        // NO -g option.
+</pre></div>
+
+<p>When package.json exists, install with <code>--save-dev</code> option.</p>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>npm install --save-dev rajah
+</pre></div>
+
+<h4>
+<a name="usage-1" class="anchor" href="#usage-1"><span class="octicon octicon-link"></span></a>Usage</h4>
+
+<ol>
+<li>
+<p><strong>Run Rajah in local Node.js environment</strong></p>
+
+<p>rajah command is in local node_modules/.bin directory.</p>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>./node_modules/.bin/rajah SPECS <span class="o">[</span> options <span class="o">]</span>
+</pre></div>
+
+<p>This works as same as above section (Jasmine spec runner for Node.js).</p>
+</li>
+<li>
+<p><strong>Compile with --codegs option switch</strong></p>
+
+<p>Then, add option switch <code>--codegs</code> and you see merged long source code in your terminal.</p>
+
+<p><code>-o filepath</code> let Rajah to store source code in the file.</p>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>./node_modules/.bin/rajah SPECS <span class="o">[</span> options <span class="o">]</span>  --codegs -o out.js <span class="o">[</span> codegs-options <span class="o">]</span>
+</pre></div>
+</li>
+<li>
+<p><strong>Paste to Google apps script file</strong></p>
+
+<p>Create new project for unit testing and open <code>Code.gs</code> file. Then paste into that file.</p>
+</li>
+<li>
+<p><strong>Open console</strong></p>
+
+<p>Open <a href="https://script.google.com/macros/s/AKfycbzZaq3NPqMHYBno7ByxV-bpTbDt6EZ4M_5-kjYXXeQ9HI-k_w8/exec"><code>gas-console</code></a>
+in onother browser window. &gt;&gt; <a href="https://www.npmjs.org/package/gas-console">more about gas-console</a></p>
+</li>
+<li>
+<p><strong>Run doGet function</strong></p>
+
+<p>Back to google IDE.</p>
+
+<p>On toolbar, select function <code>doGet</code> and press <code>Run</code> button.</p>
+
+<p>You see result in gas-console window.</p>
+</li>
+</ol><h4>
+<a name="running-mode-of-doget-function" class="anchor" href="#running-mode-of-doget-function"><span class="octicon octicon-link"></span></a>Running mode of <code>doGet</code> function</h4>
+
+<p><code>doGet</code> function is able to be kicked by 3 ways.</p>
+
+<ol>
+<li>
+<p>IDE Run / Debug button</p>
+
+<p>Explained in usage section is this pattern.</p>
+</li>
+<li>
+<p>HTTP request</p>
+
+<p>This is challenge to headless unit testing. (not complete)</p>
+
+<ul>
+<li>
+<p>Deploy as web service your unit testing project.</p>
+
+<ol>
+<li>Goto menu: <code>File</code> &gt; <code>Manage versions...</code> and put version number.</li>
+<li>Goto menu: <code>Publish</code> &gt; <code>Deploy as web app...</code> and get URL of <code>Latest code</code>.</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p>Access that URL. When access by browser, result is displayed in the window.</p></li>
+<li>
+<p>It's possible to add option values as url query parameters.</p>
+
+<ul>
+<li>Valid options: specs, showColor, match</li>
+<li>ex.  script.google.com/xxxxxx/exec/<strong>?sepcs=test/spec&amp;showColor=true</strong>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol><ol>
+<li>
+<p>Timer or other triggers</p>
+
+<p>Time trrigered unit testing for health checking.</p>
+
+<p><code>onComplete</code> option(see below) let you set any function to notify the result or store as you like.</p>
+</li>
+</ol><h4>
+<a name="execute-options-for-doget-function" class="anchor" href="#execute-options-for-doget-function"><span class="octicon octicon-link"></span></a>Execute options for doGet function</h4>
+
+<p><strong>TO BE FILLED LATER</strong></p>
+
+<h4>
+<a name="command-line-options-for---codegs" class="anchor" href="#command-line-options-for---codegs"><span class="octicon octicon-link"></span></a>Command line options for --codegs</h4>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>./node_modules/.bin/rajah SPECS <span class="o">[</span> options <span class="o">]</span>  --codegs -o out.js <span class="o">[</span> codegs-options <span class="o">]</span>
+</pre></div>
+
+<ul>
+<li><p><code>-o FILEPATH / --output=FILEPATH</code></p></li>
+<li><p><code>-p PACKAGEFILE / --package=PACKAGEFILE</code></p></li>
+</ul><h4>
+<a name="tips" class="anchor" href="#tips"><span class="octicon octicon-link"></span></a>Tips</h4>
+
+<ul>
+<li>Minimize file size</li>
+</ul><h2>
+<a name="library-project-for-google-apps-script" class="anchor" href="#library-project-for-google-apps-script"><span class="octicon octicon-link"></span></a>Library project for Google apps script</h2>
+
+<h4>
+<a name="project-keys" class="anchor" href="#project-keys"><span class="octicon octicon-link"></span></a>Project keys</h4>
+
+<p><strong>Rajah 2 v0.1.0</strong></p>
+
+<ul>
+<li>Project key: MW3WzHQgUPiNsCAKwIwmYtVJodnbMh4p7</li>
+<li>Console URL: <a href="https://script.google.com/macros/s/AKfycbzZaq3NPqMHYBno7ByxV-bpTbDt6EZ4M_5-kjYXXeQ9HI-k_w8/exec">https://script.google.com/macros/s/AKfycbzZaq3NPqMHYBno7ByxV-bpTbDt6EZ4M_5-kjYXXeQ9HI-k_w8/exec</a>
+</li>
+<li><a href="https://script.google.com/d/11kk1FVsxDD3FgcR2hNmmHeVwjqww055VYy6ZO7NnCJeyN2pGfYbbRw_0/edit">Sample project using rajah</a></li>
+</ul><p><strong>Rajah v1.00b</strong></p>
+
+<ul>
+<li>Project key: Mn7JlN4wYLKUhi13E3mbpdVJodnbMh4p7</li>
+<li><a href="https://script.google.com/d/1D6qmc_sIehOP-p6__Z29uSQTbGYrcTF0wXIwWgsD2Hba8Onjf6EWrRym/edit">Sample project using rajah</a></li>
+<li><a href="https://script.google.com/macros/s/AKfycbz5tA3qJOgNHU9M8pSM7hLHO76pg8A3mx_b7bqziHIpSCwXWus/exec">Sample's published web page</a></li>
+</ul><p>Following section explains usage of Rajah 2.<br>
+For v1.00b, See <a href="">README.md for v0.100b</a>.</p>
+
+<h4>
+<a name="install-2" class="anchor" href="#install-2"><span class="octicon octicon-link"></span></a>Install</h4>
+
+<ol>
+<li><p>Open your apps script project.</p></li>
+<li><p>Goto menu: <code>Resources</code> &gt; <code>Libraries...</code></p></li>
+<li><p>Copy &amp; paste project key(above) into <code>Find a Library</code> and press <code>Select</code> button.</p></li>
+<li><p><code>rajah</code> will be showed up. select version(chose latest one).</p></li>
+<li><p><code>Save</code> button.</p></li>
+</ol><h4>
+<a name="usage-2" class="anchor" href="#usage-2"><span class="octicon octicon-link"></span></a>Usage</h4>
+
+<ol>
+<li>
+<p><strong>Write code</strong></p>
+
+<p>Here's First sample code. You need to call only 2 methods.</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">rajah</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">MyFunction</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Any spec-code</span>
+    <span class="nx">describe</span><span class="p">(</span><span class="s2">"Rajah"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">it</span><span class="p">(</span><span class="s2">"is the best friend of Jasmine."</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">rajah</span><span class="p">.</span><span class="nx">rajah</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s1">'jasmine'</span><span class="p">)).</span><span class="nx">toBe</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+
+    <span class="nx">rajah</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 
-<h2>
-<a name="wish-list" class="anchor" href="#wish-list"><span class="octicon octicon-link"></span></a>Wish list</h2>
+<p>Only 2 methods to call:</p>
 
-<ul>
-<li><p>Visual Reporter and Filter</p></li>
-<li><p>console.log &gt;&gt; <a href="http://minipaca.net/blog/javascript/firebug-console-api/">http://minipaca.net/blog/javascript/firebug-console-api/</a></p></li>
-<li>
-<p>Execute in debbug mode.</p>
-
-<ul>
-<li><p>Execute from debbug main function (not by button)</p></li>
-<li><p>Step by step console.log display</p></li>
-</ul>
+<ol>
+<li><p><strong>rajah.init(this)</strong><br>
+At the top of sourcefile, call init method with <code>this</code> argument.<br>
+rajah copy Jasmine-interface functions into <code>this</code> object. At the top of sourcefile, <code>this</code> points global scope.</p></li>
+<li><p><strong>rajah.run()</strong><br>
+Execute Jasmine after setup any spec-code.<br>
+Jasmine-interface functions setup spec-code but not execute at that timing. run method execute Jasmine.</p></li>
+</ol>
 </li>
+<li>
+<p><strong>Run your function</strong></p>
+
+<p>On toolbar, select function you wrote. And then press <code>Run</code> or <code>Debug</code> button.<br>
+You see result in console window.</p>
+</li>
+</ol><h4>
+<a name="methods-and-properties" class="anchor" href="#methods-and-properties"><span class="octicon octicon-link"></span></a>Methods and Properties:</h4>
+
+<ul>
+<li><p>rajah.init(scopeObject)</p></li>
+<li><p>rajah.run(onComplete)</p></li>
+<li><p>rajah.addReporter(reporter)</p></li>
+<li><p>rajah.addConsoleReporter(showColor, print)</p></li>
+<li><p>rajah.jasmine</p></li>
 </ul>
       </section>
 
