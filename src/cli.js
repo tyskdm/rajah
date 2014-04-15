@@ -68,7 +68,8 @@ module.exports = function () {
     _check(error);
 };
 
-function _check(error) {
+function _check(error) {    // jshint ignore:line
+                            // ~ used before it was defined.
     if (error !== null) {
         if (error.substr(0, 6) === 'Error:') {
             console.error(error);
