@@ -20,12 +20,27 @@ module.exports = function(grunt) {
       }
     },
 
+    shell: {
+      'mktmp': {
+        command: 'mkdir tmp'
+      },
+      'rajah_spec': {
+        command: 'bin/rajah test/spec',
+        options: {
+          stdout: true
+        }
+      },
+      'rajah_case-01': {
+        command: 'test/case-01/rajah.sh'
+      }
+    },
+
     clean: {
       tests: ['tmp']
     },
 
     nodeunit: {
-      tests: ['test/*_test.js']
+      tests: ['test/case-*/*_test.js']
     }
   });
 
@@ -35,7 +50,11 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-shell');
 
-  grunt.registerTask('test', ['clean', 'nodeunit']);
 
-  grunt.registerTask('default', ['jshint', 'test']);
+  grunt.registerTask('rajah_spec', ['shell:rajah_spec']);
+  grunt.registerTask('rajah_test', ['shell:mktmp', 'shell:rajah_case-01']);
+
+  grunt.registerTask('test', ['clean', 'rajah_test', 'nodeunit']);
+
+  grunt.registerTask('default', ['jshint', 'rajah_spec', 'test']);
 };
