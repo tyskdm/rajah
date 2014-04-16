@@ -15,7 +15,6 @@ module.exports = function(grunt) {
         'test/spec/**/*.js',
         '<%= nodeunit.tests %>'
       ],
-      // JSHint options. (see:http://www.jshint.com/docs/)
       options: {
         jshintrc: '.jshintrc'
       }
@@ -25,7 +24,6 @@ module.exports = function(grunt) {
       tests: ['tmp']
     },
 
-    // Unit tests.
     nodeunit: {
       tests: ['test/*_test.js']
     }
@@ -35,10 +33,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
 
-  // Whenever the "test" task is run, first clean the "tmp" dir, then run this
-  // plugin's task(s), then test the result.
+  grunt.loadNpmTasks('grunt-shell');
+
   grunt.registerTask('test', ['clean', 'nodeunit']);
 
-  // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);
 };
