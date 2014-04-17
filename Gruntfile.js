@@ -36,6 +36,9 @@ module.exports = function(grunt) {
       'test-case-01': {
         command: 'test/case-01/rajah.sh'
       },
+      'test-case-02': {
+        command: 'test/case-02/rajah.sh'
+      },
       'gas-upload': {
         command: 'gas upload -f <%= gas.fileId %> -S "Code:<%= testfile %>" -c <%= gas.credential %>'
       }
@@ -46,7 +49,7 @@ module.exports = function(grunt) {
     },
 
     nodeunit: {
-      tests: ['test/case-*/*_test.js']
+      tests: ['test/case-*/test-*.js']
     }
   });
 
@@ -57,7 +60,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
 
   grunt.registerTask('rajah-spec', ['shell:rajah-spec']);
-  grunt.registerTask('rajah-test', ['shell:mktmp', 'shell:test-case-01']);
+  grunt.registerTask('rajah-test', [
+      'shell:mktmp',
+      'shell:test-case-01',
+      'shell:test-case-02'
+  ]);
   grunt.registerTask('gas-upload', ['shell:gas-upload']);
 
   grunt.registerTask('test', ['clean', 'rajah-test', 'nodeunit']);
