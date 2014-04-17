@@ -5,6 +5,9 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     pkg: grunt.file.readJSON('package.json'),
+    gas: grunt.file.readJSON('gas.json'),
+
+    testfile: 'tmp/testcode.gs',
 
     jshint: {
       files: [
@@ -24,14 +27,17 @@ module.exports = function(grunt) {
       'mktmp': {
         command: 'mkdir tmp'
       },
-      'rajah_spec': {
+      'rajah-spec': {
         command: 'bin/rajah test/spec',
         options: {
           stdout: true
         }
       },
-      'rajah_case-01': {
+      'test-case-01': {
         command: 'test/case-01/rajah.sh'
+      },
+      'gas-upload': {
+        command: 'gas upload -f <%= gas.fileId %> -S "Code:<%= testfile %>" -c <%= gas.credential %>'
       }
     },
 
@@ -50,11 +56,11 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-shell');
 
+  grunt.registerTask('rajah-spec', ['shell:rajah-spec']);
+  grunt.registerTask('rajah-test', ['shell:mktmp', 'shell:test-case-01']);
+  grunt.registerTask('gas-upload', ['shell:gas-upload']);
 
-  grunt.registerTask('rajah_spec', ['shell:rajah_spec']);
-  grunt.registerTask('rajah_test', ['shell:mktmp', 'shell:rajah_case-01']);
+  grunt.registerTask('test', ['clean', 'rajah-test', 'nodeunit']);
 
-  grunt.registerTask('test', ['clean', 'rajah_test', 'nodeunit']);
-
-  grunt.registerTask('default', ['jshint', 'rajah_spec', 'test']);
+  grunt.registerTask('default', ['jshint', 'rajah-spec', 'test']);
 };
