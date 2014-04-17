@@ -1,1 +1,0 @@
-./node_modules/.bin/code ./package.json -c ./node_modules/codegs-core/code/gas -n ./node_modules/codegs-core/node/v0.10.26 $@

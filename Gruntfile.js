@@ -16,6 +16,7 @@ module.exports = function(grunt) {
         'lib/**/*.js',
         'src/**/*.js',
         'test/spec/**/*.js',
+        'test/jasmine/jasmine-spec.js',
         '<%= nodeunit.tests %>'
       ],
       options: {
@@ -33,14 +34,29 @@ module.exports = function(grunt) {
           stdout: true
         }
       },
+      'jasmine-spec': {
+        command: 'bin/rajah test/jasmine/jasmine-spec.js',
+        options: {
+          stdout: true
+        }
+      },
+      'jasmine-codegs': {
+        command: 'bin/rajah test/jasmine/jasmine-spec.js --codegs -p test/jasmine/package.json -o <%= testfile %>',
+        options: {
+          stdout: true
+        }
+      },
       'test-case-01': {
         command: 'test/case-01/rajah.sh'
       },
       'test-case-02': {
         command: 'test/case-02/rajah.sh'
       },
-      'gas-upload': {
-        command: 'gas upload -f <%= gas.fileId %> -S "Code:<%= testfile %>" -c <%= gas.credential %>'
+      'gas-upload-testbench': {
+        command: 'gas upload -f <%= gas.testbench.fileId %> -S "<%= gas.testbench.filename%>:<%= testfile %>" -c <%= gas.testbench.credential %>'
+      },
+      'gas-upload-jasminebench': {
+        command: 'gas upload -f <%= gas.jasminebench.fileId %> -S "<%= gas.jasminebench.filename%>:<%= testfile %>" -c <%= gas.jasminebench.credential %>'
       }
     },
 
@@ -56,18 +72,30 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
-
   grunt.loadNpmTasks('grunt-shell');
 
+  // rajah testing sub tasks.
   grunt.registerTask('rajah-spec', ['shell:rajah-spec']);
   grunt.registerTask('rajah-test', [
-      'shell:mktmp',
-      'shell:test-case-01',
-      'shell:test-case-02'
+    'clean',
+    'shell:mktmp',
+    'shell:test-case-01',
+    'shell:test-case-02',
+    'nodeunit'
   ]);
-  grunt.registerTask('gas-upload', ['shell:gas-upload']);
 
-  grunt.registerTask('test', ['clean', 'rajah-test', 'nodeunit']);
+  // jasmine testing sub tasks.
+  grunt.registerTask('jasmine-spec', ['shell:jasmine-spec']);
+  grunt.registerTask('jasmine-test', [
+    'clean',
+    'shell:mktmp',
+    'shell:jasmine-codegs',
+    'shell:gas-upload-jasminebench'
+  ]);
 
-  grunt.registerTask('default', ['jshint', 'rajah-spec', 'test']);
+
+  // main tasks.
+  grunt.registerTask('jasmine', ['jasmine-spec', 'jasmine-test']);
+  grunt.registerTask('rajah', ['jshint', 'rajah-spec', 'rajah-test']);
+  grunt.registerTask('default', ['rajah']);
 };
