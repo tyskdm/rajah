@@ -32,26 +32,24 @@ exports.doget = {
   },
 
   'failures': function(test) {
-    test.expect(1);
+    test.expect(2);
 
     /*
       359 specs, 0 failures, 1 pending spec
       Finished in 2.124 seconds
     */
     var actual = grunt.file.read('tmp/doget.txt').match(/^\d+ spec(s*), \d+ failure(s*)/mg);
+    test.notEqual(actual, null, 'doget should return spec results.');
 
     actual = actual[0].split(',');
-
     actual = {
       specs:    parseInt(actual[0], 10),
       failures: parseInt(actual[1], 10)
     };
 
-    test.deepEqual(
-        actual,
-        { specs: 359, failures: 0 },
-        'doget returns error-result.'
-    );
+    // grunt.log.writeln('' + actual.specs + ' specs, ' + actual.failures + ' failures.');
+    test.equal(actual.failures, 0,
+        'doget should not return failures. but ' + actual.failures + ' failures.');
 
     test.done();
   }
