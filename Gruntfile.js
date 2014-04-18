@@ -59,6 +59,9 @@ module.exports = function(grunt) {
       'test-case-02': {
         command: 'test/case-02/rajah.sh'
       },
+      'test-case-03': {
+        command: 'test/case-03/rajah.sh'
+      },
       'gas-upload-testbench': {
         command: 'gas upload -f <%= gas.testbench.fileId %> -S "<%= gas.testbench.filename%>:<%= testfile %>" -c <%= gas.testbench.credential %>'
       },
@@ -68,7 +71,7 @@ module.exports = function(grunt) {
     },
 
     clean: {
-      tests: ['tmp']
+      tmp: ['tmp']
     },
 
     nodeunit: {
@@ -89,6 +92,7 @@ module.exports = function(grunt) {
     'shell:mktmp',
     'shell:test-case-01',
     'shell:test-case-02',
+    'shell:test-case-03',
     'nodeunit:rajah'
   ]);
 
