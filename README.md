@@ -9,11 +9,20 @@ Want to use GAS-Library now? [Here’s project key](#library-project-for-google-
 
 ## Version info:
 
-#### Rajah 2 v0.1.0 (development version) : branch [`Release/2.x`](https://github.com/tyskdm/rajah/tree/Release/2.x) (`master`)
+#### Rajah 2 v0.2.0 (development version) : branch [`Release/2.x`](https://github.com/tyskdm/rajah/tree/Release/2.x) (`master`)
 
 * new release for Jasmine 2.0
-* Rebuild whole project on Node.js environment.
-* Using [Code.gs](https://www.npmjs.org/package/codegs) to build for google apps script environment.
+* [Stability: 2 - Unstable](http://nodejs.org/api/documentation.html#documentation_stability_index)
+
+##### r2 v0.2.0
+
+date: 2014-04-18
+
+changes:
+- add auto test on Google apps script: pack with --codegs, upload to google, and get result via doGet function.
+- cli: implement --output
+- cli: fix --noColor
+
 
 #### Rajah v1.00b (stable version) : branch [`Release/1.0`](https://github.com/tyskdm/rajah/tree/Release/1.0)
 
