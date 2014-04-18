@@ -17,7 +17,8 @@ module.exports = function(grunt) {
         'src/**/*.js',
         'test/spec/**/*.js',
         'test/jasmine/jasmine-spec.js',
-        '<%= nodeunit.tests %>'
+        '<%= nodeunit.rajah %>',
+        '<%= nodeunit.jasmine %>'
       ],
       options: {
         jshintrc: '.jshintrc'
@@ -46,6 +47,12 @@ module.exports = function(grunt) {
           stdout: true
         }
       },
+      'wget-jasmine': {
+        command: 'wget --load-cookies=<%= gas.jasminebench.dogetCookie %> <%= gas.jasminebench.dogetUrl %> -O tmp/doget.txt',
+        options: {
+          stdout: true
+        }
+      },
       'test-case-01': {
         command: 'test/case-01/rajah.sh'
       },
@@ -65,7 +72,8 @@ module.exports = function(grunt) {
     },
 
     nodeunit: {
-      tests: ['test/case-*/test-*.js']
+      rajah: ['test/case-*/test-*.js'],
+      jasmine: ['test/jasmine/test-*.js']
     }
   });
 
@@ -81,7 +89,7 @@ module.exports = function(grunt) {
     'shell:mktmp',
     'shell:test-case-01',
     'shell:test-case-02',
-    'nodeunit'
+    'nodeunit:rajah'
   ]);
 
   // jasmine testing sub tasks.
@@ -90,7 +98,9 @@ module.exports = function(grunt) {
     'clean',
     'shell:mktmp',
     'shell:jasmine-codegs',
-    'shell:gas-upload-jasminebench'
+    'shell:gas-upload-jasminebench',
+    'shell:wget-jasmine',
+    'nodeunit:jasmine'
   ]);
 
 
