@@ -44,6 +44,10 @@ module.exports = function () {
                 type:           'path',
                 description:    'filepath which package file should be handed to codegs command.',
                 example:        "'" + name + " --path=FILEPATH' or '" + name + " -p FILEPATH'"
+            },
+            {   name:           'stamp',
+                type:           'string',
+                description:    'stamp stiring to add beggining of output string.'
             }
         ])
         .run();
@@ -56,7 +60,8 @@ module.exports = function () {
         match:          argv.options.match      || null,
         output:         argv.options.output     || null,
         codegs:         typeof argv.options.codegs !== 'undefined',
-        packagefile:    argv.options['package'] || null
+        packagefile:    argv.options['package'] || null,
+        stamp:          argv.options.stamp || null
     };
 
     // Create and configure Application.

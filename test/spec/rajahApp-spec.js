@@ -23,6 +23,7 @@ describe("rajahApp:", function () {
                 packagefile:  null,
                 reportType:   null,
                 showColor:    null,
+                stamp:        null,
                 output:       null,
                 codegs:       null
             },
@@ -37,6 +38,7 @@ describe("rajahApp:", function () {
                 packagefile:  null,
                 reportType:   null,
                 showColor:    null,
+                stamp:        null,
                 output:       null,
                 codegs:       null
             };
@@ -64,6 +66,7 @@ describe("rajahApp:", function () {
                 packagefile:  null,
                 reportType:   null,
                 showColor:    null,
+                stamp:        null,
                 output:       null,
                 codegs:       null
             },
@@ -74,6 +77,7 @@ describe("rajahApp:", function () {
                 packagefile:  '/package.json',
                 reportType:   'console',
                 showColor:    true,
+                stamp:        '2014/04/22 16:58',
                 output:       ['out.js'],
                 codegs:       ['code.gs']
             },
@@ -84,6 +88,7 @@ describe("rajahApp:", function () {
                 packagefile:  '/package.json',
                 reportType:   'console',
                 showColor:    true,
+                stamp:        '2014/04/22 16:58',
                 output:       ['out.js'],
                 codegs:       ['code.gs']
             };
@@ -108,6 +113,7 @@ describe("rajahApp:", function () {
                     packagefile:  null,
                     reportType:   null,
                     showColor:    null,
+                    stamp:        null,
                     output:       null,
                     codegs:       null
                 },
