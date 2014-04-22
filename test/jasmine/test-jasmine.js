@@ -32,13 +32,18 @@ exports.doget = {
   },
 
   'failures': function(test) {
-    test.expect(2);
+    test.expect(3);
 
     /*
       359 specs, 0 failures, 1 pending spec
       Finished in 2.124 seconds
     */
-    var actual = grunt.file.read('tmp/doget.txt').match(/^\d+ spec(s*), \d+ failure(s*)/mg);
+    var actual = grunt.file.read('tmp/doget.txt');
+    var timestamp = grunt.file.read('tmp/timestamp');
+
+    test.equal(timestamp, actual.match(/^.+\n/)[0], "timestamp not match.");
+
+    actual = actual.match(/^\d+ spec(s*), \d+ failure(s*)/mg);
     test.notEqual(actual, null, 'doget should return spec results.');
 
     actual = actual[0].split(',');

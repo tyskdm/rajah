@@ -8,6 +8,7 @@ module.exports = function(grunt) {
     gas: grunt.file.readJSON('gas.json'),
 
     testfile: 'tmp/testcode.gs',
+    timestamp: new Date().toString(),
 
     jshint: {
       files: [
@@ -54,7 +55,10 @@ module.exports = function(grunt) {
         }
       },
       'jasmine-codegs': {
-        command: 'bin/rajah test/jasmine/jasmine-spec.js --codegs -p test/jasmine/package.json -o <%= testfile %>',
+        command: [
+          'bin/rajah test/jasmine/jasmine-spec.js --codegs -p test/jasmine/package.json --stamp="<%= timestamp %>" -o <%= testfile %>',
+          'echo "<%= timestamp %>" > tmp/timestamp'
+        ].join('&&'),
         options: {
           stdout: true
         }
