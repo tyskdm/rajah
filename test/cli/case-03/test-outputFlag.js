@@ -22,7 +22,7 @@ var grunt = require('grunt');
     test.ifError(value)
 */
 
-var expected = {};
+var HERE = 'test/cli/';
 
 exports.outputFlag = {
 
@@ -34,7 +34,7 @@ exports.outputFlag = {
   'nooption': function(test) {
     test.expect(1);
 
-    var stdout = grunt.file.read('tmp/case-03-nooption-stdout');
+    var stdout = grunt.file.read(HERE + 'tmp/case-03-nooption-stdout');
     test.equal(stdout.indexOf('Started'), 0, 'should output to stdout.');
 
     test.done();
@@ -43,8 +43,8 @@ exports.outputFlag = {
   '-o': function(test) {
     test.expect(2);
 
-    var outfile = grunt.file.read('tmp/case-03-o-outfile');
-    var stdout = grunt.file.read('tmp/case-03-o-stdout');
+    var outfile = grunt.file.read(HERE + 'tmp/case-03-o-outfile');
+    var stdout = grunt.file.read(HERE + 'tmp/case-03-o-stdout');
 
     test.equal(stdout.indexOf('Started'), -1, 'should not output to stdout.');
     test.equal(outfile.indexOf('Started'), 0, 'should stored to outfile.');
@@ -55,8 +55,8 @@ exports.outputFlag = {
   '--output': function(test) {
     test.expect(2);
 
-    var outfile = grunt.file.read('tmp/case-03-output-outfile');
-    var stdout = grunt.file.read('tmp/case-03-output-stdout');
+    var outfile = grunt.file.read(HERE + 'tmp/case-03-output-outfile');
+    var stdout = grunt.file.read(HERE + 'tmp/case-03-output-stdout');
 
     test.equal(stdout.indexOf('Started'), -1, 'should not output to stdout.');
     test.equal(outfile.indexOf('Started'), 0, 'should stored to outfile.');

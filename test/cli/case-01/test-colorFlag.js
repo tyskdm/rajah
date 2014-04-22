@@ -22,14 +22,15 @@ var grunt = require('grunt');
     test.ifError(value)
 */
 
-var expected = {};
+var HERE = 'test/cli/',
+    expected = {};
 
 exports.colorFlag = {
 
   setUp: function(done) {
 
-    expected.color = grunt.file.read('test/case-01/out-color').split('\n').slice(0, 4);
-    expected.nocolor = grunt.file.read('test/case-01/out-nocolor').split('\n').slice(0, 4);
+    expected.color = grunt.file.read(HERE + 'case-01/out-color').split('\n').slice(0, 4);
+    expected.nocolor = grunt.file.read(HERE + 'case-01/out-nocolor').split('\n').slice(0, 4);
 
     done();
   },
@@ -37,7 +38,7 @@ exports.colorFlag = {
   'default': function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/case-01-default').split('\n').slice(0, 4);
+    var actual = grunt.file.read(HERE + 'tmp/case-01-default').split('\n').slice(0, 4);
     test.deepEqual(actual, expected.color, 'outputs should be colored.');
 
     test.done();
@@ -46,7 +47,7 @@ exports.colorFlag = {
   '--color': function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/case-01-color').split('\n').slice(0, 4);
+    var actual = grunt.file.read(HERE + 'tmp/case-01-color').split('\n').slice(0, 4);
     test.deepEqual(actual, expected.color, 'output should be colored.');
 
     test.done();
@@ -55,7 +56,7 @@ exports.colorFlag = {
   '--noColor': function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/case-01-nocolor').split('\n').slice(0, 4);
+    var actual = grunt.file.read(HERE + 'tmp/case-01-nocolor').split('\n').slice(0, 4);
     test.deepEqual(actual, expected.nocolor, 'output should not be colored.');
 
     test.done();

@@ -22,7 +22,7 @@ var grunt = require('grunt');
     test.ifError(value)
 */
 
-var expected = {};
+var HERE = 'test/cli/';
 
 exports.matchFlag = {
 
@@ -34,7 +34,7 @@ exports.matchFlag = {
   'noOption': function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/case-02-noOption').match(/^case-spec.+js$/mg);
+    var actual = grunt.file.read(HERE + 'tmp/case-02-noOption').match(/^case-spec.+js$/mg);
     test.deepEqual(
         actual,
         ['case-spec-01.js', 'case-spec-02.js', 'case-spec.js'],
@@ -47,7 +47,7 @@ exports.matchFlag = {
   '-m spec\\.js': function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/case-02-noNum').match(/^case-spec.+js$/mg);
+    var actual = grunt.file.read(HERE + 'tmp/case-02-noNum').match(/^case-spec.+js$/mg);
     test.deepEqual(
         actual,
         ['case-spec.js'],
@@ -60,7 +60,7 @@ exports.matchFlag = {
   '-m spec-.+\\.js': function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/case-02-num').match(/^case-spec.+js$/mg);
+    var actual = grunt.file.read(HERE + 'tmp/case-02-num').match(/^case-spec.+js$/mg);
     test.deepEqual(
         actual,
         ['case-spec-01.js', 'case-spec-02.js'],

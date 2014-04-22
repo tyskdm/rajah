@@ -18,6 +18,7 @@ module.exports = function(grunt) {
         'test/spec/**/*.js',
         'test/jasmine/jasmine-spec.js',
         '<%= nodeunit.cli %>',
+        '<%= nodeunit.rajah %>',
         '<%= nodeunit.jasmine %>'
       ],
       options: {
@@ -25,28 +26,13 @@ module.exports = function(grunt) {
       }
     },
 
-    clean: {
-      tmp: [ 'tmp',
-             'test/cli/tmp' ]
-    },
-
     shell: {
       'mktmp': {
-        command: [
-          'mkdir tmp',
-          'mkdir test/cli/tmp'
-        ].join('&&')
-      },
-
-      // rajah-core related tasks.
-      'rajah-spec': {
-        command: 'bin/rajah test/spec',
-        options: {
-          stdout: true
-        }
+        command: 'mkdir tmp'
       },
 
       // Jamine-core related tasks.
+      //
       'jasmine-spec': {
         command: 'bin/rajah test/jasmine/jasmine-spec.js',
         options: {
@@ -66,17 +52,27 @@ module.exports = function(grunt) {
         }
       },
 
-      // cli related tasks.
-      'cli-test': {
-        options: { execOptions: { cwd: 'test/cli' } },
-        command: [
-            './case-01/rajah.sh',
-            './case-02/rajah.sh',
-            './case-03/rajah.sh'
-        ].join('&&')
+
+
+      'rajah-spec': {
+        command: 'bin/rajah test/spec',
+        options: {
+          stdout: true
+        }
+      },
+      'test-case-01': {
+        command: 'test/case-01/rajah.sh'
+      },
+      'test-case-02': {
+        command: 'test/case-02/rajah.sh'
+      },
+      'test-case-03': {
+        command: 'test/case-03/rajah.sh'
       },
 
+
       //  gas uploader tasks.
+      //
       'gas-upload-testbench': {
         command: 'gas upload -f <%= gas.testbench.fileId %> -S "<%= gas.testbench.filename%>:<%= testfile %>" -c <%= gas.testbench.credential %>'
       },
@@ -85,9 +81,14 @@ module.exports = function(grunt) {
       }
     },
 
+    clean: {
+      tmp: ['tmp']
+    },
+
     nodeunit: {
-      jasmine: ['test/jasmine/test-*.js'],
-      cli: ['test/cli/case-*/test-*.js']
+      cli: ['test/cli/case-*/test-*.js'],
+      rajah: ['test/case-*/test-*.js'],
+      jasmine: ['test/jasmine/test-*.js']
     }
   });
 
@@ -96,20 +97,21 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-shell');
 
-
-  // cli testing sub tasks.
-  grunt.registerTask('cli-test', [
-    'shell:mktmp',
-    'shell:cli-test',
-    'nodeunit:cli'
-  ]);
-
   // rajah testing sub tasks.
   grunt.registerTask('rajah-spec', ['shell:rajah-spec']);
+  grunt.registerTask('rajah-test', [
+    'clean',
+    'shell:mktmp',
+    'shell:test-case-01',
+    'shell:test-case-02',
+    'shell:test-case-03',
+    'nodeunit:rajah'
+  ]);
 
   // jasmine testing sub tasks.
   grunt.registerTask('jasmine-spec', ['shell:jasmine-spec']);
   grunt.registerTask('jasmine-test', [
+    'clean',
     'shell:mktmp',
     'shell:jasmine-codegs',
     'shell:gas-upload-jasminebench',
@@ -119,11 +121,7 @@ module.exports = function(grunt) {
 
 
   // main tasks.
-  grunt.registerTask('cli',     ['clean', 'jshint', 'rajah-spec', 'cli-test']);
-
-  grunt.registerTask('jasmine', ['clean', 'jshint', 'rajah-spec', 'jasmine-spec', 'jasmine-test']);
-
-  grunt.registerTask('rajah',   ['clean', 'jshint', 'rajah-spec']);
-
+  grunt.registerTask('jasmine', ['jasmine-spec', 'jasmine-test']);
+  grunt.registerTask('rajah', ['jshint', 'rajah-spec', 'rajah-test']);
   grunt.registerTask('default', ['rajah']);
 };
