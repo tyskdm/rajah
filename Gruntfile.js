@@ -68,12 +68,16 @@ module.exports = function(grunt) {
 
       // cli related tasks.
       'cli-test': {
-        options: { execOptions: { cwd: 'test/cli' } },
+        options: { stdout: true, stderr: true, execOptions: { cwd: 'test/cli' } },
         command: [
             './case-01/rajah.sh',
             './case-02/rajah.sh',
             './case-03/rajah.sh'
         ].join('&&')
+      },
+      'cli-codegs': {
+        options: { stdout: true, stderr: true },
+        command: 'bin/rajah test/cli/case-04/spec --codegs -p test/cli/case-04/package.json -o test/cli/tmp/case-04-output.js'
       },
 
       //  gas uploader tasks.
@@ -101,6 +105,7 @@ module.exports = function(grunt) {
   grunt.registerTask('cli-test', [
     'shell:mktmp',
     'shell:cli-test',
+    'shell:cli-codegs',
     'nodeunit:cli'
   ]);
 
@@ -118,12 +123,14 @@ module.exports = function(grunt) {
   ]);
 
 
+  grunt.registerTask('precheck', ['clean', 'jshint', 'rajah-spec']);
+
   // main tasks.
-  grunt.registerTask('cli',     ['clean', 'jshint', 'rajah-spec', 'cli-test']);
+  grunt.registerTask('cli',     ['precheck', 'cli-test']);
 
-  grunt.registerTask('jasmine', ['clean', 'jshint', 'rajah-spec', 'jasmine-spec', 'jasmine-test']);
+  grunt.registerTask('jasmine', ['precheck', 'jasmine-spec', 'jasmine-test']);
 
-  grunt.registerTask('rajah',   ['clean', 'jshint', 'rajah-spec']);
+  grunt.registerTask('rajah',   ['precheck', 'cli-test']);
 
   grunt.registerTask('default', ['rajah']);
 };
