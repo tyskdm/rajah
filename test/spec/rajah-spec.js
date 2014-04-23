@@ -6,7 +6,6 @@ describe("rajah", function () {
         var rajah = {
             isFriend: function (foo) { return true; }
         };
-        expect(rajah.isFriend('Jasmine')).toBe(true);
+        expect(rajah.isFriend('Jasmine')).toBe(false);
     });
 });
-
