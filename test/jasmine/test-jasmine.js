@@ -56,6 +56,9 @@ exports.doget = {
     test.equal(actual.failures, 0,
         'doget should not return failures. but ' + actual.failures + ' failures.');
 
+    console.log('\ndoGet result - Stamp: ' + timestamp.slice(0, -1));
+    console.log('doGet result - ' + actual.specs + ' specs, ' + actual.failures + ' failures.');
+
     test.done();
   }
 
