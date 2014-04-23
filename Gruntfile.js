@@ -43,6 +43,7 @@ module.exports = function(grunt) {
       'rajah-spec': {
         command: 'bin/rajah test/spec',
         options: {
+          failOnError: true,
           stdout: true
         }
       },
