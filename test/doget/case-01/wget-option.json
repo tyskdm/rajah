@@ -1,0 +1,8 @@
+{
+    "options": [
+        "?specs=test/doget/case-01/spec/case-spec.js",
+        "match=/\\.js$/",
+        "reportType=console",
+        "showColor=false"
+    ]
+}
