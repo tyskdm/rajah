@@ -1,4 +1,13 @@
-#### r2 v0.2.0:
+#### r2 v0.2.1:
+date: 2014-04-24
+
+[Stability: 2 - Unstable](http://nodejs.org/api/documentation.html#documentation_stability_index)
+
+changes:
+- cli/doGet: add `--stamp` option that allows to check if result of http access is created correct source code.
+- rajah-core: add 'dumbReporter' for jasmine to let 'onComplete' callback function gets arguments about spec results.
+- add tests and fix bugs.
+
 date: 2014-04-18
 
 [Stability: 2 - Unstable](http://nodejs.org/api/documentation.html#documentation_stability_index)
