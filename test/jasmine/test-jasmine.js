@@ -38,7 +38,8 @@ exports.doget = {
       359 specs, 0 failures, 1 pending spec
       Finished in 2.124 seconds
     */
-    var actual = grunt.file.read('tmp/doget.txt');
+    var actual = grunt.file.read('tmp/doget.txt'),
+        dogetResult = actual;
     var timestamp = grunt.file.read('tmp/timestamp');
 
     test.equal(timestamp, actual.match(/^.+\n/)[0], "timestamp not match.");
@@ -56,8 +57,9 @@ exports.doget = {
     test.equal(actual.failures, 0,
         'doget should not return failures. but ' + actual.failures + ' failures.');
 
-    console.log('\ndoGet result - Stamp: ' + timestamp.slice(0, -1));
-    console.log('doGet result - ' + actual.specs + ' specs, ' + actual.failures + ' failures.');
+    //console.log('\ndoGet result - Stamp: ' + timestamp.slice(0, -1));
+    //console.log('doGet result - ' + actual.specs + ' specs, ' + actual.failures + ' failures.');
+    console.log('\n' + dogetResult);
 
     test.done();
   }
