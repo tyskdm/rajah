@@ -82,7 +82,10 @@ module.exports = function(grunt) {
       },
       'cli-codegs': {
         options: { stdout: true, stderr: true },
-        command: 'bin/rajah test/cli/case-04/spec --codegs -p test/cli/case-04/package.json -o test/cli/tmp/case-04-output.js'
+        command: [
+          'bin/rajah test/cli/case-04/spec --codegs -p test/cli/case-04/package1.json -o test/cli/tmp/case-04-output1.js',
+          'bin/rajah test/cli/case-04/spec --codegs -p test/cli/case-04/package2.json -o test/cli/tmp/case-04-output2.js'
+        ].join('&&')
       },
 
       //  gas uploader tasks.

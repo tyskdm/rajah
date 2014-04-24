@@ -71,7 +71,13 @@ module.exports = function () {
     error = rajahApp.addConfig(config);
     _check(error);
 
-    error = rajahApp.run();
+    error = rajahApp.run(function (passed) {
+        if (passed) {
+            process.exit(0);
+        } else {
+            process.exit(1);
+        }
+    });
     _check(error);
 };
 

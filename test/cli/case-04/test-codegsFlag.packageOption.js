@@ -32,13 +32,20 @@ exports.outputFlag = {
   },
 
   '--codegs': function(test) {
-    test.expect(1);
+    test.expect(2);
 
-    var outfile = grunt.file.read(HERE + 'tmp/case-04-output.js');
-    var files = outfile.match(/^require\('module'\).define\('\/test.+',$/mg);
+    var outfile1 = grunt.file.read(HERE + 'tmp/case-04-output1.js');
+    var files1 = outfile1.match(/^require\('module'\).define\('\/test.+',$/mg);
 
-    test.deepEqual(files, [
+    var outfile2 = grunt.file.read(HERE + 'tmp/case-04-output2.js');
+    var files2 = outfile2.match(/^require\('module'\).define\('\/test.+',$/mg);
+
+    test.deepEqual(files1, [
       "require('module').define('/test/cli/case-04/lib/target.js',",
+      "require('module').define('/test/cli/case-04/spec/target-spec.js',"
+    ], 'should not output to stdout.');
+
+    test.deepEqual(files2, [
       "require('module').define('/test/cli/case-04/spec/target-spec.js',"
     ], 'should not output to stdout.');
 
