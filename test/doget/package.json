@@ -1,15 +1,7 @@
 {
-  "name": "case-04",
-  "private": true,
-  "version": "0.0.0",
-  "description": "Rajah test case-04 : test '--codegs' option.",
+  "name": "test/doget",
   "files": [
     "case-01/spec",
     "case-02/spec"
-  ],
-  "dependencies": {
-  },
-  "devDependencies": {
-    "rajah": "~0.0.11"
-  }
+  ]
 }

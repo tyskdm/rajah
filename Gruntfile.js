@@ -28,8 +28,8 @@ module.exports = function(grunt) {
     },
 
     nodeunit: {
-      cli:   ['test/cli/case-*/test-*.js'],
-      doget: ['test/doget/case-*/test-*.js']
+      cli:      ['test/cli/case-*/test-*.js'],
+      doget_02: ['test/doget/case-*/test-*.js']
     },
 
     clean: {
@@ -177,10 +177,17 @@ module.exports = function(grunt) {
 
     'shell:gas-upload:testbench:<%= testcode_doget %>',
 
+    // case-01
     'shell:gas-wget:testbench:tmp/doget-case-01.txt:' +
                 grunt.file.readJSON('test/doget/case-01/wget-option.json').options.join('&'),
+    'check-result:tmp/doget-case-01.txt',
 
-    'check-result:tmp/doget-case-01.txt'
+    // case-02
+    'shell:gas-wget:testbench:tmp/doget-case-02-pass.txt:' +
+                grunt.file.readJSON('test/doget/case-02/wget-option-pass.json').options.join('&'),
+    'shell:gas-wget:testbench:tmp/doget-case-02-fail.txt:' +
+                grunt.file.readJSON('test/doget/case-02/wget-option-fail.json').options.join('&'),
+    'nodeunit:doget_02'
   ]);
 
   // jasmine testing sub task.
