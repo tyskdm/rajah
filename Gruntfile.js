@@ -18,10 +18,9 @@ module.exports = function(grunt) {
         'lib/**/*.js',
         'src/**/*.js',
         'test/spec/**/*.js',
+        'test/cli/**/*.js',
         'test/doget/**/*.js',
-        'test/jasmine/jasmine-spec.js',
-        '<%= nodeunit.cli %>',
-        '<%= nodeunit.jasmine %>'
+        'test/jasmine/*.js'   // not check jsmine-core project files.
       ],
       options: {
         jshintrc: '.jshintrc'
@@ -29,9 +28,8 @@ module.exports = function(grunt) {
     },
 
     nodeunit: {
-      cli: ['test/cli/case-*/test-*.js'],
-      doget: ['test/doget/case-*/test-*.js'],
-      jasmine: ['test/jasmine/test-*.js']
+      cli:   ['test/cli/case-*/test-*.js'],
+      doget: ['test/doget/case-*/test-*.js']
     },
 
     clean: {
@@ -57,87 +55,88 @@ module.exports = function(grunt) {
         }
       },
 
-      // rajah-core related tasks.
-      'rajah-spec': {
-        command: 'bin/rajah test/spec',
+      'run': {
+        command: function (cmd) {
+          return cmd;
+        },
         options: {
-          failOnError: true,
-          stdout: true
-        }
-      },
-
-      // cli related tasks.
-      'cli-test': {
-        options: { stdout: true, stderr: true, execOptions: { cwd: 'test/cli' } },
-        command: [
-            './case-01/rajah.sh',
-            './case-02/rajah.sh',
-            './case-03/rajah.sh'
-        ].join('&&')
-      },
-      'cli-codegs': {
-        options: { stdout: true, stderr: true },
-        command: [
-          'bin/rajah test/cli/case-04/spec --codegs -p test/cli/case-04/package1.json -o test/cli/tmp/case-04-output1.js',
-          'bin/rajah test/cli/case-04/spec --codegs -p test/cli/case-04/package2.json -o test/cli/tmp/case-04-output2.js'
-        ].join('&&')
-      },
-
-
-      // doGet related tasks.
-      'doget-codegs': {
-        command: 'bin/rajah --codegs -p test/doget/package.json --stamp="<%= timestamp %>" -o <%= testcode_doget %>',
-        options: {
-          stdout: true
-        }
-      },
-      'doget-wget-case-01': {
-        command: [
-          'wget --load-cookies=<%= gas.testbench.dogetCookie %>' +
-          ' "<%= gas.testbench.dogetUrl %>' +
-          grunt.file.readJSON('test/doget/case-01/wget-option.json').options.join('&') + '"' +
-          ' -O tmp/doget-case-01.txt'
-        ].join('&&'),
-        options: {
-          stdout: true
-        }
-      },
-
-
-      // Jamine-core related tasks.
-      'jasmine-spec': {
-        command: 'bin/rajah test/jasmine/jasmine-spec.js',
-        options: {
-          stdout: true
-        }
-      },
-      'jasmine-codegs': {
-        command: 'bin/rajah test/jasmine/jasmine-spec.js --codegs -p test/jasmine/package.json --stamp="<%= timestamp %>" -o <%= testfile %>',
-        options: {
-          stdout: true
-        }
-      },
-      'jasmine-wget': {
-        command: 'wget --load-cookies=<%= gas.jasminebench.dogetCookie %> <%= gas.jasminebench.dogetUrl %> -O tmp/doget.txt',
-        options: {
-          stdout: true
-        }
-      },
-
-      //  gas uploader tasks.
-      'gas-upload-testbench': {
-        command: 'gas upload -f <%= gas.testbench.fileId %> -S "<%= gas.testbench.filename%>:<%= testcode_doget %>" -c <%= gas.testbench.credential %>',
-        options: {
+          stdout: true,
           failOnError: true
         }
       },
-      'gas-upload-jasminebench': {
-        command: 'gas upload -f <%= gas.jasminebench.fileId %> -S "<%= gas.jasminebench.filename%>:<%= testfile %>" -c <%= gas.jasminebench.credential %>',
+
+      'rajah': {
+        command: function () {
+          var i, cmd = 'bin/rajah';
+          for (i = 0; i < arguments.length; i++) {
+            cmd += ' ' + arguments[i];
+          }
+          return cmd;
+        },
         options: {
+          stdout: true,
+          failOnError: true
+        }
+      },
+
+      'gas-upload': {
+        command: function (target, filepath) {
+          return 'gas upload' +
+                 ' -f ' + this.config.get('gas')[target].fileId +
+                 ' -S ' + this.config.get('gas')[target].filename + ':' + filepath +
+                 ' -c ' + this.config.get('gas')[target].credential;
+        },
+        options: {
+          stdout: true,
+          failOnError: true
+        }
+      },
+
+      'gas-wget': {
+        command: function (target, filepath, options) {
+          return 'wget' +
+                 ' "' + this.config.get('gas')[target].dogetUrl + (options ? options : '') + '"' +
+                 ' --load-cookies=' + this.config.get('gas')[target].dogetCookie +
+                 ' -O ' + filepath;
+        },
+        options: {
+          stdout: true,
           failOnError: true
         }
       }
     }
+  });
+
+  grunt.registerTask('check-result', 'check result returned from doget.', function(filepath) {
+
+    var actual = grunt.file.read(filepath),
+        output = actual,
+        timestamp = grunt.config.get('timestamp');
+
+    if (timestamp !== actual.match(/^.+(?=\n)/)[0]) {
+      grunt.log.error('timestamp not match.');
+      return false;
+    }
+
+    actual = actual.match(/^\d+ spec(s*), \d+ failure(s*)/mg);
+    if (actual === null) {
+      grunt.log.error('doget should return spec results.');
+      return false;
+    }
+
+    actual = actual[0].split(',');
+    actual = {
+      specs:    parseInt(actual[0], 10),
+      failures: parseInt(actual[1], 10)
+    };
+    if (actual.failures !== 0) {
+      grunt.log.error('doget should not return failures. but ' + actual.failures + ' failures.');
+      return false;
+    }
+
+    grunt.log.writeln('\n' + output);
+
+    return true;
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -146,40 +145,65 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
 
 
-  // rajah testing sub tasks.
-  grunt.registerTask('rajah-spec', ['shell:rajah-spec']);
+  // rajah-core testing sub task.
+  grunt.registerTask('rajahCore-test', ['shell:rajah:test/spec']);
 
-  // cli testing sub tasks.
+  // cli testing sub task.
   grunt.registerTask('cli-test', [
-    'shell:cli-test',
-    'shell:cli-codegs',
+    'shell:run:' + [
+        './test/cli/case-01/test.sh',
+        './test/cli/case-02/test.sh',
+        './test/cli/case-03/test.sh'
+    ].join('&&'),
+
+    'shell:rajah:test/cli/case-04/spec' +
+                ' --codegs -p test/cli/case-04/package1.json' +
+                ' -o test/cli/tmp/case-04-output1.js',
+
+    'shell:rajah:test/cli/case-04/spec' +
+                ' --codegs -p test/cli/case-04/package2.json' +
+                ' -o test/cli/tmp/case-04-output2.js',
+
     'nodeunit:cli'
   ]);
 
-  // doget testing sub tasks.
+  // doget testing sub task.
   grunt.registerTask('doget-test', [
-    'shell:doget-codegs',
-    'shell:gas-upload-testbench',
-    'shell:doget-wget-case-01',
-    'nodeunit:doget'
+    'shell:rajah:test/doget/case-01/spec',
+
+    'shell:rajah: --codegs -p test/doget/package.json' +
+                ' --stamp="<%= timestamp %>"' +
+                ' -o <%= testcode_doget %>',
+
+    'shell:gas-upload:testbench:<%= testcode_doget %>',
+
+    'shell:gas-wget:testbench:tmp/doget-case-01.txt:' +
+                grunt.file.readJSON('test/doget/case-01/wget-option.json').options.join('&'),
+
+    'check-result:tmp/doget-case-01.txt'
   ]);
 
-  // jasmine testing sub tasks.
-  grunt.registerTask('jasmine-spec', ['shell:jasmine-spec']);
+  // jasmine testing sub task.
   grunt.registerTask('jasmine-test', [
-    'shell:jasmine-codegs',
-    'shell:gas-upload-jasminebench',
-    'shell:jasmine-wget',
-    'nodeunit:jasmine'
+    'shell:rajah:test/jasmine/jasmine-spec.js',
+
+    'shell:rajah:test/jasmine/jasmine-spec.js' +
+                ' --codegs -p test/jasmine/package.json' +
+                ' --stamp="<%= timestamp %>"' +
+                ' -o <%= testfile %>',
+
+    'shell:gas-upload:jasminebench:<%= testfile %>',
+    'shell:gas-wget:jasminebench:tmp/doget.txt',
+    'check-result:tmp/doget.txt'
   ]);
 
-
+  // common precheck sub task.
   grunt.registerTask('precheck', [
     'clean',
     'shell:mktmp',
     'shell:timestamp',
     'jshint',
-    'rajah-spec'
+    'rajahCore-test'
   ]);
 
   // main tasks.
@@ -187,9 +211,11 @@ module.exports = function(grunt) {
 
   grunt.registerTask('doget',   ['precheck', 'doget-test']);
 
-  grunt.registerTask('jasmine', ['precheck', 'jasmine-spec', 'jasmine-test']);
+  grunt.registerTask('jasmine', ['precheck', 'jasmine-test']);
 
   grunt.registerTask('rajah',   ['precheck', 'cli-test', 'doget-test']);
+
+  grunt.registerTask('all',     ['precheck', 'cli-test', 'doget-test', 'jasmine-test']);
 
   grunt.registerTask('default', ['rajah']);
 };
