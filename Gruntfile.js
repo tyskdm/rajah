@@ -28,8 +28,7 @@ module.exports = function(grunt) {
     },
 
     nodeunit: {
-      cli:      ['test/cli/case-*/test-*.js'],
-      doget_02: ['test/doget/case-*/test-*.js']
+      cli:      ['test/cli/case-*/test-*.js']
     },
 
     clean: {
