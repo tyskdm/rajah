@@ -1,7 +1,8 @@
 {
   "name": "test/doget",
   "files": [
-    "case-01/spec",
-    "case-02/spec"
+    "case-03/spec",
+    "case-02/spec",
+    "case-01/spec"
   ]
 }

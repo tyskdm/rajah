@@ -223,7 +223,16 @@ module.exports = function(grunt) {
 
     'shell:gas-wget:testbench:tmp/doget-case-02-fail.txt:' +
                 grunt.file.readJSON('test/doget/case-02/wget-option-fail.json').options.join('&'),
-    'expect-result:tmp/doget-case-02-fail.txt:failure:1'
+    'expect-result:tmp/doget-case-02-fail.txt:failure:1',
+
+    // case-03
+    'shell:gas-wget:testbench:tmp/doget-case-03-rajahError.txt:' +
+                grunt.file.readJSON('test/doget/case-03/wget-option-rajahError.json').options.join('&'),
+    'expect-result:tmp/doget-case-03-rajahError.txt:error',
+
+    'shell:gas-wget:testbench:tmp/doget-case-03-exceptionError.txt:' +
+                grunt.file.readJSON('test/doget/case-03/wget-option-exceptionError.json').options.join('&'),
+    'expect-result:tmp/doget-case-03-exceptionError.txt:error'
   ]);
 
   // jasmine testing sub task.
