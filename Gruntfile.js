@@ -107,19 +107,25 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('check-result', 'check result returned from doget.', function(filepath) {
+  grunt.registerTask('expect-result', 'check result returned from doget.', function(filepath, status, num) {
 
     var actual = grunt.file.read(filepath),
         output = actual,
         timestamp = grunt.config.get('timestamp');
 
     if (timestamp !== actual.match(/^.+(?=\n)/)[0]) {
+      if (status === 'exception') {
+        return true;    // expect result-status tobe exception.
+      }
       grunt.log.error('timestamp not match.');
       return false;
     }
 
     actual = actual.match(/^\d+ spec(s*), \d+ failure(s*)/mg);
     if (actual === null) {
+      if (status === 'error') {
+        return true;    // expect result-status tobe error.
+      }
       grunt.log.error('doget should return spec results.');
       return false;
     }
@@ -130,10 +136,39 @@ module.exports = function(grunt) {
       failures: parseInt(actual[1], 10)
     };
     if (actual.failures !== 0) {
+      if (status === 'failure') {
+        if (typeof num !== 'undefined') {
+          num = parseInt(num, 10);
+          if (actual.failures !== num) {
+            grunt.log.error('doget should return ' + num + ' failures. but ' + actual.failures + ' failures.');
+            return false;
+          }
+        }
+        return true;    // expect result to return failures.
+      }
       grunt.log.error('doget should not return failures. but ' + actual.failures + ' failures.');
       return false;
     }
 
+    if (status === 'specs') {
+      if (typeof num !== 'undefined') {
+        num = parseInt(num, 10);
+        if (actual.specs !== num) {
+          grunt.log.error('doget should return ' + num + ' specs. but ' + actual.specs + ' specs.');
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        grunt.log.error('expect-result:Error: number of specs expected is required.');
+        return false;
+      }
+    }
+
+    if (status !== 'pass') {
+      grunt.log.error('expect-result:Error: result is expected ' + status + '. but pass.');
+      return false;
+    }
     grunt.log.writeln('\n' + output);
 
     return true;
@@ -180,14 +215,16 @@ module.exports = function(grunt) {
     // case-01
     'shell:gas-wget:testbench:tmp/doget-case-01.txt:' +
                 grunt.file.readJSON('test/doget/case-01/wget-option.json').options.join('&'),
-    'check-result:tmp/doget-case-01.txt',
+    'expect-result:tmp/doget-case-01.txt:pass',
 
     // case-02
     'shell:gas-wget:testbench:tmp/doget-case-02-pass.txt:' +
                 grunt.file.readJSON('test/doget/case-02/wget-option-pass.json').options.join('&'),
+    'expect-result:tmp/doget-case-02-pass.txt:pass',
+
     'shell:gas-wget:testbench:tmp/doget-case-02-fail.txt:' +
                 grunt.file.readJSON('test/doget/case-02/wget-option-fail.json').options.join('&'),
-    'nodeunit:doget_02'
+    'expect-result:tmp/doget-case-02-fail.txt:failure:1'
   ]);
 
   // jasmine testing sub task.
@@ -201,7 +238,7 @@ module.exports = function(grunt) {
 
     'shell:gas-upload:jasminebench:<%= testfile %>',
     'shell:gas-wget:jasminebench:tmp/doget.txt',
-    'check-result:tmp/doget.txt'
+    'expect-result:tmp/doget.txt:pass'
   ]);
 
   // common precheck sub task.
