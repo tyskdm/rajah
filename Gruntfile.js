@@ -106,26 +106,94 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('expect-result', 'check result returned from doget.', function(filepath, status, num) {
+  grunt.registerTask('check-result', 'check result returned from doget.', function(filepath, expected, opt) {
 
-    var actual = grunt.file.read(filepath),
-        output = actual,
-        timestamp = grunt.config.get('timestamp');
+    var resultText;
 
-    if (timestamp !== actual.match(/^.+(?=\n)/)[0]) {
-      if (status === 'exception') {
-        return true;    // expect result-status tobe exception.
-      }
-      grunt.log.error('timestamp not match.');
+    try {
+      resultText = grunt.file.read(filepath);
+    } catch(e) {
+      grunt.log.error("FILE-READ-ERROR: " + filepath + "\n" + e);
       return false;
     }
 
-    actual = actual.match(/^\d+ spec(s*), \d+ failure(s*)/mg);
-    if (actual === null) {
-      if (status === 'error') {
-        return true;    // expect result-status tobe error.
+    var actual = resultText.split('\n', 3),
+        timestamp = grunt.config.get('timestamp'),
+        resultStatus = null,
+        stampConfirmed = false;
+
+    /*
+     *  Check First line.
+     */
+    if (actual[0] === '<!DOCTYPE html>') {
+      var title = resultText.match(/<\s*title\s*>(.+?)<\s*\/\s*title\s*>/i)[1];
+
+      if (title.indexOf('Meet Google Drive') === 0) {
+        resultStatus = 'ACCESS-ERROR';
+
+      } else if (title === 'Error') {
+        resultStatus = 'GAS-ERROR';
+
+      } else {
+        resultStatus = 'UNKNOWN-HTML-ERROR';
       }
-      grunt.log.error('doget should return spec results.');
+
+    } else if (actual[0] === '[ STAMP NOT FOUND ]') {
+      stampConfirmed = false;
+
+    } else if (actual[0] === timestamp) {
+      stampConfirmed = true;
+
+    } else {
+      resultStatus = 'STAMP-NOT-MATCH';
+    }
+
+    if (resultStatus !== null) {
+      grunt.log.error(resultStatus + ':');
+      return false;
+    }
+
+
+    /*
+     *  Check 2nd. line.
+     */
+    if (actual[1] === 'doGet Exception:') {
+      resultStatus = 'DOGET-EXCEPTION';
+
+    } else if (actual[1] === 'Rajah Error:') {
+      if (actual[2].indexOf('Error:') === 0) {
+        if (expected !== 'error') {
+          resultStatus = 'RAJAH-ERROR';
+        } else {
+          return true;
+        }
+
+      } else if (actual[2].indexOf('Exception:') === 0) {
+        if (expected !== 'exception') {
+          resultStatus = 'RAJAH-EXCEPTION';
+        } else {
+          return true;
+        }
+
+      } else {
+        resultStatus = 'RAJAH-UNKNOWN-ERROR';
+      }
+
+    } else if (actual[1] !== 'Started') {
+      resultStatus = 'DOGET-UNKNOWN-ERROR';
+    }
+
+    if (resultStatus !== null) {
+      grunt.log.error(resultStatus + (stampConfirmed ? ': STAMP=OK' : ': STAMP=NOT-FOUND'));
+      return false;
+    }
+
+    /*
+     *  Check Jasmine-Report.
+     */
+    actual = resultText.match(/^\d+ spec(s*), \d+ failure(s*)/mg);
+    if (actual === null) {
+      grunt.log.error('JASMINE-INVALID-RESULT:');
       return false;
     }
 
@@ -135,40 +203,40 @@ module.exports = function(grunt) {
       failures: parseInt(actual[1], 10)
     };
     if (actual.failures !== 0) {
-      if (status === 'failure') {
-        if (typeof num !== 'undefined') {
-          num = parseInt(num, 10);
-          if (actual.failures !== num) {
-            grunt.log.error('doget should return ' + num + ' failures. but ' + actual.failures + ' failures.');
+      if (expected === 'failure') {
+        if (typeof opt !== 'undefined') {
+          opt = parseInt(opt, 10);
+          if (actual.failures !== opt) {
+            grunt.log.error('JASMINE-ERROR: expected ' + opt + ' failures but ' + actual.failures + ' failures.');
             return false;
           }
         }
         return true;    // expect result to return failures.
       }
-      grunt.log.error('doget should not return failures. but ' + actual.failures + ' failures.');
+      grunt.log.error('JASMINE-FAILURE: expected pass but ' + actual.failures + ' failures.');
       return false;
     }
 
-    if (status === 'specs') {
-      if (typeof num !== 'undefined') {
-        num = parseInt(num, 10);
-        if (actual.specs !== num) {
-          grunt.log.error('doget should return ' + num + ' specs. but ' + actual.specs + ' specs.');
+    if (expected === 'specs') {
+      if (typeof opt !== 'undefined') {
+        opt = parseInt(opt, 10);
+        if (actual.specs !== opt) {
+          grunt.log.error('JASMINE-ERROR: expected ' + opt + ' specs. but ' + actual.specs + ' specs.');
           return false;
         } else {
           return true;
         }
       } else {
-        grunt.log.error('expect-result:Error: number of specs expected is required.');
+        grunt.log.error('CHECKER-ERROR: number of specs expected is required.');
         return false;
       }
     }
 
-    if (status !== 'pass') {
-      grunt.log.error('expect-result:Error: result is expected ' + status + '. but pass.');
+    if (expected !== 'pass') {
+      grunt.log.error('CHECKER-UNKNOWN-ERROR: result is expected ' + expected + '. but pass.');
       return false;
     }
-    grunt.log.writeln('\n' + output);
+    grunt.log.writeln('\n' );
 
     return true;
   });
@@ -214,25 +282,25 @@ module.exports = function(grunt) {
     // case-01
     'shell:gas-wget:testbench:tmp/doget-case-01.txt:' +
                 grunt.file.readJSON('test/doget/case-01/wget-option.json').options.join('&'),
-    'expect-result:tmp/doget-case-01.txt:pass',
+    'check-result:tmp/doget-case-01.txt:pass',
 
     // case-02
     'shell:gas-wget:testbench:tmp/doget-case-02-pass.txt:' +
                 grunt.file.readJSON('test/doget/case-02/wget-option-pass.json').options.join('&'),
-    'expect-result:tmp/doget-case-02-pass.txt:pass',
+    'check-result:tmp/doget-case-02-pass.txt:pass',
 
     'shell:gas-wget:testbench:tmp/doget-case-02-fail.txt:' +
                 grunt.file.readJSON('test/doget/case-02/wget-option-fail.json').options.join('&'),
-    'expect-result:tmp/doget-case-02-fail.txt:failure:1',
+    'check-result:tmp/doget-case-02-fail.txt:failure:1',
 
     // case-03
     'shell:gas-wget:testbench:tmp/doget-case-03-rajahError.txt:' +
                 grunt.file.readJSON('test/doget/case-03/wget-option-rajahError.json').options.join('&'),
-    'expect-result:tmp/doget-case-03-rajahError.txt:error',
+    'check-result:tmp/doget-case-03-rajahError.txt:error',
 
     'shell:gas-wget:testbench:tmp/doget-case-03-exceptionError.txt:' +
                 grunt.file.readJSON('test/doget/case-03/wget-option-exceptionError.json').options.join('&'),
-    'expect-result:tmp/doget-case-03-exceptionError.txt:error'
+    'check-result:tmp/doget-case-03-exceptionError.txt:exception'
   ]);
 
   // jasmine testing sub task.
@@ -246,7 +314,7 @@ module.exports = function(grunt) {
 
     'shell:gas-upload:jasminebench:<%= testfile %>',
     'shell:gas-wget:jasminebench:tmp/doget.txt',
-    'expect-result:tmp/doget.txt:pass'
+    'check-result:tmp/doget.txt:pass'
   ]);
 
   // common precheck sub task.
