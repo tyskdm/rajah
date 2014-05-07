@@ -35,6 +35,7 @@
     "grunt-contrib-clean": "^0.5.0",
     "grunt-contrib-nodeunit": "^0.3.3",
     "jasmine-reporters": "^0.4.0",
-    "grunt-shell": "^0.6.4"
+    "grunt-shell": "^0.6.4",
+    "grunt-codegs": "0.0.1"
   }
 }

@@ -38,6 +38,26 @@ module.exports = function(grunt) {
            ]
     },
 
+    codegs: {
+      gaslib: {
+        options: {
+          mainfile:     'src/main.js',
+          core:         'node_modules/codegs-core/code/gas',
+          node_core:    'node_modules/codegs-core/node/v0.10.26',
+          node_modules: [ 'jasmine-core' ]
+        },
+        files: {
+          'tmp/gaslib-dev-out.js': [
+            'node_modules/jasmine-core',
+            'src/main.js',
+            'lib/rajah.js',
+            'lib/rajahApp.js',
+            'lib/timers.js'
+          ]
+        }
+      }
+    },
+
     shell: {
       'mktmp': {
         command: [
@@ -245,7 +265,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-shell');
-
+  grunt.loadNpmTasks('grunt-codegs');
 
   // rajah-core testing sub task.
   grunt.registerTask('rajahCore-test', ['shell:rajah:test/spec']);
