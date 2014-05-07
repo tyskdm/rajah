@@ -1,4 +1,13 @@
-#### r2 v0.2.1:
+#### r2 v0.3.0:
+date: 2014-05-07
+
+[Stability: 2 - Unstable](http://nodejs.org/api/documentation.html#documentation_stability_index)
+
+changes:
+- doGet: add more error handling. doget returns detail error information.
+- add tests for doget.
+- modify Gruntfile:check-result task to test doget results.
+
 date: 2014-04-24
 
 [Stability: 2 - Unstable](http://nodejs.org/api/documentation.html#documentation_stability_index)

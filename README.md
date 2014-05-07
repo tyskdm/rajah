@@ -9,19 +9,20 @@ Want to use GAS-Library now? [Here’s project key](#library-project-for-google-
 
 ## Version info:
 
-#### Rajah 2 v0.2.1 (development version) : branch [`Release/2.x`](https://github.com/tyskdm/rajah/tree/Release/2.x) (`master`)
+#### Rajah 2 v0.3.0 (development version) : branch `Release/2.x` ([`master`](https://github.com/tyskdm/rajah))
 
 * new release for Jasmine 2.0
 * [Stability: 2 - Unstable](http://nodejs.org/api/documentation.html#documentation_stability_index)
 
-##### r2 v0.2.1
+##### r2 v0.3.0
 
-date: 2014-04-24
+date: 2014-05-07
 
 changes:
-- cli/doGet: add `--stamp` option that allows to check if result of http access is created correct source code.
-- rajah-core: add 'dumbReporter' for jasmine to let 'onComplete' callback function gets arguments about spec results.
-- add tests and fix bugs.
+- doGet: add more error handling. doget returns detail error information.
+- add tests for doget.
+- modify Gruntfile:check-result task to test doget results.
+
 
 
 #### Rajah v1.00b (stable version) : branch [`Release/1.0`](https://github.com/tyskdm/rajah/tree/Release/1.0)
@@ -41,7 +42,7 @@ Rajah is a simple Jasmine spec runner, but has 3 faces.
 
 3. **Library project** for Google apps script.
 
-4. www.google.com/search?tbm=isch&q=rajah+jasmine
+4. [www.google.com/search?tbm=isch&q=rajah+jasmine](www.google.com/search?tbm=isch&q=rajah+jasmine)
 
 Rajah allows you to test Node.js project files in your PC’s command line shell. - (1)
 
