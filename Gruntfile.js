@@ -376,11 +376,13 @@ module.exports = function(grunt) {
 
   grunt.registerTask('doget',   ['precheck', 'doget-test']);
 
+  grunt.registerTask('gaslib',  ['precheck', 'gaslib-test']);
+
   grunt.registerTask('jasmine', ['precheck', 'jasmine-test']);
 
-  grunt.registerTask('rajah',   ['precheck', 'cli-test', 'doget-test']);
+  grunt.registerTask('rajah',   ['precheck', 'cli-test', 'doget-test', 'gaslib-test']);
 
-  grunt.registerTask('all',     ['precheck', 'cli-test', 'doget-test', 'jasmine-test']);
+  grunt.registerTask('all',     ['precheck', 'cli-test', 'doget-test', 'gaslib-test', 'jasmine-test']);
 
   grunt.registerTask('default', ['rajah']);
 };

@@ -1,8 +1,5 @@
 {
     "options": [
-        "?specs=test/gaslib/case-01/spec/case-spec.js",
-        "match=/\\.js$/",
-        "reportType=console",
-        "showColor=false"
+        "?specs=test/gaslib/case-01/spec/case-spec.js"
     ]
 }
