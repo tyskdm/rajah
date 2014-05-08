@@ -20,6 +20,7 @@ module.exports = function(grunt) {
         'test/spec/**/*.js',
         'test/cli/**/*.js',
         'test/doget/**/*.js',
+        'test/gaslib/**/*.js',
         'test/jasmine/*.js'   // not check jsmine-core project files.
       ],
       options: {
@@ -31,31 +32,34 @@ module.exports = function(grunt) {
       cli:      ['test/cli/case-*/test-*.js']
     },
 
-    clean: {
-      tmp: [ 'tmp',
-             'test/cli/tmp',
-             'test/doget/tmp'
-           ]
-    },
-
     codegs: {
       gaslib: {
         options: {
           mainfile:     'src/main.js',
           core:         'node_modules/codegs-core/code/gas',
           node_core:    'node_modules/codegs-core/node/v0.10.26',
-          node_modules: [ 'jasmine-core' ]
+          node_modules: []
         },
         files: {
-          'tmp/gaslib-dev-out.js': [
-            'node_modules/jasmine-core',
+          'test/gaslib/tmp/gaslib-out.js': [
+            'node_modules/jasmine-core/lib/console/console.js',
+            'node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
             'src/main.js',
             'lib/rajah.js',
             'lib/rajahApp.js',
+            'lib/dumbreporter.js',
             'lib/timers.js'
           ]
         }
       }
+    },
+
+    clean: {
+      tmp: [ 'tmp',
+             'test/cli/tmp',
+             'test/doget/tmp',
+             'test/gaslib/tmp'
+           ]
     },
 
     shell: {
@@ -63,7 +67,8 @@ module.exports = function(grunt) {
         command: [
           'mkdir tmp',
           'mkdir test/cli/tmp',
-          'mkdir test/doget/tmp'
+          'mkdir test/doget/tmp',
+          'mkdir test/gaslib/tmp'
         ].join('&&')
       },
 
@@ -145,7 +150,7 @@ module.exports = function(grunt) {
     /*
      *  Check First line.
      */
-    if (actual[0] === '<!DOCTYPE html>') {
+    if (actual[0].indexOf('<!DOCTYPE html>') === 0) {
       var title = resultText.match(/<\s*title\s*>(.+?)<\s*\/\s*title\s*>/i)[1];
 
       if (title.indexOf('Meet Google Drive') === 0) {
@@ -321,6 +326,26 @@ module.exports = function(grunt) {
     'shell:gas-wget:testbench:tmp/doget-case-03-exceptionError.txt:' +
                 grunt.file.readJSON('test/doget/case-03/wget-option-exceptionError.json').options.join('&'),
     'check-result:tmp/doget-case-03-exceptionError.txt:exception'
+  ]);
+
+  // gaslib testing sub task.
+  grunt.registerTask('gaslib-test', [
+    // precheck
+    'shell:rajah:test/gaslib/case-01/spec',
+
+    // build target and upload
+    'codegs:gaslib',
+    'shell:rajah: --codegs -p test/gaslib/package.json' +
+                ' --stamp="<%= timestamp %>"' +
+                ' -o test/gaslib/tmp/testcode.gs',
+
+    'shell:gas-upload:rajah-dev:test/gaslib/tmp/gaslib-out.js',
+    'shell:gas-upload:gaslibbench:test/gaslib/tmp/testcode.gs',
+
+    // case-01
+    'shell:gas-wget:gaslibbench:test/gaslib/tmp/gaslib-case-01.txt:' +
+                grunt.file.readJSON('test/gaslib/case-01/wget-option.json').options.join('&'),
+    'check-result:test/gaslib/tmp/gaslib-case-01.txt:pass'
   ]);
 
   // jasmine testing sub task.

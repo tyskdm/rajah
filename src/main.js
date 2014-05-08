@@ -12,8 +12,7 @@ var jasmine = this.rajah.jasmine;
  * Initialize rajah and get Jasmine-API.
  * @param {object} THIS global scope object.
  */
-function init(THIS) {
-    this.GLOBAL = THIS;
+function setup(THIS) {
     return this.rajah.setup(THIS);
 }
 
