@@ -15,10 +15,11 @@ describe("rajah", function () {
     describe("should run spec files and return results:", function () {
 
         var J = {};
-        var passed, spec, failure, pending;
+        var passed, spec, failure, pending, report;
 
         beforeEach(function (done) {
             RAJAH.setup(J);
+            report = '';
 
             J.describe("run specs:", function () {
                 J.it("should be 'pass'.", function() {
@@ -32,7 +33,7 @@ describe("rajah", function () {
                 });
             });
 
-            RAJAH.addConsoleReporter(true, function () {});
+            RAJAH.addConsoleReporter(true, function (str) { report += str; });
 
             RAJAH.run(function (p, s, f, d) {
                 passed = p;
@@ -44,8 +45,11 @@ describe("rajah", function () {
             });
         });
 
-        it("should return resultset.", function (done) {
-            done();
+        it("should print message.", function () {
+            expect(report.indexOf('Started') === 0).toBe(true);
+        });
+
+        it("should return resultset.", function () {
             expect(passed).toBe(false);
             expect(spec).toBe(3);
             expect(failure).toBe(1);
