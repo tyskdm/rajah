@@ -1,0 +1,5 @@
+{
+    "options": [
+        "?specs=test/gaslib/case-02/spec/case-spec.js"
+    ]
+}

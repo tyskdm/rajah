@@ -345,7 +345,12 @@ module.exports = function(grunt) {
     // case-01
     'shell:gas-wget:gaslibbench:test/gaslib/tmp/gaslib-case-01.txt:' +
                 grunt.file.readJSON('test/gaslib/case-01/wget-option.json').options.join('&'),
-    'check-result:test/gaslib/tmp/gaslib-case-01.txt:pass'
+    'check-result:test/gaslib/tmp/gaslib-case-01.txt:pass',
+
+    // case-02
+    'shell:gas-wget:gaslibbench:test/gaslib/tmp/gaslib-case-02.txt:' +
+                grunt.file.readJSON('test/gaslib/case-02/wget-option.json').options.join('&'),
+    'check-result:test/gaslib/tmp/gaslib-case-02.txt:pass'
   ]);
 
   // jasmine testing sub task.
