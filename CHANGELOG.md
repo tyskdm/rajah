@@ -1,4 +1,13 @@
-#### r2 v0.3.0:
+#### v2.0.0:
+date: 2014-05-09
+
+[Stability: 3 - Stable](http://nodejs.org/api/documentation.html#documentation_stability_index)
+
+changes:
+- add tests for Google apps script library.
+- small fix.
+- gruntfile: add deploy task.
+
 date: 2014-05-07
 
 [Stability: 2 - Unstable](http://nodejs.org/api/documentation.html#documentation_stability_index)

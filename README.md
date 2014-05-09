@@ -3,32 +3,21 @@
 Rajah is a [Jasmine 2.0](https://github.com/pivotal/jasmine) spec runner for Node.js
 and [Google apps script](https://developers.google.com/apps-script).
 
-Want to use GAS-Library now? [Here’s project key](#library-project-for-google-apps-script).
+Want to use GAS-Library now? [Project key is here](#library-project-for-google-apps-script).
 
 
 
 ## Version info:
 
-#### Rajah 2 v0.3.0 (development version) : branch `Release/2.x` ([`master`](https://github.com/tyskdm/rajah))
+Version: 2.0.0
 
-* new release for Jasmine 2.0
-* [Stability: 2 - Unstable](http://nodejs.org/api/documentation.html#documentation_stability_index)
+Stability: [3 - Stable](http://nodejs.org/api/documentation.html#documentation_stability_index)
 
-##### r2 v0.3.0
+Date: 2014-05-09
 
-date: 2014-05-07
-
-changes:
-- doGet: add more error handling. doget returns detail error information.
-- add tests for doget.
-- modify Gruntfile:check-result task to test doget results.
-
-
-
-#### Rajah v1.00b (stable version) : branch [`Release/1.0`](https://github.com/tyskdm/rajah/tree/Release/1.0)
-
-* Jasmine 1.3
-* Only Google apps script Library.
+Changes:
+- add tests for Google apps script library.
+- small fix.
 
 
 
@@ -40,14 +29,14 @@ Rajah is a simple Jasmine spec runner, but has 3 faces.
 
 2. Jasmine spec runner for **Google apps script**.
 
-3. **Library project** for Google apps script.
+3. **Script Library** for Google apps script.
 
-4. [www.google.com/search?tbm=isch&q=rajah+jasmine](www.google.com/search?tbm=isch&q=rajah+jasmine)
+4. [www.google.com/search?tbm=isch&q=jasmine+rajah](http://www.google.com/search?tbm=isch&q=jasmine+rajah)
 
-Rajah allows you to test Node.js project files in your PC’s command line shell. - (1)
+Rajah allows you to test Node.js project files in your command line shell. - (1)
 
-And also allows to pack Node.js module files and spec files into one source file.
-That source code is executable on Google apps script environment and run all specs as same as on your PC. - (2)
+And also allows to compile Node.js project files and spec files into one source file.
+That source code is executable on Google apps script environment and run all specs like as on your PC. - (2)
 
 Last face of Rajah is Google apps script Library. In this case, Rajah is a thin wrapper of Jasmine.
 It’s almost same as Jasmine itself, but simple and easy to use. - (3)
@@ -58,7 +47,7 @@ Following sections explain those 3 ways to use Rajah / Jasmine 2.0.
 
 ## Jasmine spec runner for Node.js
 
-Nothing special. It's simple jasmine spec runner.
+Nothing special. It's simple and easy to use jasmine spec runner.
 
 
 #### Install
@@ -83,12 +72,12 @@ $ rajah SPECS [ options ]
         Only math files in SPECS directories are loaded to run.
 
     - **--color / --noColor**<br/>
-        Use color to report results.
+        Use color to report.
 
     - **-o FILEPATH / --output=FILEPATH**<br/>
-        Store result into that file.
+        Store result into the file.
 
-    - **Not implemented yet** : -r TYPE / --reporttype=TYPE<br/>
+    - **[Not implemented yet]** -r TYPE / --reporttype=TYPE<br/>
         It will be 'console' or 'junit'.
 
 
@@ -97,18 +86,20 @@ $ rajah SPECS [ options ]
 This is for [codegs](https://github.com/tyskdm/codegs) user. Need understanding how `codegs` works first.
 * [codegs](https://github.com/tyskdm/codegs) is a tool to develop Google apps script application using Node.js development tools.<br/>
 
-Rajah execute codegs to pack your project and spec files with special `doGet` spec runner function.
+Rajah execute codegs to pack your project and spec files with special `doGet` function.
+
+This doGet function provides spec runner functionality.
 You can kick `doGet` by web IDE, HTTP Request(need to publish as web service), or Other triggers.
 
 For quick understanding, see this sample.
 
+1. Access sample project as [web service](https://script.google.com/macros/s/AKfycbz_9m0u59d01xCk4UUvGDgTZqt3oY2G6kdSR5FVGXsSXh3yNm21/exec).
+
+Or
+
 1. Open [`gas-console`](https://script.google.com/macros/s/AKfycbzZaq3NPqMHYBno7ByxV-bpTbDt6EZ4M_5-kjYXXeQ9HI-k_w8/exec).
 
 2. Open [sample project](https://script.google.com/d/1JRe4VsU9yLYMoQGDYALZN-uGQz7h9OeDGiqiTb7Oj3RVrqe8HuCVpZE7/edit) and run `doGet` function.
-
-3. Or access sample project as [web service](https://script.google.com/macros/s/AKfycbz_9m0u59d01xCk4UUvGDgTZqt3oY2G6kdSR5FVGXsSXh3yNm21/exec).
-
-Source files are in 'test/case-04'.
 
 
 
@@ -144,7 +135,7 @@ $ npm install --save-dev rajah
 
     Then, add option switch `--codegs` and you see merged long source code in your terminal.
 
-    `-o filepath` let Rajah to store source code in the file.
+    `-o filepath` let Rajah to store source code in that file.
 
     ```sh
     $ ./node_modules/.bin/rajah SPECS [ options ]  --codegs -o out.js [ codegs-options ]
@@ -153,7 +144,10 @@ $ npm install --save-dev rajah
 
 3. **Paste to Google apps script file**
 
-    Create new project for unit testing and open `Code.gs` file. Then paste into that file.
+    Create new project for unit testing and import `console` script library (Project key: MYBwh3izlQThbSz1-36mOjVJodnbMh4p7).
+
+    Open `Code.gs` file and paste compiled code.
+
 
 
 4. **Open console**
@@ -183,9 +177,9 @@ $ npm install --save-dev rajah
 
 2. HTTP request
 
-    This is challenge to headless unit testing. (not complete)
+    This is for headless unit testing.
 
-    - Deploy as web service your unit testing project.
+    - Deploy your unit testing project as a web service.
 
         1. Goto menu: `File` > `Manage versions...` and put version number.
         2. Goto menu: `Publish` > `Deploy as web app...` and get URL of `Latest code`.
@@ -198,17 +192,12 @@ $ npm install --save-dev rajah
         - ex.  script.google.com/xxxxxx/exec/**?sepcs=test/spec&showColor=true**
 
 
-3. Timer or other triggers
+3. [NOT YET IMPLEMENTED] Timer or other triggers
 
     Time trrigered unit testing for health checking.
 
     `onComplete` option(see below) let you set any function to notify the result or store as you like.
 
-
-#### Execute options for doGet function
-
-
-**TO BE FILLED LATER**
 
 
 #### Command line options for --codegs
@@ -217,36 +206,53 @@ $ npm install --save-dev rajah
 $ ./node_modules/.bin/rajah SPECS [ options ]  --codegs -o out.js [ codegs-options ]
 ```
 
-- `-o FILEPATH / --output=FILEPATH`
+- **-o FILEPATH / --output=FILEPATH**
 
-- `-p PACKAGEFILE / --package=PACKAGEFILE`
+- **-p PACKAGEFILE / --package=PACKAGEFILE**<br/>
+    Package file let rajah know which files should be packed for running specs on the GAS environment.
+
+- **--stamp=STAMP_STRING**<br/>
+    This STAMP_STRING will be sotred into compiled file.
+    And rajah output STAMP_STRING before any report results when executed in GAS environment.
+
+    This is for checking if the result of doGet access is exactly from this source code.
 
 
-#### Tips
+#### Execute options for doGet function
 
-- Minimize file size
+- Top of compiled file, config object is defined as below.
+
+    ```js
+    var rajahConfig = {
+      "specs": [
+        "test/jasmine/jasmine-spec.js"
+      ],
+      "match": null,
+      "reportType": null,
+      "showColor": true,
+      "stamp": "Fri May 09 2014 14:51:44 GMT+0900 (JST)"
+    };
+    ```
+
+- These values is handed to rajah by command line option when compile with `--codegs` option switch.
+
+- You can chenge this as you like in GAS online IDE.
+
+- When http-access, url query parameters overwrite this(specs will be added).
 
 
 
 
-## Library project for Google apps script
+
+## Script Library for Google apps script
 
 #### Project keys
 
-**Rajah 2 v0.1.0**
-
 - Project key: MW3WzHQgUPiNsCAKwIwmYtVJodnbMh4p7
+
 - Console URL: https://script.google.com/macros/s/AKfycbzZaq3NPqMHYBno7ByxV-bpTbDt6EZ4M_5-kjYXXeQ9HI-k_w8/exec
+
 - [Sample project using rajah](https://script.google.com/d/11kk1FVsxDD3FgcR2hNmmHeVwjqww055VYy6ZO7NnCJeyN2pGfYbbRw_0/edit)
-
-**Rajah v1.00b**
-
-- Project key: Mn7JlN4wYLKUhi13E3mbpdVJodnbMh4p7
-- [Sample project using rajah](https://script.google.com/d/1D6qmc_sIehOP-p6__Z29uSQTbGYrcTF0wXIwWgsD2Hba8Onjf6EWrRym/edit)
-- [Sample's published web page](https://script.google.com/macros/s/AKfycbz5tA3qJOgNHU9M8pSM7hLHO76pg8A3mx_b7bqziHIpSCwXWus/exec)
-
-Following section explains usage of Rajah 2.<br/>
-For v1.00b, See [README.md for v0.100b]().
 
 
 #### Install
@@ -297,22 +303,57 @@ For v1.00b, See [README.md for v0.100b]().
 2. **Run your function**
 
     On toolbar, select function you wrote. And then press `Run` or `Debug` button.<br/>
-    You see result in console window.
+    You see result in [gas-console](https://script.google.com/macros/s/AKfycbzZaq3NPqMHYBno7ByxV-bpTbDt6EZ4M_5-kjYXXeQ9HI-k_w8/exec).
+
+    - note: rajah itself is using gas-console. so you don't need import gas-console in your library.
 
 
+#### Other Methods and Properties:
 
-#### Methods and Properties:
+- **rajah.init(scopeObject)**
 
-- rajah.init(scopeObject)
+    It's necessary to call first. rajah will copy jasmine interface API's(describe, it,..) into scopeObject.
 
-
-- rajah.run(onComplete)
-
-
-- rajah.addReporter(reporter)
+    'scopeObject' should be `this`(global object).
 
 
-- rajah.addConsoleReporter(showColor, print)
+- **rajah.run(onComplete)**
+
+    Run rajah and execute jasmine. By default, results are printed to gas-console.
+
+    `onComplete` is callback function called with arguments below.
+    ```js
+    function onComplete(passed, specs, failures, pendings)
+    ```
+
+- **rajah.addReporter(reporter)**
+
+    Just call jasmine original `addReporter`.
 
 
-- rajah.jasmine
+- **rajah.addConsoleReporter(showColor, print)**
+
+    Instead of gas-console, rajah report to `print` function.
+    ```js
+    function print(string)
+    ```
+
+    - tips: `gas-console` use cache service of google apps script and it take time-cost.
+      Using this method, you can change it faster on-memory console.
+
+    ```js
+    var resultString = '';
+
+    rajah.addReporter(false, function (str) {
+        resultSting += str;
+    });
+
+    rajah.run(function () {
+        console.log(resultStr);
+        // or Report anyway you like.
+    });
+    ```
+
+- **rajah.jasmine**
+
+    original `jasmine` object.
