@@ -41,7 +41,7 @@ module.exports = function(grunt) {
           node_modules: []
         },
         files: {
-          'test/gaslib/tmp/gaslib-out.js': [
+          'tmp/gaslib-out.js': [
             'node_modules/jasmine-core/lib/console/console.js',
             'node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
             'src/main.js',
@@ -50,6 +50,21 @@ module.exports = function(grunt) {
             'lib/dumbreporter.js',
             'lib/timers.js'
           ]
+        }
+      }
+    },
+
+    concat: {
+      gaslib: {
+        options: {
+          banner: "/*!\n" +
+                  "<%= pkg.name %> v<%= pkg.version %>\n" +
+                  "build <%= timestamp %>\n" +
+                  "<%= grunt.file.read('LICENSE-MIT') %>" +
+                  "*/\n"
+        },
+        files: {
+          'dist/rajah-lib.gs': ['tmp/gaslib-out.js']
         }
       }
     },
@@ -269,6 +284,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-codegs');
 
@@ -339,7 +355,7 @@ module.exports = function(grunt) {
                 ' --stamp="<%= timestamp %>"' +
                 ' -o test/gaslib/tmp/testcode.gs',
 
-    'shell:gas-upload:rajah-dev:test/gaslib/tmp/gaslib-out.js',
+    'shell:gas-upload:rajah-dev:tmp/gaslib-out.js',
     'shell:gas-upload:gaslibbench:test/gaslib/tmp/testcode.gs',
 
     // case-01
@@ -351,6 +367,12 @@ module.exports = function(grunt) {
     'shell:gas-wget:gaslibbench:test/gaslib/tmp/gaslib-case-02.txt:' +
                 grunt.file.readJSON('test/gaslib/case-02/wget-option.json').options.join('&'),
     'check-result:test/gaslib/tmp/gaslib-case-02.txt:pass'
+  ]);
+
+  // deploy to rajah-scriptLibrary.
+  grunt.registerTask('gaslib-deploy', [
+    'concat:gaslib',
+    'shell:gas-upload:rajah-deploy:dist/rajah-lib.gs'
   ]);
 
   // jasmine testing sub task.
@@ -376,6 +398,7 @@ module.exports = function(grunt) {
     'rajahCore-test'
   ]);
 
+
   // main tasks.
   grunt.registerTask('cli',     ['precheck', 'cli-test']);
 
@@ -388,6 +411,8 @@ module.exports = function(grunt) {
   grunt.registerTask('rajah',   ['precheck', 'cli-test', 'doget-test', 'gaslib-test']);
 
   grunt.registerTask('all',     ['precheck', 'cli-test', 'doget-test', 'gaslib-test', 'jasmine-test']);
+
+  grunt.registerTask('deploy',  ['all', 'gaslib-deploy']);
 
   grunt.registerTask('default', ['rajah']);
 };
