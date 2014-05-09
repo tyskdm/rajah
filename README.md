@@ -9,7 +9,7 @@ Want to use GAS-Library now? [Project key is here](#library-project-for-google-a
 
 ## Version info:
 
-Version: 2.0.0
+Version: 2.0.1
 
 Stability: [3 - Stable](http://nodejs.org/api/documentation.html#documentation_stability_index)
 

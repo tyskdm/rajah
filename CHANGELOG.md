@@ -1,4 +1,4 @@
-#### v2.0.0:
+#### v2.0.1:
 date: 2014-05-09
 
 [Stability: 3 - Stable](http://nodejs.org/api/documentation.html#documentation_stability_index)

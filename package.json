@@ -1,6 +1,6 @@
 {
   "name": "rajah",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Jasmine 2.0 runner for Node.js and Google Apps Script.",
   "main": "lib/rajah.js",
   "files": [
@@ -22,6 +22,11 @@
     "name": "Tsuyoshi Kodama",
     "email": "tsuyoshi.kodama@gmail.com"
   },
+  "keywords": [
+    "GAS",
+    "googleappsscript",
+    "jasmine"
+  ],
   "license": "MIT",
   "dependencies": {
     "jasmine-core": "~2.0.0",
