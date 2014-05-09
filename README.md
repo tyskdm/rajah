@@ -3,7 +3,7 @@
 Rajah is a [Jasmine 2.0](https://github.com/pivotal/jasmine) spec runner for Node.js
 and [Google apps script](https://developers.google.com/apps-script).
 
-Want to use GAS-Library now? [Project key is here](#library-project-for-google-apps-script).
+Want to use GAS-Library now? [Project key is here](#script-library-for-google-apps-script).
 
 
 
@@ -323,7 +323,7 @@ $ ./node_modules/.bin/rajah SPECS [ options ]  --codegs -o out.js [ codegs-optio
 
     `onComplete` is callback function called with arguments below.
     ```js
-    function onComplete(passed, specs, failures, pendings)
+    function onComplete(bool passed, num specs, num failures, num pendings)
     ```
 
 - **rajah.addReporter(reporter)**
