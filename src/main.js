@@ -17,6 +17,14 @@ function setup(THIS) {
 }
 
 /**
+ * alias to setup.
+ * @param {object} THIS global scope object.
+ */
+function init(THIS) {
+    return setup(THIS);
+}
+
+/**
  * Wrapper function for jasmine.addReporter.
  * @param {object} reporter
  */
